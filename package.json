@@ -11,11 +11,10 @@
     "prettier": "prettier --single-quote --no-semi --trailing-comma es5 --write 'src/**/*.ts'",
     "prebuild": "npm run lint && npm run prettier",
     "build": "rm -rf dist && tsc",
-    "tsc": "tsc",
     "postbuild": "chmod +x dist/cli/index.js",
     "pretest": "npm run build",
     "test": "NODE_ENV=test mocha --opts mocha.opts",
-    "watch": "mocha-typescript-watch --opts mocha.opts"
+    "test:watch": "NODE_ENV=test mocha-typescript-watch --opts mocha.opts"
   },
   "engines": {
     "node": ">= 6.10.3 < 7"
@@ -44,6 +43,7 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
+    "@types/chai": "^4.0.4",
     "@types/node": "^8.0.25",
     "@types/shelljs": "^0.7.4"
   }

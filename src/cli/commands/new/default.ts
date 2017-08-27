@@ -9,15 +9,28 @@ export default class extends Command {
     name: string
   ) {
     // tslint:disable-next-line:no-console
-    console.log('scaffolding new seagull app...')
+    log('scaffolding new seagull app...')
     const dest = copyTemplateFolder(name)
 
-    // tslint:disable-next-line:no-console
-    console.log('installing dependencies...')
-    setupDependencies(dest)
+    if (process.env.NODE_ENV === 'test') {
+      // tslint:disable-next-line:no-console
+      log('skipping dependencies...')
+    } else {
+      // tslint:disable-next-line:no-console
+      log('installing dependencies...')
+      setupDependencies(dest)
+    }
 
     // tslint:disable-next-line:no-console
-    console.log('created app in: ', dest)
+    log(`created app in: ${dest}`)
+  }
+}
+
+// suppress all logging when in testing mode
+function log (msg: string) {
+  if (process.env.NODE_ENV !== 'test') {
+    // tslint:disable-next-line:no-console
+    console.log(msg)
   }
 }
 

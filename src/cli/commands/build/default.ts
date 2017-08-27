@@ -8,7 +8,7 @@ import generateYAML from '../../../lib/serverless/generate-yaml'
 @command({ description: 'compile a seagull app into a deployable bundle' })
 export default class extends Command {
   @metadata
-  public execute(context: Context) {
+  public execute() {
     initFolder()
     compileScripts()
     createServerlessYaml()
@@ -22,8 +22,10 @@ function initFolder() {
 }
 
 function compileScripts() {
-  lint()
-  prettier()
+  if (process.env.NODE_ENV !== 'test') {
+    lint()
+    prettier()
+  }
   tsc()
 }
 
