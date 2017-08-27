@@ -22,7 +22,7 @@ class Integration {
   // clean up the temporary folder after all test runs
   public static after () {
     process.chdir('../')
-    // shell.rm('-rf', appName)
+    shell.rm('-rf', appName)
   }
 
   @test('creates hidden subfolder in project')
