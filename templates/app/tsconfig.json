@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "skipLibCheck": true,
+    "target": "es6",
+    "noImplicitAny": false,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "outDir": "./.seagull/dist",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "allowJs": true
+  },
+  "include": [
+      "src/**/*",
+      "test/**/*"
+  ],
+  "lib": [ "es5", "es6", "es7", "dom", "dom.iterable" ],
+  "types": ["node"]
+}

@@ -1,0 +1,50 @@
+{
+  "name": "seagull-cli",
+  "version": "0.1.0",
+  "description": "CLI for developing seagull apps",
+  "main": "dist/cli/index.js",
+  "bin": {
+    "seagull": "dist/cli/index.js"
+  },
+  "scripts": {
+    "lint": "tslint -c tslint.json 'src/**/*.ts' --fix",
+    "prettier": "prettier --single-quote --no-semi --trailing-comma es5 --write 'src/**/*.ts'",
+    "prebuild": "npm run lint && npm run prettier",
+    "build": "rm -rf dist && tsc",
+    "tsc": "tsc",
+    "postbuild": "chmod +x dist/cli/index.js",
+    "pretest": "npm run build",
+    "test": "NODE_ENV=test mocha --opts mocha.opts",
+    "watch": "mocha-typescript-watch --opts mocha.opts"
+  },
+  "engines": {
+    "node": ">= 6.10.3 < 7"
+  },
+  "engineStrict": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seagull-js/seagull-cli.git"
+  },
+  "author": "",
+  "license": "LGPL-3.0",
+  "dependencies": {
+    "chai": "^4.1.1",
+    "clime": "^0.5.4",
+    "inflection": "^1.12.0",
+    "mocha": "^3.5.0",
+    "mocha-typescript": "^1.1.7",
+    "prettier": "^1.5.3",
+    "serverless": "^1.19.1",
+    "shelljs": "^0.7.8",
+    "source-map-support": "^0.4.16",
+    "ts-node": "^3.3.0",
+    "tslint": "^5.7.0",
+    "tslint-config-prettier": "^1.3.0",
+    "typescript": "^2.3.3",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.25",
+    "@types/shelljs": "^0.7.4"
+  }
+}
