@@ -12,12 +12,12 @@ const dir = join(shell.pwd().toString(), appName)
 @suite('CLI::new')
 class Integration {
   // execute the command *once* before the tests
-  public static before () {
+  public static before() {
     new Command().execute(appName)
   }
 
   // clean up the temporary folder after all test runs
-  public static after () {
+  public static after() {
     shell.rm('-rf', appName)
   }
 

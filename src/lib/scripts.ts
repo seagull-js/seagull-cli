@@ -1,5 +1,6 @@
 import { join } from 'path'
 import * as shell from 'shelljs'
+import wrapApp from './devserver'
 
 /**
  * These functions assume that the current PWD === app of the user !
@@ -24,4 +25,11 @@ export function prettier(): void {
 export function tsc(): void {
   shell.rm('-rf', '.seagull/dist')
   shell.exec(`${binPath('tsc')}`)
+}
+
+export function serve(): any {
+  const folder = shell.pwd().toString()
+  const appPath = join(folder, '.seagull', 'dist', 'index.js')
+  const app = require(appPath)
+  return wrapApp(app)
 }

@@ -13,14 +13,14 @@ const dir = join(shell.pwd().toString(), appName)
 @suite('CLI::build')
 class Integration {
   // execute the command *once* before the tests
-  public static before () {
+  public static before() {
     new NewCommand().execute(appName)
     process.chdir(appName)
     new BuildCommand().execute()
   }
 
   // clean up the temporary folder after all test runs
-  public static after () {
+  public static after() {
     process.chdir('../')
     shell.rm('-rf', appName)
   }
@@ -61,5 +61,4 @@ class Integration {
     const file = join(dir, '.seagull', 'dist', 'index.js')
     expect(existsSync(file)).to.be.equal(true)
   }
-
 }
