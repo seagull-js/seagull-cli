@@ -13,7 +13,7 @@
     "allowJs": true
   },
   "include": [
-      "src/**/*",
+      "api/**/*",
       "test/**/*"
   ],
   "lib": [ "es5", "es6", "es7", "dom", "dom.iterable" ],

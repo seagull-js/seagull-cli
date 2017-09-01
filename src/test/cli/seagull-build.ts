@@ -5,6 +5,7 @@ import { join } from 'path'
 import * as shell from 'shelljs'
 
 import BuildCommand from '../../cli/commands/build/default'
+import GenerateCommand from '../../cli/commands/generate/api/default'
 import NewCommand from '../../cli/commands/new/default'
 
 const appName = '__tmp__'
@@ -13,26 +14,27 @@ const dir = join(shell.pwd().toString(), appName)
 @suite('CLI::build')
 class Integration {
   // execute the command *once* before the tests
-  public static before() {
+  static before() {
     new NewCommand().execute(appName)
     process.chdir(appName)
+    new GenerateCommand().execute('Hello', '/')
     new BuildCommand().execute()
   }
 
   // clean up the temporary folder after all test runs
-  public static after() {
+  static after() {
     process.chdir('../')
     shell.rm('-rf', appName)
   }
 
   @test('creates hidden subfolder in project')
-  public canGenerateNewProject() {
+  canGenerateNewProject() {
     const folder = join(dir, '.seagull')
     expect(existsSync(folder)).to.be.equal(true)
   }
 
   @test('creates serverless.yml in subfolder')
-  public canGenerateServerlessYaml() {
+  canGenerateServerlessYaml() {
     const file = join(dir, '.seagull', 'serverless.yml')
     expect(existsSync(file)).to.be.equal(true)
     const text = readFileSync(file, { encoding: 'utf-8' })
@@ -40,7 +42,7 @@ class Integration {
   }
 
   @test('subfolder contains package.json file')
-  public containsPackageJson() {
+  containsPackageJson() {
     const file = join(dir, '.seagull', 'package.json')
     expect(existsSync(file)).to.be.equal(true)
     const text = readFileSync(file, { encoding: 'utf-8' })
@@ -51,14 +53,8 @@ class Integration {
   }
 
   @test('subfolder contains dist folder')
-  public containsSrcFolder() {
+  containsSrcFolder() {
     const folder = join(dir, '.seagull', 'dist')
     expect(existsSync(folder)).to.be.equal(true)
-  }
-
-  @test('subfolder contains index.js file in dist folder')
-  public containsIndexTs() {
-    const file = join(dir, '.seagull', 'dist', 'index.js')
-    expect(existsSync(file)).to.be.equal(true)
   }
 }

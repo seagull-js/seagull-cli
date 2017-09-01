@@ -1,13 +1,13 @@
 import * as express from 'express'
-import { App, GetRequest, IBackendRoute, PostRequest, Response } from 'seagull'
+import { API, Request, Response } from 'seagull'
 
-export default function wrap(app: App): express.Application {
+export default function wrap(app: any): express.Application {
   const server = express()
   addBackendRoutes(app, server)
   return server
 }
 
-function addBackendRoutes(app: App, server: express.Application): void {
+function addBackendRoutes(app: any, server: express.Application): void {
   for (const route of app.backend) {
     if (route.method === 'GET') {
       addGetRequest(server, route)
@@ -17,24 +17,28 @@ function addBackendRoutes(app: App, server: express.Application): void {
   }
 }
 
-function addGetRequest(server: express.Application, route: IBackendRoute) {
+function addGetRequest(server: express.Application, route: API) {
   server.get(
     route.path,
     async (req: express.Request, res: express.Response) => {
-      const request = new GetRequest(req.originalUrl, '')
-      const data = await route.handler(request)
-      res.json(data)
+      const request = mapRequestFormat(req)
+      const response = await route.handle(request)
+      res.json(response.body) // TODO: handle redirects'n'stuff
     }
   )
 }
 
-function addPostRequest(server: express.Application, route: IBackendRoute) {
+function addPostRequest(server: express.Application, route: API) {
   server.post(
     route.path,
     async (req: express.Request, res: express.Response) => {
-      const request = new PostRequest(req.originalUrl, {}) // TODO: parse body
-      const data = await route.handler(request)
-      res.json(data)
+      const request = mapRequestFormat(req)
+      const response = await route.handle(request)
+      res.json(response.body) // TODO: handle redirects'n'stuff
     }
   )
+}
+
+function mapRequestFormat(req: express.Request): Request {
+  return new Request(req.method, req.path, req.params, req.body)
 }

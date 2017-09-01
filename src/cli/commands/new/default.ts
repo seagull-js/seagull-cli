@@ -4,7 +4,7 @@ import * as shell from 'shelljs'
 
 @command({ description: 'create a new seagull app' })
 export default class extends Command {
-  public execute(
+  execute(
     @param({ description: 'name of the app', required: true })
     name: string
   ) {
@@ -35,7 +35,6 @@ function copyTemplateFolder(name: string): string {
   shell.cp('-R', src, dest)
   shell.sed('-i', 'APP_NAME', name, join(dest, 'package.json'))
   shell.sed('-i', 'APP_NAME', name, join(dest, 'README.md'))
-  shell.sed('-i', 'APP_NAME', name, join(dest, 'src', 'index.ts'))
   return dest
 }
 

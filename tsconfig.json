@@ -9,8 +9,7 @@
     "sourceMap": true,
     "outDir": "./dist",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "allowJs": true
+    "emitDecoratorMetadata": true
   },
   "include": [
       "src/**/*",

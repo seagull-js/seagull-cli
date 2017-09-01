@@ -14,22 +14,22 @@ export default class Builder {
     this.data.service = name
   }
 
-  public addIAMRoleStatement(item: IIAMRoleStatement): Builder {
+  addIAMRoleStatement(item: IIAMRoleStatement): Builder {
     this.data.provider.iamRoleStatements.push(item)
     return this
   }
 
-  public addPlugin(item: string): Builder {
+  addPlugin(item: string): Builder {
     this.data.plugins.push(item)
     return this
   }
 
-  public addFunction(name, fn: IFunction): Builder {
+  addFunction(name, fn: IFunction): Builder {
     this.data.functions[name] = fn
     return this
   }
 
-  public toYAML(): string {
+  toYAML(): string {
     return YAML.stringify(this.data, 4)
   }
 

@@ -7,8 +7,8 @@ import generate from '../../lib/serverless/generate-yaml'
 @suite()
 class ServerlessYaml {
   @test('can generate a serverless.yml in memory')
-  public canGenerateYamlInMemory() {
-    const app = new App('SLS Demo').get('/hello', async req => 'world')
+  canGenerateYamlInMemory() {
+    const app = { backend: [], name: 'MyApp' }
     const yml = generate(app)
     // tslint:disable-next-line:no-console
     // console.log(yml)

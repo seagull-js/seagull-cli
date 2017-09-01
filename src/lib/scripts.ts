@@ -1,3 +1,5 @@
+import { existsSync } from 'fs'
+import * as dir from 'node-dir'
 import { join } from 'path'
 import * as shell from 'shelljs'
 import wrapApp from './devserver'
@@ -28,8 +30,14 @@ export function tsc(): void {
 }
 
 export function serve(): any {
-  const folder = shell.pwd().toString()
-  const appPath = join(folder, '.seagull', 'dist', 'index.js')
-  const app = require(appPath)
+  const path = join(shell.pwd().toString(), '.seagull', 'dist', 'api')
+  let backend = []
+  if (existsSync(path)) {
+    backend = dir
+      .files(path, { sync: true })
+      .map(file => require(file).default)
+      .map(api => new api())
+  }
+  const app = { backend }
   return wrapApp(app)
 }

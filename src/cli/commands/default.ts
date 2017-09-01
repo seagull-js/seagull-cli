@@ -4,7 +4,7 @@ import { Command, command, param } from 'clime'
   description: 'This is a command for printing a greeting message',
 })
 export default class extends Command {
-  public execute(
+  execute(
     @param({
       description: 'Your loud name',
       required: true,
