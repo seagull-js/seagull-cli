@@ -1,9 +1,5 @@
-import { existsSync, readFileSync } from 'fs'
-import * as dir from 'node-dir'
 import { join } from 'path'
 import * as shell from 'shelljs'
-import wrapApp from './devserver'
-import App from './loader/app'
 
 /**
  * These functions assume that the current PWD === app of the user !
@@ -28,10 +24,4 @@ export function prettier(): void {
 export function tsc(): void {
   shell.rm('-rf', '.seagull/dist')
   shell.exec(`${binPath('tsc')}`)
-}
-
-export function serve(): any {
-  const path = join(shell.pwd().toString(), '.seagull')
-  const app = new App(path)
-  return wrapApp(app)
 }
