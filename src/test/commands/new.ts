@@ -4,7 +4,7 @@ import { skip, slow, suite, test, timeout } from 'mocha-typescript'
 import { join } from 'path'
 import * as shell from 'shelljs'
 
-import Command from '../../cli/commands/new/default'
+import Command from '../../commands/new'
 
 const appName = '__tmp__'
 const dir = join(shell.pwd().toString(), appName)

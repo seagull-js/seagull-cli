@@ -3,8 +3,8 @@ import { existsSync, writeFileSync } from 'fs'
 import * as dir from 'node-dir'
 import { join } from 'path'
 import * as shell from 'shelljs'
-import { lint, prettier, tsc } from '../../../lib/scripts'
-import generateYAML from '../../../lib/serverless/generate-yaml'
+import { lint, prettier, tsc } from '../lib/scripts'
+import generateYAML from '../lib/serverless/generate-yaml'
 
 @command({ description: 'compile a seagull app into a deployable bundle' })
 export default class extends Command {
@@ -48,7 +48,6 @@ function createServerlessYaml() {
     backend = files
       .filter(apiFile => /\.js$/.test(apiFile))
       .map(apiFile => require(apiFile).default)
-      .map(api => new api())
   }
 
   // generate actual yaml

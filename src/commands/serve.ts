@@ -1,7 +1,7 @@
 import { Command, command, metadata, param } from 'clime'
 import { join } from 'path'
 import * as shell from 'shelljs'
-import { serve } from '../../../lib/scripts'
+import { serve } from '../lib/scripts'
 
 @command({ description: 'start local devserver for your app' })
 export default class extends Command {

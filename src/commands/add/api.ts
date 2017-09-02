@@ -17,8 +17,6 @@ export default class extends Command {
       '..',
       '..',
       '..',
-      '..',
-      '../',
       'templates',
       'api',
       'handler.ts'

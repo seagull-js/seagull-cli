@@ -5,10 +5,10 @@ import * as fetch from 'node-fetch'
 import { join } from 'path'
 import * as shell from 'shelljs'
 
-import BuildCommand from '../../cli/commands/build/default'
-import GenerateCommand from '../../cli/commands/generate/api/default'
-import NewCommand from '../../cli/commands/new/default'
-import ServeCommand from '../../cli/commands/serve/default'
+import AddCommand from '../../commands/add/api'
+import BuildCommand from '../../commands/build'
+import NewCommand from '../../commands/new'
+import ServeCommand from '../../commands/serve'
 
 const appName = '__tmp__'
 const dir = join(shell.pwd().toString(), appName)
@@ -19,7 +19,7 @@ class Integration {
   static before() {
     new NewCommand().execute(appName)
     process.chdir(appName)
-    new GenerateCommand().execute('Hello', '/hello')
+    new AddCommand().execute('Hello', '/hello')
     new BuildCommand().execute()
   }
 
