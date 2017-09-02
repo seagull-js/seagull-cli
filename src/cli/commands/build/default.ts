@@ -19,7 +19,9 @@ export default class extends Command {
 function initFolder() {
   shell.mkdir('-p', '.seagull')
   shell.cp('package.json', '.seagull/package.json')
-  shell.cp('-R', 'node_modules', '.seagull/node_modules')
+  if (existsSync(join(shell.pwd().toString(), 'node_modules'))) {
+    shell.cp('-R', 'node_modules', '.seagull/node_modules')
+  }
 }
 
 function compileScripts() {

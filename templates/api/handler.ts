@@ -1,16 +1,16 @@
-import { API, Request, Response } from 'seagull'
+import { API, Request, Response } from '@seagull-js/seagull'
 
 export default class APINAME extends API {
   /**
    * This is the HTTP method / verb for the API. Defaults to 'GET'
    */
-  method = 'GET'
+  static method = 'GET'
 
   /**
    * The URL path where this API will be located. Skip for private functions
    * like cronjobs. Example: '/greetings/{name}'
    */
-  // path = '/'
+  // static path = '/'
 
   /**
    * This handle function executes your code. Return one of the following method

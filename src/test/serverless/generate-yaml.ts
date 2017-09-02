@@ -1,7 +1,5 @@
 import { expect } from 'chai'
 import { skip, slow, suite, test, timeout } from 'mocha-typescript'
-
-import App from 'seagull'
 import generate from '../../lib/serverless/generate-yaml'
 
 @suite()

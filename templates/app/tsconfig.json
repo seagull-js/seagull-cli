@@ -8,6 +8,7 @@
     "preserveConstEnums": true,
     "sourceMap": true,
     "outDir": "./.seagull/dist",
+    "rootDir": "./",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "allowJs": true

@@ -1,5 +1,7 @@
+import { API, Request, Response } from '@seagull-js/seagull'
 import * as express from 'express'
-import { API, Request, Response } from 'seagull'
+
+export type HttpMethod = 'GET' | 'POST' // TODO: change to string in framework
 
 export default function wrap(app: any): express.Application {
   const server = express()
@@ -8,37 +10,19 @@ export default function wrap(app: any): express.Application {
 }
 
 function addBackendRoutes(app: any, server: express.Application): void {
-  for (const route of app.backend) {
-    if (route.method === 'GET') {
-      addGetRequest(server, route)
-    } else {
-      addPostRequest(server, route)
+  for (const api of app.backend) {
+    const { path, method } = api
+    const fn = async (req: express.Request, res: express.Response) => {
+      const request = mapRequestFormat(req)
+      const handler: API = new (api as any)()
+      const response = await handler.handle(request)
+      res.json(response.body) // TODO: handle redirects'n'stuff
     }
+    server[method.toLowerCase()](path, fn)
   }
 }
 
-function addGetRequest(server: express.Application, route: API) {
-  server.get(
-    route.path,
-    async (req: express.Request, res: express.Response) => {
-      const request = mapRequestFormat(req)
-      const response = await route.handle(request)
-      res.json(response.body) // TODO: handle redirects'n'stuff
-    }
-  )
-}
-
-function addPostRequest(server: express.Application, route: API) {
-  server.post(
-    route.path,
-    async (req: express.Request, res: express.Response) => {
-      const request = mapRequestFormat(req)
-      const response = await route.handle(request)
-      res.json(response.body) // TODO: handle redirects'n'stuff
-    }
-  )
-}
-
 function mapRequestFormat(req: express.Request): Request {
-  return new Request(req.method, req.path, req.params, req.body)
+  const method = req.method as HttpMethod
+  return new Request(method, req.path, req.params, req.body)
 }

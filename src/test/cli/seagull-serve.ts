@@ -32,9 +32,11 @@ class Integration {
   @test('does load an app and starts the dev server')
   async canGenerateNewProject() {
     const server = new ServeCommand().execute()
-    // const data = await fetch('http://localhost:3000/hello')
-    // const json = await data.json()
-    // expect(json).to.be.equal('world')
+    const data = await fetch('http://localhost:3000/hello')
+    // tslint:disable-next-line:no-console
+    // console.log('data', data)
+    const json = await data.json()
+    expect(json).to.be.equal('hello world')
     server.close()
   }
 }

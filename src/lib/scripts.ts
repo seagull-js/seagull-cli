@@ -1,4 +1,4 @@
-import { existsSync } from 'fs'
+import { existsSync, readFileSync } from 'fs'
 import * as dir from 'node-dir'
 import { join } from 'path'
 import * as shell from 'shelljs'
@@ -35,8 +35,11 @@ export function serve(): any {
   if (existsSync(path)) {
     backend = dir
       .files(path, { sync: true })
-      .map(file => require(file).default)
-      .map(api => new api())
+      .filter(file => /\.js$/.test(file))
+      .map(file => {
+        delete require.cache[file] // do not remove this
+        return require(file).default
+      })
   }
   const app = { backend }
   return wrapApp(app)

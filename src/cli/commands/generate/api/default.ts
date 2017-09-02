@@ -27,7 +27,7 @@ export default class extends Command {
     shell.cp(src, dest)
     shell.sed('-i', 'APINAME', name, dest)
     if (path) {
-      shell.sed('-i', "// path = '/'", `path = '${path}'`, dest)
+      shell.sed('-i', "// static path = '/'", `static path = '${path}'`, dest)
     }
     log(`created api in: ${dest}`)
   }

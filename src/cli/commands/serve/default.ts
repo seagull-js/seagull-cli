@@ -3,7 +3,7 @@ import { join } from 'path'
 import * as shell from 'shelljs'
 import { serve } from '../../../lib/scripts'
 
-@command({ description: 'create a new seagull app' })
+@command({ description: 'start local devserver for your app' })
 export default class extends Command {
   @metadata
   execute() {

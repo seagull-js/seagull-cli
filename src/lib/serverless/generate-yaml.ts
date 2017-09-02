@@ -1,8 +1,7 @@
 import * as inflection from 'inflection'
-import App from 'seagull'
 import Builder from './builder'
 
-export default function generate(app: App): string {
+export default function generate(app: any): string {
   // create instance with defaults
   const sls = new Builder(app.name)
 
