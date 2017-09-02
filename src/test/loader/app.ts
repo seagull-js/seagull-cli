@@ -1,8 +1,8 @@
 import { expect } from 'chai'
+import { existsSync, readFileSync } from 'fs'
 import { skip, slow, suite, test, timeout } from 'mocha-typescript'
 import { join } from 'path'
 import * as shell from 'shelljs'
-import generate from '../../lib/serverless/generate-yaml'
 
 import AddCommand from '../../commands/add/api'
 import BuildCommand from '../../commands/build'
@@ -13,14 +13,12 @@ import App from '../../lib/loader/app'
 const appName = '__tmp__'
 const dir = join(shell.pwd().toString(), appName)
 
-@suite()
-class ServerlessYaml {
+@suite('Loader::app')
+class Integration {
   // execute the command *once* before the tests
   static before() {
     new NewCommand().execute(appName)
     shell.cd(appName)
-    new AddCommand().execute('Hello', '/hello')
-    new BuildCommand().execute()
   }
 
   // clean up the temporary folder after all test runs
@@ -29,12 +27,24 @@ class ServerlessYaml {
     shell.rm('-rf', appName)
   }
 
-  @test('can generate a serverless.yml in memory')
-  canGenerateYamlInMemory() {
+  @test
+  'can load demo project with api handlers'() {
+    new AddCommand().execute('Hello', '/hello')
+    new BuildCommand().execute()
     const folder = join(dir, '.seagull')
     const app = new App(folder)
-    const yml = generate(app) // TODO: functions are badly formatted
-    expect(yml).to.include('aws')
-    expect(yml).to.include('runtime: nodejs6.10')
+    // tslint:disable-next-line:no-console
+    // console.log(app)
+    expect(app.name).to.be.equal('__tmp__')
+    expect(app.backend).to.have.length(1)
+  }
+
+  @test
+  'can load demo project without api handlers'() {
+    new BuildCommand().execute()
+    const folder = join(dir, '.seagull')
+    const app = new App(folder)
+    expect(app.name).to.be.equal('__tmp__')
+    expect(app.backend).to.have.length(1)
   }
 }

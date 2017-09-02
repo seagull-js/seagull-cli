@@ -1,8 +1,8 @@
 import { Command, command, Context, metadata, param } from 'clime'
 import { existsSync, writeFileSync } from 'fs'
-import * as dir from 'node-dir'
 import { join } from 'path'
 import * as shell from 'shelljs'
+import App from '../lib/loader/app'
 import { lint, prettier, tsc } from '../lib/scripts'
 import generateYAML from '../lib/serverless/generate-yaml'
 
@@ -34,24 +34,8 @@ function compileScripts() {
 
 function createServerlessYaml() {
   const pwd = shell.pwd().toString()
+  const app = new App(join(pwd, '.seagull'))
 
-  // load package.json
-  const pkgPath = join(pwd, 'package.json')
-  const pkg = require(pkgPath)
-
-  // load backend api routes
-  let backend = []
-  if (existsSync(join(pwd, '.seagull', 'dist', 'api'))) {
-    const files = dir.files(join(pwd, '.seagull', 'dist', 'api'), {
-      sync: true,
-    })
-    backend = files
-      .filter(apiFile => /\.js$/.test(apiFile))
-      .map(apiFile => require(apiFile).default)
-  }
-
-  // generate actual yaml
-  const app = { backend, name: pkg.name }
   const yml = generateYAML(app)
   const ymlPath = join(pwd, '.seagull', 'serverless.yml')
   writeFileSync(ymlPath, yml)

@@ -3,6 +3,7 @@ import * as dir from 'node-dir'
 import { join } from 'path'
 import * as shell from 'shelljs'
 import wrapApp from './devserver'
+import App from './loader/app'
 
 /**
  * These functions assume that the current PWD === app of the user !
@@ -30,17 +31,7 @@ export function tsc(): void {
 }
 
 export function serve(): any {
-  const path = join(shell.pwd().toString(), '.seagull', 'dist', 'api')
-  let backend = []
-  if (existsSync(path)) {
-    backend = dir
-      .files(path, { sync: true })
-      .filter(file => /\.js$/.test(file))
-      .map(file => {
-        delete require.cache[file] // do not remove this
-        return require(file).default
-      })
-  }
-  const app = { backend }
+  const path = join(shell.pwd().toString(), '.seagull')
+  const app = new App(path)
   return wrapApp(app)
 }
