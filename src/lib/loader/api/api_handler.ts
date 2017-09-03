@@ -12,9 +12,9 @@ export default class ApiHandler {
 
   private generateName() {
     const id = this.filePath
-      .split('/.seagull/')
+      .split('/.seagull/dist/')
       .reverse()[0]
-      .replace('/', '-')
+      .replace(/\//g, '-')
       .replace(/\.js$/, '')
     this.name = `${this.appName}-${id}`
   }
