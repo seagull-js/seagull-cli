@@ -11,24 +11,35 @@ import FunctionalTest from '../../helper/functional_test'
 class ServeCommandTest extends FunctionalTest {
   @test
   'can build a project'() {
-    this.addApi('hello', '/hello') // there must be "something" for the tsc to do
+    this.addApi('Hello', '/hello') // there must be "something" for the tsc to do
     this.build()
   }
 
-  @test('can generate a serverless.yml in memory')
-  canGenerateYamlInMemory() {
-    const folder = join(this.appDir, '.seagull')
-    const app = new App(folder)
-    const yml = generate(app) // TODO: functions are badly formatted
-    // tslint:disable-next-line:no-console
-    // console.log(yml)
-    expect(yml).to.include('aws')
-    expect(yml).to.include('runtime: nodejs6.10')
-    const obj = YAML.parse(yml)
-    expect(obj.functions).to.be.an('object')
-    expect(obj.functions).to.have.key('__tmp__-api-hello')
-    const fn = obj.functions['__tmp__-api-hello']
+  @test
+  'can generate a serverless.yml in memory'() {
+    const app = new App(join(this.appDir, '.seagull'))
+    const yml = YAML.parse(generate(app))
+    expect(yml.provider.name).to.be.equal('aws')
+    expect(yml.provider.runtime).to.be.equal('nodejs6.10')
+    expect(yml.provider.region).to.be.equal('eu-central-1')
+    expect(yml.provider.timeout).to.be.equal(30)
+  }
+
+  @test
+  'yaml contains functions'() {
+    const app = new App(join(this.appDir, '.seagull'))
+    const yml = YAML.parse(generate(app))
+    expect(yml.functions).to.be.an('object')
+    expect(yml.functions).to.have.key('__tmp__-api-Hello')
+  }
+
+  @test
+  'yaml functions have correct data fields'() {
+    const app = new App(join(this.appDir, '.seagull'))
+    const yml = YAML.parse(generate(app))
+    const fn = yml.functions['__tmp__-api-Hello']
     expect(fn.timeout).to.be.equal(30)
     expect(fn.events).to.be.an('array')
+    expect(fn.handler).to.be.equal('dist/api/Hello.handler')
   }
 }

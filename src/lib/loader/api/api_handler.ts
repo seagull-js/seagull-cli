@@ -7,6 +7,7 @@ export default class ApiHandler {
 
   constructor(public appName: string, public filePath: string) {
     this.generateName()
+    this.generateHandler()
     this.loadModule()
   }
 
@@ -17,6 +18,13 @@ export default class ApiHandler {
       .replace(/\//g, '-')
       .replace(/\.js$/, '')
     this.name = `${this.appName}-${id}`
+  }
+
+  private generateHandler() {
+    this.handler = this.filePath
+      .split('/.seagull/')
+      .reverse()[0]
+      .replace(/\.js$/, '.handler')
   }
 
   private loadModule() {

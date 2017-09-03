@@ -3,7 +3,7 @@ import { existsSync, writeFileSync } from 'fs'
 import { join } from 'path'
 import * as shell from 'shelljs'
 import App from '../lib/loader/app'
-import { lint, prettier, tsc } from '../lib/scripts'
+import { lint, modifyScriptExports, prettier, tsc } from '../lib/scripts'
 import generateYAML from '../lib/serverless/generate-yaml'
 
 @command({ description: 'compile a seagull app into a deployable bundle' })
@@ -31,6 +31,7 @@ function compileScripts() {
       prettier()
     }
     tsc()
+    modifyScriptExports()
   }
 }
 

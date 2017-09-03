@@ -32,7 +32,7 @@
   "author": "",
   "license": "LGPL-3.0",
   "dependencies": {
-    "@seagull-js/seagull": "^0.1.5",
+    "@seagull-js/seagull": "^0.1.7",
     "chai": "^4.1.1",
     "clime": "^0.5.4",
     "express": "^4.15.4",

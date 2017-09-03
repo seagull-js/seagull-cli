@@ -1,3 +1,4 @@
+import * as dir from 'node-dir'
 import { join } from 'path'
 import * as shell from 'shelljs'
 
@@ -24,4 +25,13 @@ export function prettier(): void {
 export function tsc(): void {
   shell.rm('-rf', '.seagull/dist')
   shell.exec(`${binPath('tsc')}`)
+}
+
+export function modifyScriptExports(): void {
+  const files = dir
+    .files('.seagull/dist/api', { sync: true })
+    .filter(file => /\.js$/.test(file))
+  const from = /exports\.default = (\w+);/
+  const to = 'exports.default = $1;\nexports.handler = $1.dispatch.bind($1);'
+  shell.sed('-i', from, to, files)
 }

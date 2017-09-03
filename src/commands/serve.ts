@@ -38,8 +38,8 @@ function wrap(app: App): express.Application {
       const response = await handler.handle(request)
       res.json(response.body) // TODO: handle redirects'n'stuff
     }
-    const method = api.module.method.toString().toLowerCase()
-    server[method](api.module.path.toString(), fn)
+    const method = (api.module as any).method.toString().toLowerCase()
+    server[method]((api.module as any).path.toString(), fn)
   }
   return server
 }
