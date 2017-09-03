@@ -4,15 +4,15 @@ import * as shell from 'shelljs'
 import BaseTest from './base_test'
 
 @suite
-export default class FunctionalTest extends BaseTest {
+export default class IntegrationTest extends BaseTest {
   // execute the command *once* before the tests
-  static before() {
+  before() {
     this.create(this.appName)
     shell.cd(this.appName)
   }
 
   // clean up the temporary folder after all test runs
-  static after() {
+  after() {
     shell.cd(this.cwd)
     shell.rm('-rf', this.appName)
   }

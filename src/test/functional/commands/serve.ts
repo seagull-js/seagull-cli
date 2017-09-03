@@ -10,13 +10,13 @@ import FunctionalTest from '../../helper/functional_test'
 class ServeCommandTest extends FunctionalTest {
   @test
   'can build a project'() {
-    this.addApi('hello', '/hello') // there must be "something" for the tsc to do
+    this.addApi('hello', '/hello')
     this.build()
   }
 
   @test
   async 'does load an app and starts the dev server'() {
-    const server = new ServeCommand().execute()
+    const server = this.serve()
     const data = await fetch('http://localhost:3000/hello')
     // tslint:disable-next-line:no-console
     // console.log('data', data)

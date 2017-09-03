@@ -25,11 +25,13 @@ function initFolder() {
 }
 
 function compileScripts() {
-  if (process.env.NODE_ENV !== 'test') {
-    lint()
-    prettier()
+  if (existsSync(join(shell.pwd().toString(), 'api'))) {
+    if (process.env.NODE_ENV !== 'test') {
+      lint()
+      prettier()
+    }
+    tsc()
   }
-  tsc()
 }
 
 function createServerlessYaml() {

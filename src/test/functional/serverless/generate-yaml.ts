@@ -21,7 +21,7 @@ class ServeCommandTest extends FunctionalTest {
     const app = new App(folder)
     const yml = generate(app) // TODO: functions are badly formatted
     // tslint:disable-next-line:no-console
-    console.log(yml)
+    // console.log(yml)
     expect(yml).to.include('aws')
     expect(yml).to.include('runtime: nodejs6.10')
     const obj = YAML.parse(yml)
