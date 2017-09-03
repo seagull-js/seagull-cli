@@ -1,5 +1,5 @@
 {
-  "name": "seagull-cli",
+  "name": "@seagull-js/seagull-cli",
   "version": "0.1.0",
   "description": "CLI for developing seagull apps",
   "main": "dist/index.js",
@@ -36,7 +36,6 @@
     "chai": "^4.1.1",
     "clime": "^0.5.4",
     "express": "^4.15.4",
-    "inflection": "^1.12.0",
     "mocha": "^3.5.0",
     "mocha-typescript": "^1.1.7",
     "node-dir": "^0.1.17",

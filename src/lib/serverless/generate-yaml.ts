@@ -1,4 +1,3 @@
-import * as inflection from 'inflection'
 import App from '../loader/app'
 import Builder from './builder'
 
