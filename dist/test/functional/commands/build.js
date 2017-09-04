@@ -16,7 +16,7 @@ const path_1 = require("path");
 const functional_test_1 = require("../../helper/functional_test");
 let BuildCommandTest = class BuildCommandTest extends functional_test_1.default {
     'can build a project'() {
-        this.addApi('hello', '/');
+        this.addApi('hello', { path: '/' });
         this.build();
     }
     'creates hidden subfolder in project'() {

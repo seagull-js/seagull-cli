@@ -23,7 +23,7 @@ const fetch = require("node-fetch");
 const functional_test_1 = require("../../helper/functional_test");
 let ServeCommandTest = class ServeCommandTest extends functional_test_1.default {
     'can build a project'() {
-        this.addApi('hello', '/hello');
+        this.addApi('hello', { path: '/hello' });
         this.build();
     }
     'does load an app and starts the dev server'() {

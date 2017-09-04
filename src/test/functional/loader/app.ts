@@ -9,7 +9,7 @@ import FunctionalTest from '../../helper/functional_test'
 class LoaderAppTest extends FunctionalTest {
   @test
   'can build a project'() {
-    this.addApi('hello', '/hello')
+    this.addApi('hello', { path: '/hello' })
     this.build()
   }
 

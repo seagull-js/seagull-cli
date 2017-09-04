@@ -18,7 +18,7 @@ const generate_yaml_1 = require("../../../lib/serverless/generate-yaml");
 const functional_test_1 = require("../../helper/functional_test");
 let ServeCommandTest = class ServeCommandTest extends functional_test_1.default {
     'can build a project'() {
-        this.addApi('Hello', '/hello');
+        this.addApi('Hello', { path: '/hello' });
         this.build();
     }
     'can generate a serverless.yml in memory'() {

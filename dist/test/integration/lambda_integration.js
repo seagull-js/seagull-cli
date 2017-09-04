@@ -24,7 +24,7 @@ const integration_test_1 = require("../helper/integration_test");
 let AwsLambdaIntegrationTest = class AwsLambdaIntegrationTest extends integration_test_1.default {
     'can invoke a function handler'() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.addApi('hello', '/hello');
+            this.addApi('hello', { path: '/hello' });
             this.build();
             const event = {
                 httpMethod: 'GET',

@@ -7,7 +7,7 @@ import IntegrationTest from '../helper/integration_test'
 class AwsLambdaIntegrationTest extends IntegrationTest {
   @test
   async 'can invoke a function handler'() {
-    this.addApi('hello', '/hello')
+    this.addApi('hello', { path: '/hello' })
     this.build()
     const event = {
       httpMethod: 'GET',

@@ -15,25 +15,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const clime_1 = require("clime");
 const path_1 = require("path");
 const shell = require("shelljs");
+class SomeOptions extends clime_1.Options {
+}
+__decorate([
+    clime_1.option({ description: 'url path for the api handler', flag: 'p' }),
+    __metadata("design:type", String)
+], SomeOptions.prototype, "path", void 0);
+exports.SomeOptions = SomeOptions;
 let default_1 = class default_1 extends clime_1.Command {
-    execute(name, path) {
+    execute(name, options) {
         const pwd = shell.pwd().toString();
         const dest = path_1.join(pwd, 'api', `${name}.ts`);
         const src = path_1.join(__dirname, '..', '..', '..', 'templates', 'api', 'handler.ts');
         shell.mkdir('-p', 'api');
         shell.cp(src, dest);
         shell.sed('-i', 'APINAME', name, dest);
-        if (path) {
-            shell.sed('-i', "// static path = '/'", `static path = '${path}'`, dest);
+        if (options.path) {
+            shell.sed('-i', "// static path = '/'", `static path = '${options.path}'`, dest);
         }
         log(`created api in: ${dest}`);
     }
 };
 __decorate([
     __param(0, clime_1.param({ description: 'name of the api handler', required: true })),
-    __param(1, clime_1.param({ description: 'url path for the handler', required: false })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [String, SomeOptions]),
     __metadata("design:returntype", void 0)
 ], default_1.prototype, "execute", null);
 default_1 = __decorate([

@@ -11,7 +11,7 @@ import FunctionalTest from '../../helper/functional_test'
 class ServeCommandTest extends FunctionalTest {
   @test
   'can build a project'() {
-    this.addApi('Hello', '/hello') // there must be "something" for the tsc to do
+    this.addApi('Hello', { path: '/hello' }) // there must be "something" for the tsc to do
     this.build()
   }
 

@@ -16,7 +16,7 @@ const app_1 = require("../../../lib/loader/app");
 const functional_test_1 = require("../../helper/functional_test");
 let LoaderAppTest = class LoaderAppTest extends functional_test_1.default {
     'can build a project'() {
-        this.addApi('hello', '/hello');
+        this.addApi('hello', { path: '/hello' });
         this.build();
     }
     'can load demo project with api handlers'() {
