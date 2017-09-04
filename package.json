@@ -1,6 +1,6 @@
 {
   "name": "@seagull-js/seagull-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "CLI for developing seagull apps",
   "main": "dist/index.js",
   "bin": {
@@ -19,7 +19,8 @@
     "test:unit:watch": "NODE_ENV=test mocha-typescript-watch --opts mocha.opts dist/test/unit/**/*.js",
     "test:functional": "NODE_ENV=test mocha --opts mocha.opts dist/test/functional/**/*.js",
     "test:functional:watch": "NODE_ENV=test mocha-typescript-watch --opts mocha.opts dist/test/functional/**/*.js",
-    "test:integration": "NODE_ENV=test mocha --opts mocha.opts dist/test/integration/**/*.js"
+    "test:integration": "NODE_ENV=test mocha --opts mocha.opts dist/test/integration/**/*.js",
+    "postinstall": "npm run build"
   },
   "engines": {
     "node": ">= 6.10.3 < 7"
