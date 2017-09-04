@@ -21,6 +21,11 @@ function tsc() {
     shell.exec(`${binPath('tsc')}`);
 }
 exports.tsc = tsc;
+function nodemon() {
+    const cfg = path_1.join(__dirname, '..', '..', 'nodemon.json');
+    shell.exec(`${binPath('nodemon')} --config ${cfg}`);
+}
+exports.nodemon = nodemon;
 function modifyScriptExports() {
     const files = dir
         .files('.seagull/dist/api', { sync: true })

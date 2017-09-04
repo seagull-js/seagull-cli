@@ -9,7 +9,6 @@ import App from '../lib/loader/app'
 export default class extends Command {
   @metadata
   execute() {
-    log('> starting dev server with live reload (TODO: reload)...')
     const path = join(shell.pwd().toString(), '.seagull')
     const app = new App(path)
     const server = wrap(app)

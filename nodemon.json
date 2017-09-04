@@ -1,5 +1,5 @@
 {
-  "watch": ["src", "package.json"],
-  "ext": "json,ts,vue",
-  "exec": "ts-node ./local.ts"
+  "watch": ["api", "package.json"],
+  "ext": "json,ts",
+  "exec": "seagull build && seagull serve"
 }

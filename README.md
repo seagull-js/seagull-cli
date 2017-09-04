@@ -16,6 +16,7 @@ this is a work in progress
 - add some backend logic `seagull add api --name hello --path '/'`
 - compile the app with `seagull build`
 - start a devserver with `seagull serve` and point your browser to `http://localhost:3000/`
+- the last two steps including live reload: `seagull dev`
 
 ## Roadmap
 
@@ -24,7 +25,7 @@ this is a work in progress
 - [x] add "add api" command after APIs are defined in framework core
 - [x] add "build" command and provide outsourced tooling for apps
 - [x] add "serve" command which wraps up backend handlers into localhost:3000
-- [ ] add livereload to "serve" command for developer ergonomics
+- [x] add livereload to "serve" command for developer ergonomics
 - [ ] add "deploy" command to push app to AWS
 - [ ] add "add view" command after SPA-framework is integrated in seagull
 - [ ] add "add store" command after views are working

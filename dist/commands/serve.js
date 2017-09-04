@@ -25,7 +25,6 @@ const shell = require("shelljs");
 const app_1 = require("../lib/loader/app");
 let default_1 = class default_1 extends clime_1.Command {
     execute() {
-        log('> starting dev server with live reload (TODO: reload)...');
         const path = path_1.join(shell.pwd().toString(), '.seagull');
         const app = new app_1.default(path);
         const server = wrap(app);
