@@ -16,5 +16,6 @@
       "test/**/*"
   ],
   "lib": [],
-  "types": ["node"]
+  "types": ["node"],
+  "typeRoots": [ "node_modules/@types"]
 }
