@@ -10,11 +10,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const clime_1 = require("clime");
-const scripts_1 = require("../lib/scripts");
 let default_1 = class default_1 extends clime_1.Command {
     execute() {
         log('> starting dev server with live reload...');
-        scripts_1.nodemon();
+        const nodemon = require('nodemon');
+        nodemon({
+            exec: 'seagull serve',
+            ext: 'json,ts',
+            watch: ['api', 'package.json'],
+        });
     }
 };
 __decorate([

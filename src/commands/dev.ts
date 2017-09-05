@@ -3,7 +3,7 @@ import { Command, command, metadata, param } from 'clime'
 import * as express from 'express'
 import { join } from 'path'
 import * as shell from 'shelljs'
-import { nodemon } from '../lib/scripts'
+// import { nodemon } from '../lib/scripts'
 
 @command({
   description: 'start local dev server for your app with live reload',
@@ -12,7 +12,14 @@ export default class extends Command {
   @metadata
   execute() {
     log('> starting dev server with live reload...')
-    nodemon()
+    // nodemon()
+    // shell.exec(`${binPath('nodemon')} --config ${cfg}`)
+    const nodemon = require('nodemon')
+    nodemon({
+      exec: 'seagull serve',
+      ext: 'json,ts',
+      watch: ['api', 'package.json'],
+    })
   }
 }
 
