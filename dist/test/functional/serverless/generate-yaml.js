@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const chai_1 = require("chai");
 const mocha_typescript_1 = require("mocha-typescript");
-const path_1 = require("path");
 const YAML = require("yamljs");
 const app_1 = require("../../../lib/loader/app");
 const generate_yaml_1 = require("../../../lib/serverless/generate-yaml");
@@ -22,7 +21,7 @@ let ServeCommandTest = class ServeCommandTest extends functional_test_1.default 
         this.build();
     }
     'can generate a serverless.yml in memory'() {
-        const app = new app_1.default(path_1.join(this.appDir, '.seagull'));
+        const app = new app_1.default(this.appDir);
         const yml = YAML.parse(generate_yaml_1.default(app));
         chai_1.expect(yml.provider.name).to.be.equal('aws');
         chai_1.expect(yml.provider.runtime).to.be.equal('nodejs6.10');
@@ -30,15 +29,15 @@ let ServeCommandTest = class ServeCommandTest extends functional_test_1.default 
         chai_1.expect(yml.provider.timeout).to.be.equal(30);
     }
     'yaml contains functions'() {
-        const app = new app_1.default(path_1.join(this.appDir, '.seagull'));
+        const app = new app_1.default(this.appDir);
         const yml = YAML.parse(generate_yaml_1.default(app));
         chai_1.expect(yml.functions).to.be.an('object');
-        chai_1.expect(yml.functions).to.have.key('__tmp__-api-Hello');
+        chai_1.expect(yml.functions).to.have.key('api-Hello');
     }
     'yaml functions have correct data fields'() {
-        const app = new app_1.default(path_1.join(this.appDir, '.seagull'));
+        const app = new app_1.default(this.appDir);
         const yml = YAML.parse(generate_yaml_1.default(app));
-        const fn = yml.functions['__tmp__-api-Hello'];
+        const fn = yml.functions['api-Hello'];
         chai_1.expect(fn.timeout).to.be.equal(30);
         chai_1.expect(fn.events).to.be.an('array');
         chai_1.expect(fn.handler).to.be.equal('dist/api/Hello.handler');

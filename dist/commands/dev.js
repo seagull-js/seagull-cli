@@ -24,7 +24,9 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], default_1.prototype, "execute", null);
 default_1 = __decorate([
-    clime_1.command({ description: 'start local devserver for your app' })
+    clime_1.command({
+        description: 'start local dev server for your app with live reload',
+    })
 ], default_1);
 exports.default = default_1;
 function log(msg) {

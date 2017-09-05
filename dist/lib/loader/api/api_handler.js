@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tsnode = require("ts-node");
+tsnode.register({ fast: true });
 class ApiHandler {
     constructor(appName, filePath) {
         this.appName = appName;
@@ -10,17 +12,18 @@ class ApiHandler {
     }
     generateName() {
         const id = this.filePath
-            .split('/.seagull/dist/')
+            .split('/api/')
             .reverse()[0]
             .replace(/\//g, '-')
-            .replace(/\.js$/, '');
-        this.name = `${this.appName}-${id}`;
+            .replace(/\.ts$/, '');
+        this.name = `api-${id}`;
     }
     generateHandler() {
-        this.handler = this.filePath
-            .split('/.seagull/')
+        const id = this.filePath
+            .split('/api/')
             .reverse()[0]
-            .replace(/\.js$/, '.handler');
+            .replace(/\.ts$/, '.handler');
+        this.handler = `dist/api/${id}`;
     }
     loadModule() {
         delete require.cache[this.filePath];

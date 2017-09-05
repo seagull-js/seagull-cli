@@ -11,7 +11,6 @@ class ServeCommandTest extends FunctionalTest {
   @test
   'can build a project'() {
     this.addApi('hello', { path: '/hello' })
-    this.build()
   }
 
   @test

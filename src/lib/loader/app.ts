@@ -20,7 +20,7 @@ export default class App {
   }
 
   private loadApiHandlers() {
-    const folder = join(this.folder, 'dist', 'api')
+    const folder = join(this.folder, 'api')
     this.backend = apiLoader(this.name, folder)
   }
 }

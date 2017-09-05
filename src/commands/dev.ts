@@ -5,7 +5,9 @@ import { join } from 'path'
 import * as shell from 'shelljs'
 import { nodemon } from '../lib/scripts'
 
-@command({ description: 'start local dev server for your app with live reload' })
+@command({
+  description: 'start local dev server for your app with live reload',
+})
 export default class extends Command {
   @metadata
   execute() {

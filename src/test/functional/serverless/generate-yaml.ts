@@ -17,7 +17,7 @@ class ServeCommandTest extends FunctionalTest {
 
   @test
   'can generate a serverless.yml in memory'() {
-    const app = new App(join(this.appDir, '.seagull'))
+    const app = new App(this.appDir)
     const yml = YAML.parse(generate(app))
     expect(yml.provider.name).to.be.equal('aws')
     expect(yml.provider.runtime).to.be.equal('nodejs6.10')
@@ -27,17 +27,17 @@ class ServeCommandTest extends FunctionalTest {
 
   @test
   'yaml contains functions'() {
-    const app = new App(join(this.appDir, '.seagull'))
+    const app = new App(this.appDir)
     const yml = YAML.parse(generate(app))
     expect(yml.functions).to.be.an('object')
-    expect(yml.functions).to.have.key('__tmp__-api-Hello')
+    expect(yml.functions).to.have.key('api-Hello')
   }
 
   @test
   'yaml functions have correct data fields'() {
-    const app = new App(join(this.appDir, '.seagull'))
+    const app = new App(this.appDir)
     const yml = YAML.parse(generate(app))
-    const fn = yml.functions['__tmp__-api-Hello']
+    const fn = yml.functions['api-Hello']
     expect(fn.timeout).to.be.equal(30)
     expect(fn.events).to.be.an('array')
     expect(fn.handler).to.be.equal('dist/api/Hello.handler')

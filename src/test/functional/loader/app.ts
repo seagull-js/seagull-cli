@@ -15,8 +15,7 @@ class LoaderAppTest extends FunctionalTest {
 
   @test
   'can load demo project with api handlers'() {
-    const folder = join(this.appDir, '.seagull')
-    const app = new App(folder)
+    const app = new App(this.appDir)
     // tslint:disable-next-line:no-console
     // console.log(app)
     expect(app.name).to.be.equal('__tmp__')

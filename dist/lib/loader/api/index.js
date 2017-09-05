@@ -10,7 +10,7 @@ function loader(appName, folder) {
     }
     return dir
         .files(folder, { sync: true })
-        .filter(file => /\.js$/.test(file))
+        .filter(file => /\.ts$/.test(file))
         .map(file => new api_handler_1.default(appName, file));
 }
 exports.default = loader;

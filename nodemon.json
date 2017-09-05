@@ -1,5 +1,5 @@
 {
   "watch": ["api", "package.json"],
   "ext": "json,ts",
-  "exec": "seagull build && seagull serve"
+  "exec": "seagull serve"
 }

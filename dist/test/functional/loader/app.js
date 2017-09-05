@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const chai_1 = require("chai");
 const mocha_typescript_1 = require("mocha-typescript");
-const path_1 = require("path");
 const app_1 = require("../../../lib/loader/app");
 const functional_test_1 = require("../../helper/functional_test");
 let LoaderAppTest = class LoaderAppTest extends functional_test_1.default {
@@ -20,8 +19,7 @@ let LoaderAppTest = class LoaderAppTest extends functional_test_1.default {
         this.build();
     }
     'can load demo project with api handlers'() {
-        const folder = path_1.join(this.appDir, '.seagull');
-        const app = new app_1.default(folder);
+        const app = new app_1.default(this.appDir);
         chai_1.expect(app.name).to.be.equal('__tmp__');
         chai_1.expect(app.backend).to.have.length(1);
     }

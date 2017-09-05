@@ -4,13 +4,13 @@ import * as express from 'express'
 import { join } from 'path'
 import * as shell from 'shelljs'
 import App from '../lib/loader/app'
+import wrap from '../lib/server/'
 
 @command({ description: 'start local devserver for your app' })
 export default class extends Command {
   @metadata
   execute() {
-    const path = join(shell.pwd().toString(), '.seagull')
-    const app = new App(path)
+    const app = new App(process.cwd())
     const server = wrap(app)
     if (process.env.NODE_ENV === 'test') {
       return server.listen(3000, () => log('server ready on localhost:3000'))
@@ -26,26 +26,4 @@ function log(msg: string) {
     // tslint:disable-next-line:no-console
     console.log(msg)
   }
-}
-
-function wrap(app: App): express.Application {
-  const server = express()
-  for (const api of app.backend) {
-    const fn = async (req: express.Request, res: express.Response) => {
-      const request = mapRequestFormat(req)
-      const handler: API = new (api.module as any)()
-      const response = await handler.handle(request)
-      res.json(response.body) // TODO: handle redirects'n'stuff
-    }
-    const method = (api.module as any).method.toString().toLowerCase()
-    server[method]((api.module as any).path.toString(), fn)
-  }
-  return server
-}
-
-export type HttpMethod = 'GET' | 'POST' // TODO: change to string in framework
-
-function mapRequestFormat(req: express.Request): Request {
-  const method = req.method as HttpMethod
-  return new Request(method, req.path, req.params, req.body)
 }

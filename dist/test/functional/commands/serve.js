@@ -24,7 +24,6 @@ const functional_test_1 = require("../../helper/functional_test");
 let ServeCommandTest = class ServeCommandTest extends functional_test_1.default {
     'can build a project'() {
         this.addApi('hello', { path: '/hello' });
-        this.build();
     }
     'does load an app and starts the dev server'() {
         return __awaiter(this, void 0, void 0, function* () {

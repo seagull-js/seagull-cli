@@ -15,15 +15,15 @@ const path_1 = require("path");
 const api_handler_1 = require("../../../lib/loader/api/api_handler");
 let ApiHandlerTest = class ApiHandlerTest {
     'can load an API handler directly from file'() {
-        const file = path_1.join(__dirname, 'example', 'Hello.js');
+        const file = path_1.join(process.cwd(), 'templates', 'api', 'handler.ts');
         const handler = new api_handler_1.default('myapp', file);
         chai_1.expect(handler.appName).to.be.equal('myapp');
         chai_1.expect(handler.filePath).to.be.equal(file);
-        chai_1.expect(handler.name).to.include('example-Hello');
+        chai_1.expect(handler.name).to.include('api-handler');
         chai_1.expect(handler.module).to.be.a('function');
-        chai_1.expect(handler.module.path).to.be.equal('/hello');
+        chai_1.expect(handler.module.path).to.be.equal(undefined);
         chai_1.expect(handler.module.method).to.be.equal('GET');
-        chai_1.expect(handler.handler).to.include('Hello.handler');
+        chai_1.expect(handler.handler).to.include('handler.handler');
     }
 };
 __decorate([

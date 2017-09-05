@@ -12,6 +12,6 @@ export default function loader(appName: string, folder: string): ApiHandler[] {
   }
   return dir
     .files(folder, { sync: true })
-    .filter(file => /\.js$/.test(file))
+    .filter(file => /\.ts$/.test(file))
     .map(file => new ApiHandler(appName, file))
 }

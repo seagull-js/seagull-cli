@@ -16,7 +16,7 @@ class App {
         this.name = this.package.name;
     }
     loadApiHandlers() {
-        const folder = path_1.join(this.folder, 'dist', 'api');
+        const folder = path_1.join(this.folder, 'api');
         this.backend = api_1.default(this.name, folder);
     }
 }
