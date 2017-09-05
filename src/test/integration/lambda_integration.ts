@@ -3,7 +3,7 @@ import { skip, slow, suite, test, timeout } from 'mocha-typescript'
 import { join } from 'path'
 import IntegrationTest from '../helper/integration_test'
 
-@suite.only('Integration::aws_lambda')
+@suite('Integration::aws_lambda')
 class AwsLambdaIntegrationTest extends IntegrationTest {
   @test
   async 'can invoke a function handler'() {

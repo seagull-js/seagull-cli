@@ -19,6 +19,9 @@ let default_1 = class default_1 extends clime_1.Command {
             ext: 'json,ts',
             watch: ['api', 'package.json'],
         });
+        nodemon.on('restart', files => {
+            log('App restarted due to: ', files);
+        });
     }
 };
 __decorate([
@@ -33,9 +36,9 @@ default_1 = __decorate([
     })
 ], default_1);
 exports.default = default_1;
-function log(msg) {
+function log(...args) {
     if (process.env.NODE_ENV !== 'test') {
-        console.log(msg);
+        console.log(args);
     }
 }
 //# sourceMappingURL=dev.js.map

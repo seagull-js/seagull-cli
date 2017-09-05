@@ -50,6 +50,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AwsLambdaIntegrationTest.prototype, "can invoke a function handler", null);
 AwsLambdaIntegrationTest = __decorate([
-    mocha_typescript_1.suite.only('Integration::aws_lambda')
+    mocha_typescript_1.suite('Integration::aws_lambda')
 ], AwsLambdaIntegrationTest);
 //# sourceMappingURL=lambda_integration.js.map

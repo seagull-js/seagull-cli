@@ -27,11 +27,6 @@ export function tsc(): void {
   shell.exec(`${binPath('tsc')}`)
 }
 
-export function nodemon(): void {
-  const cfg = join(__dirname, '..', '..', 'nodemon.json')
-  shell.exec(`${binPath('nodemon')} --config ${cfg}`)
-}
-
 export function modifyScriptExports(): void {
   const files = dir
     .files('.seagull/dist/api', { sync: true })

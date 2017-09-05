@@ -17,8 +17,6 @@ class ServeCommandTest extends FunctionalTest {
   async 'does load an app and starts the dev server'() {
     const server = this.serve()
     const data = await fetch('http://localhost:3000/hello')
-    // tslint:disable-next-line:no-console
-    // console.log('data', data)
     const json = await data.json()
     expect(json).to.be.equal('hello world')
     server.close()

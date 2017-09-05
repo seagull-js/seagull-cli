@@ -3,6 +3,7 @@ import { Command, command, metadata, param } from 'clime'
 import * as express from 'express'
 import { join } from 'path'
 import * as shell from 'shelljs'
+import * as stoppable from 'stoppable'
 import App from '../lib/loader/app'
 import wrap from '../lib/server/'
 
@@ -11,11 +12,13 @@ export default class extends Command {
   @metadata
   execute() {
     const app = new App(process.cwd())
-    const server = wrap(app)
+    const server = stoppable(wrap(app), 0)
     if (process.env.NODE_ENV === 'test') {
-      return server.listen(3000, () => log('server ready on localhost:3000'))
+      return server.listen(3000, () =>
+        log('static server ready on localhost:3000')
+      )
     } else {
-      server.listen(3000, () => log('server ready on localhost:3000'))
+      server.listen(3000, () => log('static server ready on localhost:3000'))
     }
   }
 }

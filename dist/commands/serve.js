@@ -10,17 +10,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const clime_1 = require("clime");
+const stoppable = require("stoppable");
 const app_1 = require("../lib/loader/app");
 const _1 = require("../lib/server/");
 let default_1 = class default_1 extends clime_1.Command {
     execute() {
         const app = new app_1.default(process.cwd());
-        const server = _1.default(app);
+        const server = stoppable(_1.default(app), 0);
         if (process.env.NODE_ENV === 'test') {
-            return server.listen(3000, () => log('server ready on localhost:3000'));
+            return server.listen(3000, () => log('static server ready on localhost:3000'));
         }
         else {
-            server.listen(3000, () => log('server ready on localhost:3000'));
+            server.listen(3000, () => log('static server ready on localhost:3000'));
         }
     }
 };
