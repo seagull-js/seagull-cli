@@ -38,7 +38,7 @@ default_1 = __decorate([
 exports.default = default_1;
 function log(...args) {
     if (process.env.NODE_ENV !== 'test') {
-        console.log(args);
+        console.log(...args);
     }
 }
 //# sourceMappingURL=dev.js.map
