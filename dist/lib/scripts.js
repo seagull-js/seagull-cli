@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const fs_1 = require("fs");
 const dir = require("node-dir");
 const path_1 = require("path");
 const shell = require("shelljs");
@@ -23,8 +22,6 @@ function tsc() {
 }
 exports.tsc = tsc;
 function browserify() {
-    const str = 'require("inferno").default.render(require("./routes").default, document.getElementById("root"));';
-    fs_1.writeFileSync('.seagull/dist/frontend/client.js', str, { encoding: 'utf-8' });
     shell.exec(`${binPath('browserify')} .seagull/dist/frontend/client.js > .seagull/assets/bundle.js`);
 }
 exports.browserify = browserify;

@@ -10,8 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const seagull_1 = require("@seagull-js/seagull");
 const express = require("express");
+const UglifyJS = require("uglify-es");
 function wrap(app) {
     const server = express();
+    if (app.frontend) {
+        server.get('/assets/bundle.js', (req, res) => res.send(UglifyJS.minify(app.frontend)));
+    }
     for (const api of app.backend) {
         const fn = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const request = mapRequestFormat(req);

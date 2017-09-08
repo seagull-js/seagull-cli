@@ -15,7 +15,7 @@ class ServeCommandTest extends FunctionalTest {
 
   @test
   async 'does load an app and starts the dev server'() {
-    const server = this.serve()
+    const server = await this.serve()
     const data = await fetch('http://localhost:3000/hello')
     const json = await data.json()
     expect(json).to.be.equal('hello world')
@@ -24,10 +24,20 @@ class ServeCommandTest extends FunctionalTest {
 
   @test
   async 'does render html pages (SSR)'() {
-    const server = this.serve()
+    const server = await this.serve()
     const data = await fetch('http://localhost:3000/')
     const html = await data.text()
     expect(html).to.include(`<title>${this.appName}</title>`)
+    server.close()
+  }
+
+  @test
+  async 'does generate bundle.js in-memory'() {
+    const server = await this.serve()
+    const data = await fetch('http://localhost:3000/assets/bundle.js')
+    const jsblob = await data.text()
+    expect(jsblob).to.be.a('string')
+    expect(jsblob.length).to.be.above(1337)
     server.close()
   }
 }

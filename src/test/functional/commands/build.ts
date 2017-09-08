@@ -52,14 +52,23 @@ class BuildCommandTest extends FunctionalTest {
     expect(api.handler).to.be.a('function')
   }
 
-  @test 'frontend folders get added and compiled'() {
-    const file = join(this.appDir, '.seagull', 'dist', 'frontend', 'pages', 'example.js')
+  @test
+  'frontend folders get added and compiled'() {
+    const file = join(
+      this.appDir,
+      '.seagull',
+      'dist',
+      'frontend',
+      'pages',
+      'example.js'
+    )
     expect(existsSync(file)).to.be.equal(true)
     const text = readFileSync(file, { encoding: 'utf-8' })
     expect(text).to.include('example')
   }
 
-  @test 'frontend gets browserified into a single file'() {
+  @test
+  'frontend gets browserified into a single file'() {
     const file = join(this.appDir, '.seagull', 'assets', 'bundle.js')
     expect(existsSync(file)).to.be.equal(true)
   }

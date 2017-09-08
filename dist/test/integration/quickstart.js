@@ -24,14 +24,14 @@ const integration_test_1 = require("../helper/integration_test");
 let LoaderAppTest = class LoaderAppTest extends integration_test_1.default {
     'can build and serve an new empty app'() {
         return __awaiter(this, void 0, void 0, function* () {
-            const server = this.serve();
+            const server = yield this.serve();
             server.close();
         });
     }
     'can build and serve an app with api routes'() {
         return __awaiter(this, void 0, void 0, function* () {
             this.addApi('hello', { path: '/hello' });
-            const server = this.serve();
+            const server = yield this.serve();
             const data = yield fetch('http://localhost:3000/hello');
             const json = yield data.json();
             chai_1.expect(json).to.be.equal('hello world');

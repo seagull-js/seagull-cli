@@ -29,9 +29,13 @@ export function tsc(): void {
 }
 
 export function browserify(): void {
-  const str = 'require("inferno").default.render(require("./routes").default, document.getElementById("root"));'
-  writeFileSync('.seagull/dist/frontend/client.js', str, { encoding: 'utf-8' })
-  shell.exec(`${binPath('browserify')} .seagull/dist/frontend/client.js > .seagull/assets/bundle.js`)
+  // const str = 'require("inferno").default.render(require("./routes").default, document.getElementById("root"));'
+  // writeFileSync('.seagull/dist/frontend/client.js', str, { encoding: 'utf-8' })
+  shell.exec(
+    `${binPath(
+      'browserify'
+    )} .seagull/dist/frontend/client.js > .seagull/assets/bundle.js`
+  )
 }
 
 export function modifyScriptExports(): void {

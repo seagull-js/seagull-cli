@@ -6,7 +6,7 @@ import ApiHandler from './api_handler'
 
 export { ApiHandler }
 
-// requires the full (absolute) path to the project's .seagull/api folder
+// requires the full (absolute) path to the project's folder
 export default function loader(appName: string, folder: string): ApiHandler[] {
   if (!existsSync(folder)) {
     return []
@@ -16,11 +16,10 @@ export default function loader(appName: string, folder: string): ApiHandler[] {
     .filter(file => /\.ts$/.test(file))
     .map(file => new ApiHandler(appName, file))
   return sorted(handlers)
-
 }
 
 // very naive for now, but works for basic apps
-function sorted (apis: ApiHandler[]): ApiHandler[] {
+function sorted(apis: ApiHandler[]): ApiHandler[] {
   const regular = filter(apis, api => api.module.path !== '/*')
   const greedy = filter(apis, api => api.module.path === '/*')
   return union(regular, greedy)

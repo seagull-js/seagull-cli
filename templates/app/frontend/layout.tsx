@@ -1,5 +1,6 @@
 import createElement from 'inferno-create-element'
 
+// this is what your index.html looks like
 export default function Layout({ children }) {
   return (
     <html>

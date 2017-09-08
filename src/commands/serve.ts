@@ -10,8 +10,9 @@ import wrap from '../lib/server/'
 @command({ description: 'start local devserver for your app' })
 export default class extends Command {
   @metadata
-  execute() {
+  async execute() {
     const app = new App(process.cwd())
+    await app.loadFrontendBundle()
     const server = stoppable(wrap(app), 0)
     if (process.env.NODE_ENV === 'test') {
       return server.listen(3000, () =>

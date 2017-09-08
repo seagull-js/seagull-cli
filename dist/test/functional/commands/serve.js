@@ -27,7 +27,7 @@ let ServeCommandTest = class ServeCommandTest extends functional_test_1.default 
     }
     'does load an app and starts the dev server'() {
         return __awaiter(this, void 0, void 0, function* () {
-            const server = this.serve();
+            const server = yield this.serve();
             const data = yield fetch('http://localhost:3000/hello');
             const json = yield data.json();
             chai_1.expect(json).to.be.equal('hello world');
@@ -36,10 +36,20 @@ let ServeCommandTest = class ServeCommandTest extends functional_test_1.default 
     }
     'does render html pages (SSR)'() {
         return __awaiter(this, void 0, void 0, function* () {
-            const server = this.serve();
+            const server = yield this.serve();
             const data = yield fetch('http://localhost:3000/');
             const html = yield data.text();
             chai_1.expect(html).to.include(`<title>${this.appName}</title>`);
+            server.close();
+        });
+    }
+    'does generate bundle.js in-memory'() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const server = yield this.serve();
+            const data = yield fetch('http://localhost:3000/assets/bundle.js');
+            const jsblob = yield data.text();
+            chai_1.expect(jsblob).to.be.a('string');
+            chai_1.expect(jsblob.length).to.be.equal(747622);
             server.close();
         });
     }
@@ -62,6 +72,12 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ServeCommandTest.prototype, "does render html pages (SSR)", null);
+__decorate([
+    mocha_typescript_1.test,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], ServeCommandTest.prototype, "does generate bundle.js in-memory", null);
 ServeCommandTest = __decorate([
     mocha_typescript_1.suite('Commands::serve')
 ], ServeCommandTest);
