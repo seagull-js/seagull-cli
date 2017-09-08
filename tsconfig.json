@@ -9,13 +9,14 @@
     "sourceMap": true,
     "outDir": "./dist",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "jsx": "react",
+    "jsxFactory": "createElement"
   },
   "include": [
       "src/**/*",
       "test/**/*"
   ],
-  "lib": [],
   "types": ["node"],
   "typeRoots": [ "node_modules/@types"]
 }

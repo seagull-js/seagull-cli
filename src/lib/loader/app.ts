@@ -1,5 +1,6 @@
 import { join } from 'path'
 import { ApiHandler, default as apiLoader } from './api'
+export { ApiHandler } from './api'
 
 // abstracts away all non-generated code inside the .seagull folder
 export default class App {

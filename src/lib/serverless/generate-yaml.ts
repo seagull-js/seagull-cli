@@ -9,7 +9,11 @@ export default function generate(app: App): string {
   for (const api of app.backend) {
     const { method, path } = api.module as any
     const event = { http: `${method} ${path}` }
-    const fn = { handler: api.handler, timeout: 30, events: [event] }
+    const events = [event]
+    if (method === 'GET' && path === '/*') {
+      events.push({ http: `${method} /` }) // special case, not covered by '/*'
+    }
+    const fn = { handler: api.handler, timeout: 30, events }
     sls.addFunction(api.name, fn)
   }
 

@@ -21,4 +21,13 @@ class ServeCommandTest extends FunctionalTest {
     expect(json).to.be.equal('hello world')
     server.close()
   }
+
+  @test
+  async 'does render html pages (SSR)'() {
+    const server = this.serve()
+    const data = await fetch('http://localhost:3000/')
+    const html = await data.text()
+    expect(html).to.include(`<title>${this.appName}</title>`)
+    server.close()
+  }
 }

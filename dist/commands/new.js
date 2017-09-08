@@ -13,6 +13,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const clime_1 = require("clime");
+const dir = require("node-dir");
 const path_1 = require("path");
 const shell = require("shelljs");
 let default_1 = class default_1 extends clime_1.Command {
@@ -45,12 +46,12 @@ function log(msg) {
     }
 }
 function copyTemplateFolder(name) {
-    const pwd = shell.pwd();
-    const dest = `${pwd}/${name}`;
+    const pwd = shell.pwd().toString();
+    const dest = path_1.join(pwd, name);
     const src = path_1.join(__dirname, '..', '..', 'templates', 'app');
     shell.cp('-R', src, dest);
-    shell.sed('-i', 'APP_NAME', name, path_1.join(dest, 'package.json'));
-    shell.sed('-i', 'APP_NAME', name, path_1.join(dest, 'README.md'));
+    const files = dir.files(dest, { sync: true });
+    shell.sed('-i', 'APP_NAME', name, files);
     return dest;
 }
 function setupDependencies(dest) {

@@ -19,6 +19,6 @@ class LoaderAppTest extends FunctionalTest {
     // tslint:disable-next-line:no-console
     // console.log(app)
     expect(app.name).to.be.equal('__tmp__')
-    expect(app.backend).to.have.length(1)
+    expect(app.backend).to.have.length(2)
   }
 }

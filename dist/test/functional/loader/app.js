@@ -21,7 +21,7 @@ let LoaderAppTest = class LoaderAppTest extends functional_test_1.default {
     'can load demo project with api handlers'() {
         const app = new app_1.default(this.appDir);
         chai_1.expect(app.name).to.be.equal('__tmp__');
-        chai_1.expect(app.backend).to.have.length(1);
+        chai_1.expect(app.backend).to.have.length(2);
     }
 };
 __decorate([

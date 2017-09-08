@@ -2,6 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = require("path");
 const api_1 = require("./api");
+var api_2 = require("./api");
+exports.ApiHandler = api_2.ApiHandler;
 class App {
     constructor(folder) {
         this.folder = folder;

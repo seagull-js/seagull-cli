@@ -1,4 +1,5 @@
 import { Command, command, param } from 'clime'
+import * as dir from 'node-dir'
 import { join } from 'path'
 import * as shell from 'shelljs'
 
@@ -29,12 +30,13 @@ function log(msg: string) {
 }
 
 function copyTemplateFolder(name: string): string {
-  const pwd = shell.pwd()
-  const dest = `${pwd}/${name}`
+  const pwd = shell.pwd().toString()
+  const dest = join(pwd, name)
   const src = join(__dirname, '..', '..', 'templates', 'app')
   shell.cp('-R', src, dest)
-  shell.sed('-i', 'APP_NAME', name, join(dest, 'package.json'))
-  shell.sed('-i', 'APP_NAME', name, join(dest, 'README.md'))
+  const files = dir.files(dest, { sync: true })
+
+  shell.sed('-i', 'APP_NAME', name, files)
   return dest
 }
 

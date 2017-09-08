@@ -6,21 +6,21 @@ import FunctionalTest from '../../helper/functional_test'
 
 @suite('Commands::new')
 class NewCommandTest extends FunctionalTest {
-  @test('does generate a new project')
-  canGenerateNewProject() {
+  @test
+  'does generate a new project'() {
     expect(existsSync(this.appDir)).to.be.equal(true)
   }
 
-  @test('project contains README file')
-  containsReadMe() {
+  @test
+  'project contains README file'() {
     const file = join(this.appDir, 'README.md')
     expect(existsSync(file)).to.be.equal(true)
     const text = readFileSync(file, { encoding: 'utf-8' })
     expect(text).to.include(this.appName)
   }
 
-  @test('project contains package.json file')
-  containsPackageJson() {
+  @test
+  'project contains package.json file'() {
     const file = join(this.appDir, 'package.json')
     expect(existsSync(file)).to.be.equal(true)
     const text = readFileSync(file, { encoding: 'utf-8' })
@@ -30,19 +30,61 @@ class NewCommandTest extends FunctionalTest {
     expect(json.version).to.be.equal('0.1.0')
   }
 
-  @test('project contains tsconfig file')
-  containsTsconfig() {
+  @test
+  'project contains tsconfig file'() {
     const file = join(this.appDir, 'tsconfig.json')
     expect(existsSync(file)).to.be.equal(true)
     const json = JSON.parse(readFileSync(file, { encoding: 'utf-8' }))
     expect(json).to.be.an('object')
   }
 
-  @test('project contains tslint file')
-  containsTslint() {
+  @test
+  'project contains tslint file'() {
     const file = join(this.appDir, 'tslint.json')
     expect(existsSync(file)).to.be.equal(true)
     const json = JSON.parse(readFileSync(file, { encoding: 'utf-8' }))
     expect(json).to.be.an('object')
+  }
+
+  @test
+  'project contains api folder'() {
+    const file = join(this.appDir, 'api')
+    expect(existsSync(file)).to.be.equal(true)
+  }
+
+  @test
+  'project api folder contains Frontend.ts file'() {
+    const file = join(this.appDir, 'api', 'Frontend.ts')
+    expect(existsSync(file)).to.be.equal(true)
+  }
+
+  @test
+  'project contains frontend folder'() {
+    const file = join(this.appDir, 'frontend')
+    expect(existsSync(file)).to.be.equal(true)
+  }
+
+  @test
+  'project frontend folder contains layout.tsx file'() {
+    const file = join(this.appDir, 'frontend', 'layout.tsx')
+    expect(existsSync(file)).to.be.equal(true)
+  }
+
+  @test
+  'project frontend folder contains routes.tsx file'() {
+    const file = join(this.appDir, 'frontend', 'routes.tsx')
+    expect(existsSync(file)).to.be.equal(true)
+  }
+
+  @test
+  'project frontend folder contains pages folder'() {
+    const file = join(this.appDir, 'frontend', 'pages')
+    expect(existsSync(file)).to.be.equal(true)
+  }
+
+  @test
+  'project frontend pages folder contains hello.tsx file'() {
+    const file = join(this.appDir, 'frontend', 'pages', 'hello.tsx')
+    expect(existsSync(file)).to.be.equal(true)
   }
 }

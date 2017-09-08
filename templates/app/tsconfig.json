@@ -11,12 +11,14 @@
     "rootDir": "./",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "allowJs": true
+    "jsx": "react",
+    "jsxFactory": "createElement"
   },
   "include": [
       "api/**/*",
+      "frontend/**/*",
       "test/**/*"
   ],
   "lib": [ "es5", "es6", "es7", "dom", "dom.iterable" ],
-  "types": ["node"]
+  "types": ["node", "inferno"]
 }

@@ -15,16 +15,16 @@ const mocha_typescript_1 = require("mocha-typescript");
 const path_1 = require("path");
 const functional_test_1 = require("../../helper/functional_test");
 let NewCommandTest = class NewCommandTest extends functional_test_1.default {
-    canGenerateNewProject() {
+    'does generate a new project'() {
         chai_1.expect(fs_1.existsSync(this.appDir)).to.be.equal(true);
     }
-    containsReadMe() {
+    'project contains README file'() {
         const file = path_1.join(this.appDir, 'README.md');
         chai_1.expect(fs_1.existsSync(file)).to.be.equal(true);
         const text = fs_1.readFileSync(file, { encoding: 'utf-8' });
         chai_1.expect(text).to.include(this.appName);
     }
-    containsPackageJson() {
+    'project contains package.json file'() {
         const file = path_1.join(this.appDir, 'package.json');
         chai_1.expect(fs_1.existsSync(file)).to.be.equal(true);
         const text = fs_1.readFileSync(file, { encoding: 'utf-8' });
@@ -33,49 +33,119 @@ let NewCommandTest = class NewCommandTest extends functional_test_1.default {
         chai_1.expect(json.name).to.be.equal(this.appName);
         chai_1.expect(json.version).to.be.equal('0.1.0');
     }
-    containsTsconfig() {
+    'project contains tsconfig file'() {
         const file = path_1.join(this.appDir, 'tsconfig.json');
         chai_1.expect(fs_1.existsSync(file)).to.be.equal(true);
         const json = JSON.parse(fs_1.readFileSync(file, { encoding: 'utf-8' }));
         chai_1.expect(json).to.be.an('object');
     }
-    containsTslint() {
+    'project contains tslint file'() {
         const file = path_1.join(this.appDir, 'tslint.json');
         chai_1.expect(fs_1.existsSync(file)).to.be.equal(true);
         const json = JSON.parse(fs_1.readFileSync(file, { encoding: 'utf-8' }));
         chai_1.expect(json).to.be.an('object');
     }
+    'project contains api folder'() {
+        const file = path_1.join(this.appDir, 'api');
+        chai_1.expect(fs_1.existsSync(file)).to.be.equal(true);
+    }
+    'project api folder contains Frontend.ts file'() {
+        const file = path_1.join(this.appDir, 'api', 'Frontend.ts');
+        chai_1.expect(fs_1.existsSync(file)).to.be.equal(true);
+    }
+    'project contains frontend folder'() {
+        const file = path_1.join(this.appDir, 'frontend');
+        chai_1.expect(fs_1.existsSync(file)).to.be.equal(true);
+    }
+    'project frontend folder contains layout.tsx file'() {
+        const file = path_1.join(this.appDir, 'frontend', 'layout.tsx');
+        chai_1.expect(fs_1.existsSync(file)).to.be.equal(true);
+    }
+    'project frontend folder contains routes.tsx file'() {
+        const file = path_1.join(this.appDir, 'frontend', 'routes.tsx');
+        chai_1.expect(fs_1.existsSync(file)).to.be.equal(true);
+    }
+    'project frontend folder contains pages folder'() {
+        const file = path_1.join(this.appDir, 'frontend', 'pages');
+        chai_1.expect(fs_1.existsSync(file)).to.be.equal(true);
+    }
+    'project frontend pages folder contains hello.tsx file'() {
+        const file = path_1.join(this.appDir, 'frontend', 'pages', 'hello.tsx');
+        chai_1.expect(fs_1.existsSync(file)).to.be.equal(true);
+    }
 };
 __decorate([
-    mocha_typescript_1.test('does generate a new project'),
+    mocha_typescript_1.test,
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
-], NewCommandTest.prototype, "canGenerateNewProject", null);
+], NewCommandTest.prototype, "does generate a new project", null);
 __decorate([
-    mocha_typescript_1.test('project contains README file'),
+    mocha_typescript_1.test,
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
-], NewCommandTest.prototype, "containsReadMe", null);
+], NewCommandTest.prototype, "project contains README file", null);
 __decorate([
-    mocha_typescript_1.test('project contains package.json file'),
+    mocha_typescript_1.test,
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
-], NewCommandTest.prototype, "containsPackageJson", null);
+], NewCommandTest.prototype, "project contains package.json file", null);
 __decorate([
-    mocha_typescript_1.test('project contains tsconfig file'),
+    mocha_typescript_1.test,
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
-], NewCommandTest.prototype, "containsTsconfig", null);
+], NewCommandTest.prototype, "project contains tsconfig file", null);
 __decorate([
-    mocha_typescript_1.test('project contains tslint file'),
+    mocha_typescript_1.test,
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
-], NewCommandTest.prototype, "containsTslint", null);
+], NewCommandTest.prototype, "project contains tslint file", null);
+__decorate([
+    mocha_typescript_1.test,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], NewCommandTest.prototype, "project contains api folder", null);
+__decorate([
+    mocha_typescript_1.test,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], NewCommandTest.prototype, "project api folder contains Frontend.ts file", null);
+__decorate([
+    mocha_typescript_1.test,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], NewCommandTest.prototype, "project contains frontend folder", null);
+__decorate([
+    mocha_typescript_1.test,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], NewCommandTest.prototype, "project frontend folder contains layout.tsx file", null);
+__decorate([
+    mocha_typescript_1.test,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], NewCommandTest.prototype, "project frontend folder contains routes.tsx file", null);
+__decorate([
+    mocha_typescript_1.test,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], NewCommandTest.prototype, "project frontend folder contains pages folder", null);
+__decorate([
+    mocha_typescript_1.test,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], NewCommandTest.prototype, "project frontend pages folder contains hello.tsx file", null);
 NewCommandTest = __decorate([
     mocha_typescript_1.suite('Commands::new')
 ], NewCommandTest);

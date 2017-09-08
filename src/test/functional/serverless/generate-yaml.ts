@@ -30,7 +30,7 @@ class ServeCommandTest extends FunctionalTest {
     const app = new App(this.appDir)
     const yml = YAML.parse(generate(app))
     expect(yml.functions).to.be.an('object')
-    expect(yml.functions).to.have.key('api-Hello')
+    expect(yml.functions).to.have.keys('api-Hello', 'api-Frontend')
   }
 
   @test
@@ -41,5 +41,16 @@ class ServeCommandTest extends FunctionalTest {
     expect(fn.timeout).to.be.equal(30)
     expect(fn.events).to.be.an('array')
     expect(fn.handler).to.be.equal('dist/api/Hello.handler')
+  }
+
+  @test
+  'frontend function has correct paths (/ and /*)'() {
+    const app = new App(this.appDir)
+    const yml = YAML.parse(generate(app))
+    const fn = yml.functions['api-Frontend']
+    expect(fn.timeout).to.be.equal(30)
+    expect(fn.events).to.be.an('array')
+    expect(fn.events).to.have.length(2)
+    expect(fn.handler).to.be.equal('dist/api/Frontend.handler')
   }
 }

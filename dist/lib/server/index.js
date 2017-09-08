@@ -20,7 +20,7 @@ function wrap(app) {
             res.json(response.body);
         });
         const method = api.module.method.toString().toLowerCase();
-        server[method](api.module.path.toString(), fn);
+        server[method](api.module.path.replace('/*', '*').toString(), fn);
     }
     return server;
 }

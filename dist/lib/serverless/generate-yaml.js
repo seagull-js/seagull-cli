@@ -6,7 +6,11 @@ function generate(app) {
     for (const api of app.backend) {
         const { method, path } = api.module;
         const event = { http: `${method} ${path}` };
-        const fn = { handler: api.handler, timeout: 30, events: [event] };
+        const events = [event];
+        if (method === 'GET' && path === '/*') {
+            events.push({ http: `${method} /` });
+        }
+        const fn = { handler: api.handler, timeout: 30, events };
         sls.addFunction(api.name, fn);
     }
     return sls.toYAML();

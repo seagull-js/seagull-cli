@@ -32,7 +32,7 @@ let ServeCommandTest = class ServeCommandTest extends functional_test_1.default 
         const app = new app_1.default(this.appDir);
         const yml = YAML.parse(generate_yaml_1.default(app));
         chai_1.expect(yml.functions).to.be.an('object');
-        chai_1.expect(yml.functions).to.have.key('api-Hello');
+        chai_1.expect(yml.functions).to.have.keys('api-Hello', 'api-Frontend');
     }
     'yaml functions have correct data fields'() {
         const app = new app_1.default(this.appDir);
@@ -41,6 +41,15 @@ let ServeCommandTest = class ServeCommandTest extends functional_test_1.default 
         chai_1.expect(fn.timeout).to.be.equal(30);
         chai_1.expect(fn.events).to.be.an('array');
         chai_1.expect(fn.handler).to.be.equal('dist/api/Hello.handler');
+    }
+    'frontend function has correct paths (/ and /*)'() {
+        const app = new app_1.default(this.appDir);
+        const yml = YAML.parse(generate_yaml_1.default(app));
+        const fn = yml.functions['api-Frontend'];
+        chai_1.expect(fn.timeout).to.be.equal(30);
+        chai_1.expect(fn.events).to.be.an('array');
+        chai_1.expect(fn.events).to.have.length(2);
+        chai_1.expect(fn.handler).to.be.equal('dist/api/Frontend.handler');
     }
 };
 __decorate([
@@ -67,6 +76,12 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], ServeCommandTest.prototype, "yaml functions have correct data fields", null);
+__decorate([
+    mocha_typescript_1.test,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], ServeCommandTest.prototype, "frontend function has correct paths (/ and /*)", null);
 ServeCommandTest = __decorate([
     mocha_typescript_1.suite('Serverless::generate_yaml')
 ], ServeCommandTest);

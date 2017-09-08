@@ -34,6 +34,15 @@ let ServeCommandTest = class ServeCommandTest extends functional_test_1.default 
             server.close();
         });
     }
+    'does render html pages (SSR)'() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const server = this.serve();
+            const data = yield fetch('http://localhost:3000/');
+            const html = yield data.text();
+            chai_1.expect(html).to.include(`<title>${this.appName}</title>`);
+            server.close();
+        });
+    }
 };
 __decorate([
     mocha_typescript_1.test,
@@ -47,6 +56,12 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ServeCommandTest.prototype, "does load an app and starts the dev server", null);
+__decorate([
+    mocha_typescript_1.test,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], ServeCommandTest.prototype, "does render html pages (SSR)", null);
 ServeCommandTest = __decorate([
     mocha_typescript_1.suite('Commands::serve')
 ], ServeCommandTest);

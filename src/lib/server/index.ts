@@ -12,7 +12,7 @@ export default function wrap(app: App): express.Application {
       res.json(response.body) // TODO: handle redirects'n'stuff
     }
     const method = (api.module as any).method.toString().toLowerCase()
-    server[method]((api.module as any).path.toString(), fn)
+    server[method]((api.module as any).path.replace('/*', '*').toString(), fn)
   }
   return server
 }
