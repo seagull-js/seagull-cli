@@ -1,3 +1,4 @@
+import { writeFileSync } from 'fs'
 import * as dir from 'node-dir'
 import { join } from 'path'
 import * as shell from 'shelljs'
@@ -25,6 +26,12 @@ export function prettier(): void {
 export function tsc(): void {
   shell.rm('-rf', '.seagull/dist')
   shell.exec(`${binPath('tsc')}`)
+}
+
+export function browserify(): void {
+  const str = 'require("inferno").default.render(require("./routes").default, document.getElementById("root"));'
+  writeFileSync('.seagull/dist/frontend/client.js', str, { encoding: 'utf-8' })
+  shell.exec(`${binPath('browserify')} .seagull/dist/frontend/client.js > .seagull/assets/bundle.js`)
 }
 
 export function modifyScriptExports(): void {

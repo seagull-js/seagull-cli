@@ -8,7 +8,8 @@ import FunctionalTest from '../../helper/functional_test'
 class BuildCommandTest extends FunctionalTest {
   @test
   'can build a project'() {
-    this.addApi('hello', { path: '/' }) // there must be "something" for the tsc to do
+    this.addApi('hello', { path: '/' })
+    this.addPage('example')
     this.build()
   }
 
@@ -49,5 +50,17 @@ class BuildCommandTest extends FunctionalTest {
     const api = require(file)
     expect(api.default).to.be.a('function')
     expect(api.handler).to.be.a('function')
+  }
+
+  @test 'frontend folders get added and compiled'() {
+    const file = join(this.appDir, '.seagull', 'dist', 'frontend', 'pages', 'example.js')
+    expect(existsSync(file)).to.be.equal(true)
+    const text = readFileSync(file, { encoding: 'utf-8' })
+    expect(text).to.include('example')
+  }
+
+  @test 'frontend gets browserified into a single file'() {
+    const file = join(this.appDir, '.seagull', 'assets', 'bundle.js')
+    expect(existsSync(file)).to.be.equal(true)
   }
 }

@@ -17,6 +17,7 @@ const functional_test_1 = require("../../helper/functional_test");
 let BuildCommandTest = class BuildCommandTest extends functional_test_1.default {
     'can build a project'() {
         this.addApi('hello', { path: '/' });
+        this.addPage('example');
         this.build();
     }
     'creates hidden subfolder in project'() {
@@ -47,6 +48,16 @@ let BuildCommandTest = class BuildCommandTest extends functional_test_1.default 
         const api = require(file);
         chai_1.expect(api.default).to.be.a('function');
         chai_1.expect(api.handler).to.be.a('function');
+    }
+    'frontend folders get added and compiled'() {
+        const file = path_1.join(this.appDir, '.seagull', 'dist', 'frontend', 'pages', 'example.js');
+        chai_1.expect(fs_1.existsSync(file)).to.be.equal(true);
+        const text = fs_1.readFileSync(file, { encoding: 'utf-8' });
+        chai_1.expect(text).to.include('example');
+    }
+    'frontend gets browserified into a single file'() {
+        const file = path_1.join(this.appDir, '.seagull', 'assets', 'bundle.js');
+        chai_1.expect(fs_1.existsSync(file)).to.be.equal(true);
     }
 };
 __decorate([
@@ -85,6 +96,18 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], BuildCommandTest.prototype, "api handler exports get rewritten", null);
+__decorate([
+    mocha_typescript_1.test,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], BuildCommandTest.prototype, "frontend folders get added and compiled", null);
+__decorate([
+    mocha_typescript_1.test,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], BuildCommandTest.prototype, "frontend gets browserified into a single file", null);
 BuildCommandTest = __decorate([
     mocha_typescript_1.suite('Commands::build')
 ], BuildCommandTest);

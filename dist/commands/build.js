@@ -21,6 +21,7 @@ let default_1 = class default_1 extends clime_1.Command {
         initFolder();
         compileScripts();
         createServerlessYaml();
+        scripts_1.browserify();
     }
 };
 __decorate([
@@ -39,6 +40,7 @@ function initFolder() {
     if (fs_1.existsSync(path_1.join(shell.pwd().toString(), 'node_modules'))) {
         shell.cp('-R', 'node_modules', '.seagull/node_modules');
     }
+    shell.mkdir('-p', '.seagull/assets');
 }
 function compileScripts() {
     if (fs_1.existsSync(path_1.join(shell.pwd().toString(), 'api'))) {
