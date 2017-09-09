@@ -14,7 +14,7 @@ export default class extends Command {
     const nodemon = require('nodemon')
     nodemon({
       exec: 'seagull fmt && seagull serve',
-      ext: 'json,ts',
+      ext: 'json,ts,tsx',
       watch: ['frontend', 'api', 'package.json'],
     })
     nodemon.on('restart', files => {
