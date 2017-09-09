@@ -5,14 +5,19 @@ import App from '../loader/app'
 export default function wrap(app: App): express.Application {
   const server = express()
   if (app.frontend) {
-    server.get('/assets/bundle.js', (req, res) => res.send(app.frontend))
+    server.get('/assets/bundle.js', (req, res) => {
+      res.setHeader('Content-Type', 'application/javascript')
+      res.send(app.frontend)
+    })
   }
   for (const api of app.backend) {
     const fn = async (req: express.Request, res: express.Response) => {
       const request = mapRequestFormat(req)
       const handler: API = new (api.module as any)()
       const response = await handler.handle(request)
-      res.json(response.body) // TODO: handle redirects'n'stuff
+      res.status(response.statusCode)
+      res.setHeader('Content-Type', response.headers['Content-Type'])
+      res.send(response.body)
     }
     const method = (api.module as any).method.toString().toLowerCase()
     server[method]((api.module as any).path.replace('/*', '*').toString(), fn)
