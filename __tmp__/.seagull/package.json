@@ -1,0 +1,21 @@
+{
+  "name": "__tmp__",
+  "version": "0.1.0",
+  "description": "my new seagull app",
+  "main": "src/index.ts",
+  "engines": {
+    "node": ">= 6.10.3 < 7"
+  },
+  "engineStrict": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@seagull-js/seagull": "^0.2.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.0.4",
+    "@types/mocha": "^2.2.42",
+    "@types/node": "^8.0.25"
+  }
+}

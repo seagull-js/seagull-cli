@@ -1,0 +1,11 @@
+frameworkVersion: '=1.19.0'
+functions: {}
+plugins: []
+provider:
+    iamRoleStatements: []
+    name: aws
+    region: eu-central-1
+    runtime: nodejs6.10
+    stage: dev
+    timeout: 30
+service: __tmp__

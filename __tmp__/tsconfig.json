@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "skipLibCheck": true,
+    "target": "es6",
+    "noImplicitAny": false,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "outDir": "./.seagull/dist",
+    "rootDir": "./",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "jsx": "react",
+    "jsxFactory": "createElement"
+  },
+  "include": [
+      "api/**/*",
+      "frontend/**/*",
+      "test/**/*"
+  ],
+  "lib": [ "es5", "es6", "es7", "dom", "dom.iterable" ],
+  "types": ["node", "inferno"]
+}
