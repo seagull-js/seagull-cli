@@ -15,7 +15,7 @@ export default class extends Command {
     nodemon({
       exec: 'seagull serve',
       ext: 'json,ts',
-      watch: ['api', 'package.json'],
+      watch: ['frontend', 'api', 'package.json'],
     })
     nodemon.on('restart', files => {
       log('App restarted due to: ', files)
