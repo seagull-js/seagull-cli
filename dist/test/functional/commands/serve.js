@@ -49,7 +49,7 @@ let ServeCommandTest = class ServeCommandTest extends functional_test_1.default 
             const data = yield fetch('http://localhost:3000/assets/bundle.js');
             const jsblob = yield data.text();
             chai_1.expect(jsblob).to.be.a('string');
-            chai_1.expect(jsblob.length).to.be.equal(747622);
+            chai_1.expect(jsblob.length).to.be.above(1337);
             server.close();
         });
     }

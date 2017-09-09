@@ -1,8 +1,20 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const browserify = require("browserify");
+const fs_1 = require("fs");
 const dir = require("node-dir");
 const path_1 = require("path");
 const shell = require("shelljs");
+const streamToString = require("stream-to-string");
+const UglifyJS = require("uglify-es");
 function binPath(name) {
     return path_1.join(__dirname, '..', '..', 'node_modules', '.bin', name);
 }
@@ -21,10 +33,18 @@ function tsc() {
     shell.exec(`${binPath('tsc')}`);
 }
 exports.tsc = tsc;
-function browserify() {
-    shell.exec(`${binPath('browserify')} .seagull/dist/frontend/client.js > .seagull/assets/bundle.js`);
+function bundle() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const src = path_1.join(process.cwd(), '.seagull', 'dist', 'frontend', 'client.js');
+        const data = yield streamToString(browserify()
+            .add(src)
+            .bundle());
+        const blob = UglifyJS.minify(data);
+        const dist = path_1.join(process.cwd(), '.seagull', 'assets', 'bundle.js');
+        fs_1.writeFileSync(dist, blob, { encoding: 'utf-8' });
+    });
 }
-exports.browserify = browserify;
+exports.bundle = bundle;
 function modifyScriptExports() {
     const files = dir
         .files('.seagull/dist/api', { sync: true })

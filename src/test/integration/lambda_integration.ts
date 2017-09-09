@@ -5,10 +5,12 @@ import IntegrationTest from '../helper/integration_test'
 
 @suite('Integration::aws_lambda')
 class AwsLambdaIntegrationTest extends IntegrationTest {
+  @timeout(20000)
+  @slow(5000)
   @test
   async 'can invoke a function handler'() {
     this.addApi('hello', { path: '/hello' })
-    this.build()
+    await this.build()
     const event = {
       httpMethod: 'GET',
       path: '/hello',

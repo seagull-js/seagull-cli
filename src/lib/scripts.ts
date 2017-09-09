@@ -1,7 +1,10 @@
-import { writeFileSync } from 'fs'
+import * as browserify from 'browserify'
+import { readFileSync, writeFileSync } from 'fs'
 import * as dir from 'node-dir'
 import { join } from 'path'
 import * as shell from 'shelljs'
+import * as streamToString from 'stream-to-string'
+import * as UglifyJS from 'uglify-es'
 
 /**
  * These functions assume that the current PWD === app of the user !
@@ -28,14 +31,16 @@ export function tsc(): void {
   shell.exec(`${binPath('tsc')}`)
 }
 
-export function browserify(): void {
-  // const str = 'require("inferno").default.render(require("./routes").default, document.getElementById("root"));'
-  // writeFileSync('.seagull/dist/frontend/client.js', str, { encoding: 'utf-8' })
-  shell.exec(
-    `${binPath(
-      'browserify'
-    )} .seagull/dist/frontend/client.js > .seagull/assets/bundle.js`
+export async function bundle(): Promise<void> {
+  const src = join(process.cwd(), '.seagull', 'dist', 'frontend', 'client.js')
+  const data: string = await streamToString(
+    browserify()
+      .add(src)
+      .bundle()
   )
+  const blob = UglifyJS.minify(data)
+  const dist = join(process.cwd(), '.seagull', 'assets', 'bundle.js')
+  writeFileSync(dist, blob, { encoding: 'utf-8' })
 }
 
 export function modifyScriptExports(): void {

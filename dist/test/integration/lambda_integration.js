@@ -25,7 +25,7 @@ let AwsLambdaIntegrationTest = class AwsLambdaIntegrationTest extends integratio
     'can invoke a function handler'() {
         return __awaiter(this, void 0, void 0, function* () {
             this.addApi('hello', { path: '/hello' });
-            this.build();
+            yield this.build();
             const event = {
                 httpMethod: 'GET',
                 path: '/hello',
@@ -44,6 +44,8 @@ let AwsLambdaIntegrationTest = class AwsLambdaIntegrationTest extends integratio
     }
 };
 __decorate([
+    mocha_typescript_1.timeout(20000),
+    mocha_typescript_1.slow(5000),
     mocha_typescript_1.test,
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),

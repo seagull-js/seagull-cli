@@ -6,11 +6,13 @@ import FunctionalTest from '../../helper/functional_test'
 
 @suite('Commands::build')
 class BuildCommandTest extends FunctionalTest {
+  @timeout(20000)
+  @slow(5000)
   @test
-  'can build a project'() {
+  async 'can build a project'() {
     this.addApi('hello', { path: '/' })
     this.addPage('example')
-    this.build()
+    await this.build()
   }
 
   @test

@@ -1,15 +1,11 @@
 import { API, Request, Response } from '@seagull-js/seagull'
 import * as express from 'express'
-import * as UglifyJS from 'uglify-es'
 import App from '../loader/app'
 
 export default function wrap(app: App): express.Application {
   const server = express()
   if (app.frontend) {
-    server.get('/assets/bundle.js', (req, res) =>
-      // res.send(UglifyJS.minify(app.frontend))
-      res.send(app.frontend)
-    )
+    server.get('/assets/bundle.js', (req, res) => res.send(app.frontend))
   }
   for (const api of app.backend) {
     const fn = async (req: express.Request, res: express.Response) => {

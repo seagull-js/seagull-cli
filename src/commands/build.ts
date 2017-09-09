@@ -4,7 +4,7 @@ import { join } from 'path'
 import * as shell from 'shelljs'
 import App from '../lib/loader/app'
 import {
-  browserify,
+  bundle,
   lint,
   modifyScriptExports,
   prettier,
@@ -15,11 +15,11 @@ import generateYAML from '../lib/serverless/generate-yaml'
 @command({ description: 'compile a seagull app into a deployable bundle' })
 export default class extends Command {
   @metadata
-  execute() {
+  async execute() {
     initFolder()
     compileScripts()
     createServerlessYaml()
-    browserify()
+    await bundle()
   }
 }
 
