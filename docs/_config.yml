@@ -1,0 +1,16 @@
+# Setup
+title:        'Seagull::CLI'
+tagline:      The best way to start, develop and deploy Seagull Apps.
+baseurl:      "/seagull-cli"
+
+# About/contact
+author:
+  name:       Maximilian Stroh
+  url:        https://seagull-js.github.io/seagull-cli/
+
+# Gems
+gems:
+  - jekyll-paginate
+
+#Others
+markdown: kramdown
