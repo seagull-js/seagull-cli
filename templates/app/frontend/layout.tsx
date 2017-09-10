@@ -9,6 +9,7 @@ export default function Layout({ children }) {
       </head>
       <body>
         <div id='root'>{children}</div>
+        <script src='/assets/bundle.js'></script>
       </body>
     </html>
   );
