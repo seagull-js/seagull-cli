@@ -13,3 +13,26 @@ this is a work in progress
 The best way to start, develop and deploy Seagull Apps. For a quickstart guide
 and more infos about the seagull framework, have a look at the
 [website](https://seagull-js.github.io).
+
+## Getting Started
+
+Use with the current LTS version of node.js (6.X) and enter:
+
+````bash
+$ npm install -g @seagull-js/seagull-cli
+````
+
+To instantly create a fully functional hello-world app:
+
+````bash
+$ seagull new hello && cd hello
+````
+
+Preview in your browser on localhost with live-reloading:
+
+````bash
+$ seagull dev # hit CTRL + C twice to stop
+````
+
+And now youre already into developing some app! Read
+[the docs](https://seagull-js.github.io) to proceed further if you like it!
