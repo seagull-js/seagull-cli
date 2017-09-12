@@ -13,7 +13,7 @@ export default class extends Command {
     log('> starting dev server with live reload...')
     const nodemon = require('nodemon')
     nodemon({
-      exec: 'seagull fmt && seagull serve',
+      exec: 'seagull serve',
       ext: 'json,ts,tsx',
       watch: ['frontend', 'api', 'package.json'],
     })
