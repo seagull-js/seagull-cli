@@ -1,6 +1,6 @@
 {
   "name": "@seagull-js/seagull-cli",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "CLI for developing seagull apps",
   "main": "dist/index.js",
   "bin": {
@@ -31,7 +31,7 @@
   "author": "",
   "license": "LGPL-3.0",
   "dependencies": {
-    "@seagull-js/seagull": "^0.2.0",
+    "@seagull-js/seagull": "^0.2.1",
     "browserify": "^14.4.0",
     "chai": "^4.1.1",
     "clime": "^0.5.4",
