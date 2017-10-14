@@ -38,7 +38,7 @@ export async function bundle(): Promise<void> {
       .add(src)
       .bundle()
   )
-  const blob = UglifyJS.minify(data)
+  const blob = UglifyJS.minify(data).code
   const dist = join(process.cwd(), '.seagull', 'assets', 'bundle.js')
   writeFileSync(dist, blob, { encoding: 'utf-8' })
 }
