@@ -11,8 +11,7 @@
     "rootDir": "./",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "jsx": "react",
-    "jsxFactory": "createElement"
+    "jsx": "react"
   },
   "include": [
       "api/**/*",

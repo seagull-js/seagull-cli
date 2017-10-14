@@ -11,7 +11,6 @@ class BuildCommandTest extends FunctionalTest {
   @test
   async 'can build a project'() {
     this.addApi('hello', { path: '/' })
-    this.addPage('example')
     await this.build()
   }
 
@@ -54,7 +53,7 @@ class BuildCommandTest extends FunctionalTest {
     expect(api.handler).to.be.a('function')
   }
 
-  @test
+  @test.skip
   'frontend folders get added and compiled'() {
     const file = join(
       this.appDir,

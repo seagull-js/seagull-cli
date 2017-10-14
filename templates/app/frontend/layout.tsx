@@ -1,4 +1,4 @@
-import createElement from 'inferno-create-element'
+import * as React from 'react'
 
 // this is what your index.html looks like
 export default function Layout({ children }) {

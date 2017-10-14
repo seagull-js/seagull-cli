@@ -1,4 +1,4 @@
-import Inferno from 'inferno';
+import { render } from 'react-dom'
 import routes from './routes'
 
-Inferno.render(routes, document.getElementById('root'));
+render(routes(), document.getElementById('root'))
