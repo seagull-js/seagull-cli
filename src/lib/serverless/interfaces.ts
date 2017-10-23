@@ -8,6 +8,25 @@ export interface IFunction {
   events: IFunctionEvent[]
 }
 
+export interface ITable {
+  Type: string
+  Properties: {
+    TableName: string
+    AttributeDefinitions: Array<{
+      AttributeName: string
+      AttributeType: string
+    }>
+    KeySchema: Array<{
+      AttributeName: string
+      KeyType: string
+    }>
+    ProvisionedThroughput: {
+      ReadCapacityUnits: number
+      WriteCapacityUnits: number
+    }
+  }
+}
+
 export interface IIAMRoleStatement {
   Effect: string
   Action: string[]
@@ -33,5 +52,7 @@ export interface IServerless {
     include: string[]
     exclude: string[]
   }
-  resources?: any // TODO: DynamoDB tables n stuff
+  resources: {
+    Resources: { [name: string]: ITable }
+  }
 }

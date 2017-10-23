@@ -12,6 +12,7 @@ class ServeCommandTest extends FunctionalTest {
   @test
   'can build a project'() {
     this.addApi('Hello', { path: '/hello' })
+    this.addModel('todos')
   }
 
   @test
@@ -51,5 +52,14 @@ class ServeCommandTest extends FunctionalTest {
     expect(fn.events).to.be.an('array')
     expect(fn.events).to.have.length(2)
     expect(fn.handler).to.be.equal('dist/api/Frontend.handler')
+  }
+
+  @test
+  'yaml contains tables'() {
+    const app = new App(this.appDir)
+    const yml = YAML.parse(generate(app))
+    expect(yml.resources.Resources.todos).to.be.an('object')
+    const table = yml.resources.Resources.todos
+    expect(table.Type).to.be.equal('AWS::DynamoDB::Table')
   }
 }

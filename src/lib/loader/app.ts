@@ -1,7 +1,8 @@
 import { join } from 'path'
 import { ApiHandler, default as apiLoader } from './api'
+import { DdbModel, default as modelLoader } from './models'
+
 import loadFrontendBundle from './frontend/'
-export { ApiHandler } from './api'
 
 // abstracts away all non-generated code inside the .seagull folder
 export default class App {
@@ -9,11 +10,13 @@ export default class App {
   name: string = ''
   package: any // package.json
   frontend: string
+  models: DdbModel[] = []
 
   // requires the full (absolute) path to the users' project .seagull folder
   constructor(public folder: string) {
     this.loadPackageJson()
     this.loadApiHandlers()
+    this.loadDdbModels()
   }
 
   async loadFrontendBundle() {
@@ -29,5 +32,10 @@ export default class App {
   private loadApiHandlers() {
     const folder = join(this.folder, 'api')
     this.backend = apiLoader(this.name, folder)
+  }
+
+  private loadDdbModels() {
+    const folder = join(this.folder, 'models')
+    this.models = modelLoader(this.name, folder)
   }
 }

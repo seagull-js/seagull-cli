@@ -10,6 +10,7 @@ class LoaderAppTest extends FunctionalTest {
   @test
   'can build a project'() {
     this.addApi('hello', { path: '/hello' })
+    this.addModel('todo')
   }
 
   @test
@@ -19,5 +20,11 @@ class LoaderAppTest extends FunctionalTest {
     // console.log(app)
     expect(app.name).to.be.equal('__tmp__')
     expect(app.backend).to.have.length(2)
+  }
+
+  @test
+  'can load demo project with data models'() {
+    const app = new App(this.appDir)
+    expect(app.models).to.have.length(1)
   }
 }

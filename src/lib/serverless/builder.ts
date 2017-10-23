@@ -4,6 +4,7 @@ import {
   IIAMRoleStatement,
   IProvider,
   IServerless,
+  ITable,
 } from './interfaces'
 
 export default class Builder {
@@ -24,8 +25,13 @@ export default class Builder {
     return this
   }
 
-  addFunction(name, fn: IFunction): Builder {
+  addFunction(name: string, fn: IFunction): Builder {
     this.data.functions[name] = fn
+    return this
+  }
+
+  addTable(name: string, table: ITable): Builder {
+    this.data.resources.Resources[name] = table
     return this
   }
 
@@ -39,6 +45,7 @@ export default class Builder {
       functions: {},
       plugins: [],
       provider: this.createDefaultProvider(),
+      resources: { Resources: {} },
       service: '',
     }
   }
