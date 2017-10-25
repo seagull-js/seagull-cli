@@ -30,12 +30,22 @@ export default class App {
   }
 
   private loadApiHandlers() {
-    const folder = join(this.folder, 'api')
-    this.backend = apiLoader(this.name, folder)
+    if (/\.seagull/.test(this.folder)) {
+      const folder = join(this.folder, 'dist', 'api')
+      this.backend = apiLoader(this.name, folder)
+    } else {
+      const folder = join(this.folder, 'api')
+      this.backend = apiLoader(this.name, folder)
+    }
   }
 
   private loadDdbModels() {
-    const folder = join(this.folder, 'models')
-    this.models = modelLoader(this.name, folder)
+    if (/\.seagull/.test(this.folder)) {
+      const folder = join(this.folder, 'dist', 'models')
+      this.models = modelLoader(this.name, folder)
+    } else {
+      const folder = join(this.folder, 'models')
+      this.models = modelLoader(this.name, folder)
+    }
   }
 }

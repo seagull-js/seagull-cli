@@ -13,7 +13,7 @@ export default function loader(appName: string, folder: string): ApiHandler[] {
   }
   const handlers = dir
     .files(folder, { sync: true })
-    .filter(file => /\.ts$/.test(file))
+    .filter(file => /\.(ts)|(js)$/.test(file))
     .map(file => new ApiHandler(appName, file))
   return sorted(handlers)
 }

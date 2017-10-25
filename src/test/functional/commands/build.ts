@@ -2,11 +2,12 @@ import { expect } from 'chai'
 import { existsSync, readFileSync } from 'fs'
 import { skip, slow, suite, test, timeout } from 'mocha-typescript'
 import { join } from 'path'
+import App from '../../../lib/loader/app'
 import FunctionalTest from '../../helper/functional_test'
 
 @suite('Commands::build')
 class BuildCommandTest extends FunctionalTest {
-  @timeout(20000)
+  @timeout(30000)
   @slow(5000)
   @test
   async 'can build a project'() {

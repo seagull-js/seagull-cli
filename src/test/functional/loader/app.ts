@@ -16,8 +16,6 @@ class LoaderAppTest extends FunctionalTest {
   @test
   'can load demo project with api handlers'() {
     const app = new App(this.appDir)
-    // tslint:disable-next-line:no-console
-    // console.log(app)
     expect(app.name).to.be.equal('__tmp__')
     expect(app.backend).to.have.length(2)
   }
