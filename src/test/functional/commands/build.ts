@@ -12,6 +12,7 @@ class BuildCommandTest extends FunctionalTest {
   @test
   async 'can build a project'() {
     this.addApi('hello', { path: '/' })
+    this.addModel('todo')
     await this.build()
   }
 
