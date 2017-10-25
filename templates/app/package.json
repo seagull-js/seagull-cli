@@ -11,7 +11,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@seagull-js/seagull": "^0.4.1"
+    "@seagull-js/seagull": "^0.4.2"
   },
   "devDependencies": {
     "@types/chai": "^4.0.4",
