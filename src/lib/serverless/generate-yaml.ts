@@ -8,10 +8,10 @@ export default function generate(app: App): string {
   // add backend routes as serverless functions (lambda + apiG)
   for (const api of app.backend) {
     const { method, path } = api.module as any
-    const event = { http: `${method} ${path}` }
+    const event = { http: { method, path } }
     const events = [event]
     if (method === 'GET' && path === '/*') {
-      events.push({ http: `${method} /` }) // special case, not covered by '/*'
+      events.push({ http: { method, path } }) // special case, not covered by '/*'
     }
     const fn = { handler: api.handler, timeout: 30, events }
     sls.addFunction(api.name, fn)

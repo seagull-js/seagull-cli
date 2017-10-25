@@ -19,6 +19,7 @@ export default class ApiHandler {
       .reverse()[0]
       .replace(/\//g, '-')
       .replace(/\.ts$/, '')
+      .replace(/\.js$/, '')
     this.name = `api-${id}`
   }
 
@@ -27,6 +28,7 @@ export default class ApiHandler {
       .split('/api/')
       .reverse()[0]
       .replace(/\.ts$/, '.handler')
+      .replace(/\.js$/, '.handler')
     this.handler = `dist/api/${id}`
   }
 

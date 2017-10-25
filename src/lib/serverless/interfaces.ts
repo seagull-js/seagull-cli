@@ -1,5 +1,8 @@
 export interface IFunctionEvent {
-  [source: string]: string
+  [source: string]: {
+    path: string
+    method: string
+  }
 }
 
 export interface IFunction {
