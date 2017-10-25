@@ -6,7 +6,7 @@ import FunctionalTest from '../../helper/functional_test'
 
 @suite('Commands::add:model')
 class AddModelCommandTest extends FunctionalTest {
-  @timeout(20000)
+  @timeout(60000)
   @slow(5000)
   @test
   async 'can build a project with models'() {
