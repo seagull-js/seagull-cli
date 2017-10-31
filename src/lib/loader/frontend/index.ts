@@ -5,7 +5,16 @@ import * as streamToString from 'stream-to-string'
 import * as tsify from 'tsify'
 
 export default async function load(folder: string): Promise<string> {
-  const file = join(folder, 'frontend', 'client.tsx')
+  const file = join(
+    folder,
+    'node_modules',
+    '@seagull-js',
+    'seagull',
+    'src',
+    'lib',
+    'spa',
+    'entry.tsx'
+  )
   const data: string = await streamToString(
     browserify()
       .add(file)

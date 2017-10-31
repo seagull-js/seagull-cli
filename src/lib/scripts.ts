@@ -32,7 +32,17 @@ export function tsc(): void {
 }
 
 export async function bundle(): Promise<void> {
-  const src = join(process.cwd(), '.seagull', 'dist', 'frontend', 'client.js')
+  const src = join(
+    process.cwd(),
+    '.seagull',
+    'node_modules',
+    '@seagull-js',
+    'seagull',
+    'dist',
+    'lib',
+    'spa',
+    'entry.js'
+  )
   const data: string = await streamToString(
     browserify()
       .add(src)
