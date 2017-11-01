@@ -5,7 +5,7 @@ import IntegrationTest from '../helper/integration_test'
 
 @suite('Integration::aws_lambda')
 class AwsLambdaIntegrationTest extends IntegrationTest {
-  @timeout(60000)
+  @timeout(150000)
   @slow(5000)
   @test
   async 'can invoke a function handler'() {

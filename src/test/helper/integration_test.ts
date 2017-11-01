@@ -6,8 +6,10 @@ import BaseTest from './base_test'
 @suite
 export default class IntegrationTest extends BaseTest {
   // execute the command *once* before the tests
+  @timeout(150000)
   before() {
     this.create(this.appName)
+    shell.cp('-Rf', './node_modules', this.appName)
     shell.cd(this.appName)
   }
 
