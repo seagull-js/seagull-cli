@@ -10,22 +10,22 @@
  */
 
 /**
-  * Workflow(s):
-  *
-  * // create new app
-  * - `seagull new 'example_app'`
-  * - `cd example_app`
-  *
-  * // create backend action (with functional tests)
-  * - seagull add:api hello/world
-  *
-  * // run a local dev server
-  * - seagull serve [--port 3000]
-  *
-  * // run the test suites (unit, functional, integration)
-  * - seagull test / test:unit / test:functional / test:integration
-  *
-  */
+ * Workflow(s):
+ *
+ * // create new app
+ * - `seagull new 'example_app'`
+ * - `cd example_app`
+ *
+ * // create backend action (with functional tests)
+ * - seagull add:api hello/world
+ *
+ * // run a local dev server
+ * - seagull serve [--port 3000]
+ *
+ * // run the test suites (unit, functional, integration)
+ * - seagull test / test:unit / test:functional / test:integration
+ *
+ */
 
 import { CLI, Shim } from 'clime'
 import * as Path from 'path'
