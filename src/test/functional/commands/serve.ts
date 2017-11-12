@@ -22,6 +22,7 @@ class ServeCommandTest extends FunctionalTest {
     server.close()
   }
 
+  @timeout(80000)
   @test
   async 'does render html pages (SSR)'() {
     const server = await this.serve()
@@ -31,6 +32,7 @@ class ServeCommandTest extends FunctionalTest {
     server.close()
   }
 
+  @timeout(80000)
   @test
   async 'does generate bundle.js in-memory'() {
     const server = await this.serve()
