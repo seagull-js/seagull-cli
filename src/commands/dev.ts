@@ -1,4 +1,3 @@
-import { API, Request, Response } from '@seagull-js/seagull'
 import { Command, command, metadata, param } from 'clime'
 import * as express from 'express'
 import { join } from 'path'
