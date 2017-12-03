@@ -14,7 +14,7 @@
     "jsx": "react"
   },
   "include": [
-      "api/**/*",
+      "backend/**/*",
       "frontend/**/*",
       "test/**/*"
   ],

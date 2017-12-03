@@ -55,7 +55,7 @@ export async function bundle(): Promise<void> {
 
 export function modifyScriptExports(): void {
   const files = dir
-    .files('.seagull/dist/api', { sync: true })
+    .files('.seagull/dist/backend/api', { sync: true })
     .filter(file => /\.js$/.test(file))
   const from = /exports\.default = (\w+);/
   const to = 'exports.default = $1;\nexports.handler = $1.dispatch.bind($1);'

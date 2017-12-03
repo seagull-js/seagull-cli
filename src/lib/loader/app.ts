@@ -31,10 +31,10 @@ export default class App {
 
   private loadApiHandlers() {
     if (/\.seagull/.test(this.folder)) {
-      const folder = join(this.folder, 'dist', 'api')
+      const folder = join(this.folder, 'dist', 'backend', 'api')
       this.backend = apiLoader(this.name, folder)
     } else {
-      const folder = join(this.folder, 'api')
+      const folder = join(this.folder, 'backend', 'api')
       this.backend = apiLoader(this.name, folder)
     }
   }

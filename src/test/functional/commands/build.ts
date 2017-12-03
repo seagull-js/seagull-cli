@@ -49,7 +49,14 @@ class BuildCommandTest extends FunctionalTest {
 
   @test
   'api handler exports get rewritten'() {
-    const file = join(this.appDir, '.seagull', 'dist', 'api', 'hello.js')
+    const file = join(
+      this.appDir,
+      '.seagull',
+      'dist',
+      'backend',
+      'api',
+      'hello.js'
+    )
     const api = require(file)
     expect(api.default).to.be.a('function')
     expect(api.handler).to.be.a('function')

@@ -40,7 +40,7 @@ class ServeCommandTest extends FunctionalTest {
     const fn = yml.functions['api-Hello']
     expect(fn.timeout).to.be.equal(30)
     expect(fn.events).to.be.an('array')
-    expect(fn.handler).to.be.equal('dist/api/Hello.handler')
+    expect(fn.handler).to.be.equal('dist/backend/api/Hello.handler')
   }
 
   @test
@@ -51,7 +51,7 @@ class ServeCommandTest extends FunctionalTest {
     expect(fn.timeout).to.be.equal(30)
     expect(fn.events).to.be.an('array')
     expect(fn.events).to.have.length(2)
-    expect(fn.handler).to.be.equal('dist/api/Frontend.handler')
+    expect(fn.handler).to.be.equal('dist/backend/api/Frontend.handler')
   }
 
   @test

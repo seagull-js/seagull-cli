@@ -33,7 +33,7 @@ function initFolder() {
 }
 
 function compileScripts() {
-  if (existsSync(join(shell.pwd().toString(), 'api'))) {
+  if (existsSync(join(shell.pwd().toString(), 'backend', 'api'))) {
     if (process.env.NODE_ENV !== 'test') {
       lint()
       prettier()

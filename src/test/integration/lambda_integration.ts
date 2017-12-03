@@ -17,7 +17,14 @@ class AwsLambdaIntegrationTest extends IntegrationTest {
       pathParameters: {},
       queryStringParameters: {},
     }
-    const file = join(this.appDir, '.seagull', 'dist', 'api', 'hello.js')
+    const file = join(
+      this.appDir,
+      '.seagull',
+      'dist',
+      'backend',
+      'api',
+      'hello.js'
+    )
     const api = require(file).handler
     const response: any = await new Promise((resolve, reject) => {
       api(event, null, (error, result) => {

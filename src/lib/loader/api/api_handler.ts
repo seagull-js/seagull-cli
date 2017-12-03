@@ -29,7 +29,7 @@ export default class ApiHandler {
       .reverse()[0]
       .replace(/\.ts$/, '.handler')
       .replace(/\.js$/, '.handler')
-    this.handler = `dist/api/${id}`
+    this.handler = `dist/backend/api/${id}`
   }
 
   private loadModule() {

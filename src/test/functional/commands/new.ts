@@ -48,13 +48,13 @@ class NewCommandTest extends FunctionalTest {
 
   @test
   'project contains api folder'() {
-    const file = join(this.appDir, 'api')
+    const file = join(this.appDir, 'backend', 'api')
     expect(existsSync(file)).to.be.equal(true)
   }
 
   @test
   'project api folder contains Frontend.ts file'() {
-    const file = join(this.appDir, 'api', 'Frontend.ts')
+    const file = join(this.appDir, 'backend', 'api', 'Frontend.ts')
     expect(existsSync(file)).to.be.equal(true)
   }
 

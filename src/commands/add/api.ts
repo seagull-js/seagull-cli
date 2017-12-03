@@ -16,7 +16,7 @@ export default class extends Command {
     options: SomeOptions
   ) {
     const pwd = shell.pwd().toString()
-    const dest = join(pwd, 'api', `${name}.ts`)
+    const dest = join(pwd, 'backend', 'api', `${name}.ts`)
     const src = join(
       __dirname,
       '..',
@@ -26,7 +26,7 @@ export default class extends Command {
       'api',
       'handler.ts'
     )
-    shell.mkdir('-p', 'api')
+    shell.mkdir('-p', 'backend/api')
     shell.cp(src, dest)
     shell.sed('-i', 'APINAME', name, dest)
     if (options.path) {
