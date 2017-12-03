@@ -3,7 +3,7 @@ import tsnode = require('ts-node')
 tsnode.register({ fast: true })
 
 export default class ApiHandler {
-  module: API
+  module: typeof API
   name: string // dasherized name with namespace
   handler: string // local path for serverless.yml
 
