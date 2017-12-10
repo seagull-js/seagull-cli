@@ -5,12 +5,14 @@ import IntegrationTest from '../helper/integration_test'
 
 @suite('Quickstart::intro')
 class LoaderAppTest extends IntegrationTest {
+  @timeout(60000)
   @test
   async 'can build and serve an new empty app'() {
     const server = await this.serve()
     server.close()
   }
 
+  @timeout(60000)
   @test
   async 'can build and serve an app with api routes'() {
     this.addApi('hello', { path: '/hello' })

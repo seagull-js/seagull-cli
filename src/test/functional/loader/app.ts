@@ -7,10 +7,12 @@ import FunctionalTest from '../../helper/functional_test'
 
 @suite('Loader::app')
 class LoaderAppTest extends FunctionalTest {
+  @timeout(60000)
   @test
-  'can build a project'() {
+  async 'can build a project'() {
     this.addApi('hello', { path: '/hello' })
     this.addModel('todo')
+    await this.build()
   }
 
   @test

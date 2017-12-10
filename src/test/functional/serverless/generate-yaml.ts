@@ -9,10 +9,12 @@ import FunctionalTest from '../../helper/functional_test'
 
 @suite('Serverless::generate_yaml')
 class ServeCommandTest extends FunctionalTest {
+  @timeout(60000)
   @test
-  'can build a project'() {
+  async 'can build a project'() {
     this.addApi('Hello', { path: '/hello' })
     this.addModel('todos')
+    await this.build()
   }
 
   @test

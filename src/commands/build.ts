@@ -26,8 +26,9 @@ export default class extends Command {
 function initFolder() {
   shell.mkdir('-p', '.seagull')
   shell.cp('package.json', '.seagull/package.json')
-  if (existsSync(join(shell.pwd().toString(), 'node_modules'))) {
-    shell.cp('-R', 'node_modules', '.seagull/node_modules')
+  // dont link existing link
+  if (!existsSync(join(shell.pwd().toString(), '.seagull', 'node_modules'))) {
+    shell.ln('-s', '../node_modules', `./.seagull/node_modules`)
   }
   shell.mkdir('-p', '.seagull/assets')
 }
@@ -45,7 +46,7 @@ function compileScripts() {
 
 function createServerlessYaml() {
   const pwd = shell.pwd().toString()
-  const app = new App(join(pwd, '.seagull'))
+  const app = new App(pwd)
 
   const yml = generateYAML(app)
   const ymlPath = join(pwd, '.seagull', 'serverless.yml')

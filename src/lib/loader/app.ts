@@ -1,8 +1,7 @@
+import { readFileSync } from 'fs'
 import { join } from 'path'
 import { ApiHandler, default as apiLoader } from './api'
 import { DdbModel, default as modelLoader } from './models'
-
-import loadFrontendBundle from './frontend/'
 
 // abstracts away all non-generated code inside the .seagull folder
 export default class App {
@@ -20,32 +19,24 @@ export default class App {
   }
 
   async loadFrontendBundle() {
-    this.frontend = await loadFrontendBundle(this.folder)
+    this.frontend = readFileSync(
+      join(this.folder, '.seagull', 'assets', 'bundle.js')
+    ).toString('utf-8')
   }
 
   private loadPackageJson() {
-    const file = join(this.folder, 'package.json')
+    const file = join(this.folder, '.seagull', 'package.json')
     this.package = require(file)
     this.name = this.package.name
   }
 
   private loadApiHandlers() {
-    if (/\.seagull/.test(this.folder)) {
-      const folder = join(this.folder, 'dist', 'backend', 'api')
-      this.backend = apiLoader(this.name, folder)
-    } else {
-      const folder = join(this.folder, 'backend', 'api')
-      this.backend = apiLoader(this.name, folder)
-    }
+    const folder = join(this.folder, '.seagull', 'dist', 'backend', 'api')
+    this.backend = apiLoader(this.name, folder)
   }
 
   private loadDdbModels() {
-    if (/\.seagull/.test(this.folder)) {
-      const folder = join(this.folder, 'dist', 'models')
-      this.models = modelLoader(this.name, folder)
-    } else {
-      const folder = join(this.folder, 'models')
-      this.models = modelLoader(this.name, folder)
-    }
+    const folder = join(this.folder, '.seagull', 'dist', 'models')
+    this.models = modelLoader(this.name, folder)
   }
 }

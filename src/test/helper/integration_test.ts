@@ -9,7 +9,7 @@ export default class IntegrationTest extends BaseTest {
   @timeout(150000)
   before() {
     this.create(this.appName)
-    shell.cp('-Rf', './node_modules', this.appName)
+    shell.ln('-s', '../node_modules', `./${this.appName}/node_modules`)
     shell.cd(this.appName)
   }
 

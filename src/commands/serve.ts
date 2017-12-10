@@ -1,15 +1,20 @@
 import { Command, command, metadata, param } from 'clime'
 import * as express from 'express'
+import { existsSync } from 'fs'
 import { join } from 'path'
 import * as shell from 'shelljs'
 import * as stoppable from 'stoppable'
 import App from '../lib/loader/app'
 import wrap from '../lib/server/'
+import BuildCommand from './build'
 
 @command({ description: 'start local devserver for your app' })
 export default class extends Command {
   @metadata
   async execute() {
+    if (!existsSync(join('.seagull', 'assets', 'bundle.js'))) {
+      await new BuildCommand().execute()
+    }
     const app = new App(process.cwd())
     await app.loadFrontendBundle()
     const server = stoppable(wrap(app), 0)

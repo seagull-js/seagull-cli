@@ -8,11 +8,14 @@ import FunctionalTest from '../../helper/functional_test'
 
 @suite('Commands::serve')
 class ServeCommandTest extends FunctionalTest {
+  @timeout(40000)
   @test
-  'can build a project'() {
+  async 'can build a project'() {
     this.addApi('hello', { path: '/hello' })
+    await this.build()
   }
 
+  @timeout(80000)
   @test
   async 'does load an app and starts the dev server'() {
     const server = await this.serve()
