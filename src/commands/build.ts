@@ -15,11 +15,18 @@ import generateYAML from '../lib/serverless/generate-yaml'
 @command({ description: 'compile a seagull app into a deployable bundle' })
 export default class extends Command {
   @metadata
-  async execute() {
+  async execute(
+    @param({
+      default: true,
+      description: 'do an optimized build',
+      required: false,
+    })
+    optimize: boolean = true
+  ) {
     initFolder()
     compileScripts()
     createServerlessYaml()
-    await bundle()
+    await bundle(optimize)
   }
 }
 

@@ -13,7 +13,7 @@ export default class extends Command {
   @metadata
   async execute() {
     if (!existsSync(join('.seagull', 'assets', 'bundle.js'))) {
-      await new BuildCommand().execute()
+      await new BuildCommand().execute(false)
     }
     const app = new App(process.cwd())
     await app.loadFrontendBundle()

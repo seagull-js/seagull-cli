@@ -31,7 +31,7 @@ export function tsc(): void {
   shell.exec(`${binPath('tsc')}`)
 }
 
-export async function bundle(): Promise<void> {
+export async function bundle(optimize = true): Promise<void> {
   const src = join(
     process.cwd(),
     '.seagull',
@@ -48,7 +48,10 @@ export async function bundle(): Promise<void> {
       .add(src)
       .bundle()
   )
-  const blob = UglifyJS.minify(data).code
+  let blob = data
+  if (optimize) {
+    blob = UglifyJS.minify(data).code
+  }
   const dist = join(process.cwd(), '.seagull', 'assets', 'bundle.js')
   writeFileSync(dist, blob, { encoding: 'utf-8' })
 }
