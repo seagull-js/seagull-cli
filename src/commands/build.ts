@@ -1,4 +1,4 @@
-import { Command, command, Context, metadata, param } from 'clime'
+import { Command, command, Context, metadata, option, Options } from 'clime'
 import { existsSync, writeFileSync } from 'fs'
 import { join } from 'path'
 import * as shell from 'shelljs'
@@ -12,21 +12,27 @@ import {
 } from '../lib/scripts'
 import generateYAML from '../lib/serverless/generate-yaml'
 
+class BuildOptions extends Options {
+  @option({
+    default: true,
+    description: 'do an optimized build',
+    flag: 'o',
+    name: 'optimize',
+    placeholder: 'true | false',
+    required: false,
+  })
+  optimize: boolean
+}
+
+// tslint:disable-next-line:max-classes-per-file
 @command({ description: 'compile a seagull app into a deployable bundle' })
 export default class extends Command {
   @metadata
-  async execute(
-    @param({
-      default: true,
-      description: 'do an optimized build',
-      required: false,
-    })
-    optimize: boolean = true
-  ) {
+  async execute(options?: BuildOptions) {
     initFolder()
     compileScripts()
     createServerlessYaml()
-    await bundle(optimize)
+    await bundle(options.optimize)
   }
 }
 
