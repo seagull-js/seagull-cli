@@ -1,9 +1,12 @@
 import { API, Request, Response } from '@seagull-js/seagull'
+import * as bodyParser from 'body-parser'
 import * as express from 'express'
 import App from '../loader/app'
 
 export default function wrap(app: App): express.Application {
   const server = express()
+  server.use(bodyParser.urlencoded({ extended: false }))
+  server.use(bodyParser.json())
   if (app.frontend) {
     server.get('/assets/bundle.js', (req, res) => {
       res.setHeader('Content-Type', 'application/javascript')
