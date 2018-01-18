@@ -32,9 +32,14 @@ export default class extends Command {
     const optimize = options ? options.optimize : false
     initFolder()
     compileScripts()
+    copyAssets()
     createServerlessYaml()
     await bundle(optimize)
   }
+}
+
+function copyAssets() {
+  shell.cp('-R', 'frontend/assets/*', '.seagull/assets/')
 }
 
 function initFolder() {

@@ -45,4 +45,14 @@ class ServeCommandTest extends FunctionalTest {
     expect(jsblob.length).to.be.above(1337)
     server.close()
   }
+  @timeout(80000)
+  @test
+  async 'does serve assets'() {
+    const server = await this.serve()
+    const data = await fetch('http://localhost:3000/assets/seagull.png')
+    expect(data.headers._headers['content-type']).to.be.deep.equal([
+      'image/png',
+    ])
+    server.close()
+  }
 }
