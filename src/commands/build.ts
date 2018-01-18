@@ -29,10 +29,11 @@ class BuildOptions extends Options {
 export default class extends Command {
   @metadata
   async execute(options?: BuildOptions) {
+    const optimize = options ? options.optimize : false
     initFolder()
     compileScripts()
     createServerlessYaml()
-    await bundle(options.optimize)
+    await bundle(optimize)
   }
 }
 
