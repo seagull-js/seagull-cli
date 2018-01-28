@@ -7,11 +7,18 @@ export default function generate(app: App): string {
 
   // add backend routes as serverless functions (lambda + apiG)
   for (const api of app.backend) {
-    const { method, path } = api.module as any
-    const event = { http: { method, path } }
-    const events = [event]
-    if (method === 'GET' && path === '/*') {
-      events.push({ http: { method, path } }) // special case, not covered by '/*'
+    const { method, path } = api.module as { method: string; path: string }
+    let events
+    if (path.endsWith('*')) {
+      // if you want a wildcard you WANT a url like 'bla/*'
+      // -> 'bla*' is forbidden
+      const proxyPath = path.replace(/\/+\*$/, '')
+      events = [
+        { http: { method, path: `${proxyPath}/` } },
+        { http: { method, path: `${proxyPath}/{proxy+}` } },
+      ]
+    } else {
+      events = [{ http: { method, path } }]
     }
     const fn = { handler: api.handler, timeout: 30, events }
     sls.addFunction(api.name, fn)
