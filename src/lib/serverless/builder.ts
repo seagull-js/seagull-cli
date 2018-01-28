@@ -36,7 +36,12 @@ export default class Builder {
   }
 
   toYAML(): string {
-    return YAML.stringify(this.data, 4)
+    // Use json.parse/stringify to remove undefined values from json
+    // yml.stringify would insert null for them...
+    const json = JSON.parse(JSON.stringify(this.data))
+    // second param -> how deep we use yml until we use inline yml (json)
+    // third param -> indention
+    return YAML.stringify(json, 42, 2)
   }
 
   private createDefaultServerless(): IServerless {

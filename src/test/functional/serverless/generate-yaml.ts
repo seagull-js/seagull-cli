@@ -4,6 +4,7 @@ import { join } from 'path'
 import * as shell from 'shelljs'
 import * as YAML from 'yamljs'
 import App from '../../../lib/loader/app'
+import Builder from '../../../lib/serverless/builder'
 import generate from '../../../lib/serverless/generate-yaml'
 import FunctionalTest from '../../helper/functional_test'
 
@@ -63,5 +64,11 @@ class ServeCommandTest extends FunctionalTest {
     expect(yml.resources.Resources.todos).to.be.an('object')
     const table = yml.resources.Resources.todos
     expect(table.Type).to.be.equal('AWS::DynamoDB::Table')
+  }
+  @test
+  'parse yml does not contain null values for previously just undefined values'() {
+    const app = new Builder(undefined)
+    const yml = YAML.parse(app.toYAML())
+    expect(yml.service).to.be.equal(undefined)
   }
 }
