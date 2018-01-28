@@ -1,8 +1,12 @@
 import * as YAML from 'yamljs'
 import {
+  IDistribution,
+  IDistributionAccessIdentity,
   IFunction,
   IIAMRoleStatement,
   IProvider,
+  IS3Bucket,
+  IS3BucketPermission,
   IServerless,
   ITable,
 } from './interfaces'
@@ -32,6 +36,32 @@ export default class Builder {
 
   addTable(name: string, table: ITable): Builder {
     this.data.resources.Resources[name] = table
+    return this
+  }
+
+  addDistribution(name: string, distribution: IDistribution): Builder {
+    this.data.resources.Resources[name] = distribution
+    return this
+  }
+
+  addS3Bucket(name: string, bucket: IS3Bucket): Builder {
+    this.data.resources.Resources[name] = bucket
+    return this
+  }
+
+  addS3BucketPermission(
+    name: string,
+    bucketPermission: IS3BucketPermission
+  ): Builder {
+    this.data.resources.Resources[name] = bucketPermission
+    return this
+  }
+
+  addDistributionAccessIdentity(
+    name: string,
+    accessIdentity: IDistributionAccessIdentity
+  ): Builder {
+    this.data.resources.Resources[name] = accessIdentity
     return this
   }
 

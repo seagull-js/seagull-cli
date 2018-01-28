@@ -1,5 +1,11 @@
 import App from '../loader/app'
 import Builder from './builder'
+import { generateDistributionAccessIdentity } from './distribution/accessIdentity'
+import { GWTarget } from './distribution/gwTarget'
+import Distribution from './distribution/index'
+import { S3Target } from './distribution/s3Target'
+import { generateS3Bucket } from './s3/bucket'
+import { generateS3BucketPermission } from './s3/permission'
 
 export default function generate(app: App): string {
   // create instance with defaults
@@ -49,6 +55,40 @@ export default function generate(app: App): string {
     }
     sls.addTable(model.name, table)
   }
+
+  // add access identity so s3 and cloudfront can communicate
+  const distributionAccessIdentityResourceName = 'appDistributionAccessIdentity'
+  sls.addDistributionAccessIdentity(
+    distributionAccessIdentityResourceName,
+    generateDistributionAccessIdentity()
+  )
+
+  // add default app / assets bucket
+  const appBucketName = `${app.name}-app-bucket`
+  const appBucketResource = 'appBucket'
+  sls.addS3Bucket(appBucketResource, generateS3Bucket(appBucketName))
+
+  // add permission for the distribution
+  sls.addS3BucketPermission(
+    appBucketResource + 'Permission',
+    generateS3BucketPermission(
+      appBucketResource,
+      distributionAccessIdentityResourceName
+    )
+  )
+
+  // add distribution to serve api and app assets
+  const distribution = new Distribution({
+    apiService: app.name,
+    targets: [
+      new S3Target(appBucketName, distributionAccessIdentityResourceName, [
+        { path: 'assets/*', ttl: 60 * 60 },
+      ]),
+      // GWTarget uses a reference to the default APIG 'APIRestGateway' in the background
+      new GWTarget('apiGateway', [{ path: '*', ttl: 0 }]),
+    ],
+  }).json()
+  sls.addDistribution('distribution', distribution)
 
   // serialize to YAML
   return sls.toYAML()
