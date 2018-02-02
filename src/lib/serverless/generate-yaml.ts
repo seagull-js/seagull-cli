@@ -1,5 +1,11 @@
 import App from '../loader/app'
 import Builder from './builder'
+import { generateDistributionAccessIdentity } from './distribution/accessIdentity'
+import { GWTarget } from './distribution/gwTarget'
+import Distribution from './distribution/index'
+import { S3Target } from './distribution/s3Target'
+import { generateS3Bucket } from './s3/bucket'
+import { generateS3BucketPermission } from './s3/permission'
 
 export default function generate(app: App): string {
   // create instance with defaults
@@ -7,11 +13,18 @@ export default function generate(app: App): string {
 
   // add backend routes as serverless functions (lambda + apiG)
   for (const api of app.backend) {
-    const { method, path } = api.module as any
-    const event = { http: { method, path } }
-    const events = [event]
-    if (method === 'GET' && path === '/*') {
-      events.push({ http: { method, path } }) // special case, not covered by '/*'
+    const { method, path } = api.module as { method: string; path: string }
+    let events
+    if (path.endsWith('*')) {
+      // if you want a wildcard you WANT a url like 'bla/*'
+      // -> 'bla*' is forbidden
+      const proxyPath = path.replace(/\/+\*$/, '')
+      events = [
+        { http: { method, path: `${proxyPath}/` } },
+        { http: { method, path: `${proxyPath}/{proxy+}` } },
+      ]
+    } else {
+      events = [{ http: { method, path } }]
     }
     const fn = { handler: api.handler, timeout: 30, events }
     sls.addFunction(api.name, fn)
@@ -42,6 +55,40 @@ export default function generate(app: App): string {
     }
     sls.addTable(model.name, table)
   }
+
+  // add access identity so s3 and cloudfront can communicate
+  const distributionAccessIdentityResourceName = 'appDistributionAccessIdentity'
+  sls.addDistributionAccessIdentity(
+    distributionAccessIdentityResourceName,
+    generateDistributionAccessIdentity()
+  )
+
+  // add default app / assets bucket
+  const appBucketName = `${app.name}-app-bucket`
+  const appBucketResource = 'appBucket'
+  sls.addS3Bucket(appBucketResource, generateS3Bucket(appBucketName))
+
+  // add permission for the distribution
+  sls.addS3BucketPermission(
+    appBucketResource + 'Permission',
+    generateS3BucketPermission(
+      appBucketResource,
+      distributionAccessIdentityResourceName
+    )
+  )
+
+  // add distribution to serve api and app assets
+  const distribution = new Distribution({
+    apiService: app.name,
+    targets: [
+      new S3Target(appBucketName, distributionAccessIdentityResourceName, [
+        { path: 'assets/*', ttl: 60 * 60 },
+      ]),
+      // GWTarget uses a reference to the default APIG 'APIRestGateway' in the background
+      new GWTarget('apiGateway', [{ path: '*', ttl: 0 }]),
+    ],
+  }).json()
+  sls.addDistribution('distribution', distribution)
 
   // serialize to YAML
   return sls.toYAML()

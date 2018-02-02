@@ -1,6 +1,7 @@
 import { API, Request, Response } from '@seagull-js/seagull'
 import * as bodyParser from 'body-parser'
 import * as express from 'express'
+import { join } from 'path'
 import App from '../loader/app'
 
 export default function wrap(app: App): express.Application {
@@ -8,10 +9,8 @@ export default function wrap(app: App): express.Application {
   server.use(bodyParser.urlencoded({ extended: false }))
   server.use(bodyParser.json())
   if (app.frontend) {
-    server.get('/assets/bundle.js', (req, res) => {
-      res.setHeader('Content-Type', 'application/javascript')
-      res.send(app.frontend)
-    })
+    const assetFolder = join(process.cwd(), '.seagull', 'assets')
+    server.use('/assets', express.static(assetFolder, { maxAge: '1h' }))
   }
   for (const api of app.backend) {
     const fn = async (req: express.Request, res: express.Response) => {

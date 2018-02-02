@@ -1,8 +1,12 @@
 import * as YAML from 'yamljs'
 import {
+  IDistribution,
+  IDistributionAccessIdentity,
   IFunction,
   IIAMRoleStatement,
   IProvider,
+  IS3Bucket,
+  IS3BucketPermission,
   IServerless,
   ITable,
 } from './interfaces'
@@ -35,8 +39,39 @@ export default class Builder {
     return this
   }
 
+  addDistribution(name: string, distribution: IDistribution): Builder {
+    this.data.resources.Resources[name] = distribution
+    return this
+  }
+
+  addS3Bucket(name: string, bucket: IS3Bucket): Builder {
+    this.data.resources.Resources[name] = bucket
+    return this
+  }
+
+  addS3BucketPermission(
+    name: string,
+    bucketPermission: IS3BucketPermission
+  ): Builder {
+    this.data.resources.Resources[name] = bucketPermission
+    return this
+  }
+
+  addDistributionAccessIdentity(
+    name: string,
+    accessIdentity: IDistributionAccessIdentity
+  ): Builder {
+    this.data.resources.Resources[name] = accessIdentity
+    return this
+  }
+
   toYAML(): string {
-    return YAML.stringify(this.data, 4)
+    // Use json.parse/stringify to remove undefined values from json
+    // yml.stringify would insert null for them...
+    const json = JSON.parse(JSON.stringify(this.data))
+    // second param -> how deep we use yml until we use inline yml (json)
+    // third param -> indention
+    return YAML.stringify(json, 42, 2)
   }
 
   private createDefaultServerless(): IServerless {

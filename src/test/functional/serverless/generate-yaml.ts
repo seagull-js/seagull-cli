@@ -4,6 +4,7 @@ import { join } from 'path'
 import * as shell from 'shelljs'
 import * as YAML from 'yamljs'
 import App from '../../../lib/loader/app'
+import Builder from '../../../lib/serverless/builder'
 import generate from '../../../lib/serverless/generate-yaml'
 import FunctionalTest from '../../helper/functional_test'
 
@@ -63,5 +64,40 @@ class ServeCommandTest extends FunctionalTest {
     expect(yml.resources.Resources.todos).to.be.an('object')
     const table = yml.resources.Resources.todos
     expect(table.Type).to.be.equal('AWS::DynamoDB::Table')
+  }
+
+  @test
+  'yaml contains cloudfront distribution'() {
+    const app = new App(this.appDir)
+    const yml = YAML.parse(generate(app))
+    expect(yml.resources.Resources.distribution).to.be.an('object')
+  }
+
+  @test
+  'yaml contains s3 bucket'() {
+    const app = new App(this.appDir)
+    const yml = YAML.parse(generate(app))
+    expect(yml.resources.Resources.appBucket).to.be.an('object')
+  }
+
+  @test
+  'yaml contains s3 permission'() {
+    const app = new App(this.appDir)
+    const yml = YAML.parse(generate(app))
+    expect(yml.resources.Resources.appBucketPermission).to.be.an('object')
+  }
+  @test
+  'parse yml does not contain null values for previously just undefined values'() {
+    const app = new Builder(undefined)
+    const yml = YAML.parse(app.toYAML())
+    expect(yml.service).to.be.equal(undefined)
+  }
+  @test
+  'yaml contains distribution access identity'() {
+    const app = new App(this.appDir)
+    const yml = YAML.parse(generate(app))
+    expect(yml.resources.Resources.appDistributionAccessIdentity).to.be.an(
+      'object'
+    )
   }
 }
