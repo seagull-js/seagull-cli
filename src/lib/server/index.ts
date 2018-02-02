@@ -31,5 +31,5 @@ export type HttpMethod = 'GET' | 'POST' // TODO: change to string in framework
 
 function mapRequestFormat(req: express.Request): Request {
   const method = req.method as HttpMethod
-  return new Request(method, req.path, req.params, req.body)
+  return new Request(method, req.path, req.query, req.body)
 }
