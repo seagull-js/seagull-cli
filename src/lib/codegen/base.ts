@@ -26,7 +26,7 @@ const prettierSettings = {
  * AST Docs: https://dsherret.github.io/ts-simple-ast/
  */
 export default class Base {
-  private sourceFile: SourceFile
+  protected sourceFile: SourceFile
 
   constructor() {
     const ast = new Ast(astSettings)
