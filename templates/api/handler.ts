@@ -13,6 +13,11 @@ export default class APINAME extends API {
   // static path = '/'
 
   /**
+   * Allow this API to be consumed by browsers from any domain.
+   */
+  // static cors = false
+
+  /**
    * This handle function executes your code. Return one of the following method
    * invocations: 'text', 'json', 'redirect', 'missing', 'error'
    */
