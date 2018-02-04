@@ -7,6 +7,10 @@ export interface IProp {
   static?: boolean
   value?: string
   doc?: string
+  decorators?: Array<{
+    name: string
+    arguments?: any[]
+  }>
 }
 
 export interface IMethod {
@@ -61,6 +65,9 @@ export default class extends Base {
     const prop = this.classDeclaration.addProperty(opts)
     if (params.value) {
       prop.setInitializer(params.value)
+    }
+    if (params.decorators && params.decorators.length) {
+      prop.addDecorators(params.decorators)
     }
     if (params.doc) {
       prop.addJsDoc({ description: params.doc })
