@@ -44,7 +44,8 @@ function copyAssets() {
     return
   }
 
-  if (dir.files('frontend/assets', { sync: true }).length === 0) {
+  const files = dir.files('frontend/assets', { sync: true })
+  if (!files || files.length === 0) {
     return
   }
   shell.cp('-R', 'frontend/assets/*', '.seagull/assets')
