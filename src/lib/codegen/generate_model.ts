@@ -8,10 +8,16 @@ export interface IOptions {
   }>
 }
 
-export default function generateAPI(name: string, options: IOptions): Class {
+export default function generateModel(name: string, options: IOptions): Class {
   const gen = new Class(name, 'Model')
   gen.addNamedImports('@seagull-js/seagull', ['field', 'Model'])
+  if (!options.fields || !options.fields.length) {
+    return gen
+  }
   for (const field of options.fields) {
+    if (!field.name || !field.type || !field.initial) {
+      continue
+    }
     gen.addProp({
       decorators: [{ name: 'field' }],
       name: field.name,
