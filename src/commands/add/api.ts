@@ -3,8 +3,34 @@ import { join } from 'path'
 import * as shell from 'shelljs'
 
 export class SomeOptions extends Options {
-  @option({ description: 'url path for the api handler', flag: 'p' })
-  path: string
+  @option({
+    description: 'url path for the api handler',
+    flag: 'p',
+    name: 'path',
+    placeholder: '/my-handler',
+    required: false,
+  })
+  path?: string
+
+  @option({
+    default: false,
+    description: 'enable CORS the api handler',
+    flag: 'c',
+    name: 'cors',
+    placeholder: 'true | false',
+    required: false,
+  })
+  cors?: boolean
+
+  @option({
+    default: 'GET',
+    description: 'http method used for the api handler',
+    flag: 'm',
+    name: 'method',
+    placeholder: 'GET | POST',
+    required: false,
+  })
+  method?: string
 }
 
 // tslint:disable-next-line:max-classes-per-file
@@ -29,6 +55,7 @@ export default class extends Command {
     shell.mkdir('-p', 'backend/api')
     shell.cp(src, dest)
     shell.sed('-i', 'APINAME', name, dest)
+
     if (options.path) {
       shell.sed(
         '-i',
@@ -37,6 +64,20 @@ export default class extends Command {
         dest
       )
     }
+
+    if (options.cors) {
+      shell.sed('-i', '// static cors = false', 'static cors = true', dest)
+    }
+
+    if (options.method) {
+      shell.sed(
+        '-i',
+        `static method = 'GET'`,
+        `static method = '${options.method}'`,
+        dest
+      )
+    }
+
     log(`created api in: ${dest}`)
   }
 }
