@@ -87,7 +87,7 @@ export function addImportIndex(): void {
           .replace(/\.js$/, '')
           .split('/')
           .reverse()[0]
-        return `${key}:require('${file.replace(frontendDir, './')}')`
+        return `"${key}":require("${file.replace(frontendDir, '.')}")`
       })
       .join(',\n')
   }
