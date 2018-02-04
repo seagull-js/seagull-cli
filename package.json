@@ -32,6 +32,7 @@
     "license": "LGPL-3.0",
     "dependencies": {
         "@seagull-js/seagull": "0.5.7",
+        "browserify-incremental": "3.1.1",
         "body-parser": "^1.18.2",
         "browserify": "^14.4.0",
         "chai": "^4.1.1",

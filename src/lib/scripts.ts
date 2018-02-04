@@ -1,4 +1,5 @@
 import * as browserify from 'browserify'
+import * as browserifyInc from 'browserify-incremental'
 import { existsSync, readFileSync, writeFileSync } from 'fs'
 import * as dir from 'node-dir'
 import { join } from 'path'
@@ -43,10 +44,16 @@ export async function bundle(optimize = true): Promise<void> {
     'spa',
     'entry.js'
   )
+
+  const browserifyInstance = browserify(
+    Object.assign({ ignoreMissing: true }, browserifyInc.args, {})
+  )
+  browserifyInc(browserifyInstance, {
+    cacheFile: '.seagull/browserify-cache.json',
+  })
+
   const data: string = await streamToString(
-    browserify({ ignoreMissing: true })
-      .add(src)
-      .bundle()
+    browserifyInstance.add(src).bundle()
   )
   let blob = data
   if (optimize) {
