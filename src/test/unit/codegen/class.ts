@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { skip, slow, suite, test, timeout } from 'mocha-typescript'
 import { join } from 'path'
-import Class from '../../../lib/codegen/class'
+import { Class } from '../../../lib/codegen'
 
 @suite
 class CodegenClassTest {
