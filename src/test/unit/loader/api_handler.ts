@@ -5,7 +5,7 @@ import * as shell from 'shelljs'
 
 import ApiHandler from '../../../lib/loader/api/api_handler'
 
-@suite()
+@suite.skip()
 class ApiHandlerTest {
   @test
   'can load an API handler directly from file'() {

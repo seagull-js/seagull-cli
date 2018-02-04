@@ -1,6 +1,7 @@
 import { Command, command, option, Options, param } from 'clime'
 import { join } from 'path'
 import * as shell from 'shelljs'
+import { Class } from '../../lib/codegen'
 
 export class SomeOptions extends Options {
   @option({
@@ -41,43 +42,55 @@ export default class extends Command {
     name: string,
     options: SomeOptions
   ) {
-    const pwd = shell.pwd().toString()
-    const dest = join(pwd, 'backend', 'api', `${name}.ts`)
-    const src = join(
-      __dirname,
-      '..',
-      '..',
-      '..',
-      'templates',
-      'api',
-      'handler.ts'
-    )
-    shell.mkdir('-p', 'backend/api')
-    shell.cp(src, dest)
-    shell.sed('-i', 'APINAME', name, dest)
+    const gen = new Class(name, 'API')
+    gen.addNamedImports('@seagull-js/seagull', ['API', 'Request', 'Response'])
 
     if (options.path) {
-      shell.sed(
-        '-i',
-        "// static path = '/'",
-        `static path = '${options.path}'`,
-        dest
-      )
+      const docPath = `The URL path where this API will be located. Skip for private functions like cronjobs. Example: '/greetings/{name}'`
+      gen.addProp({
+        doc: docPath,
+        name: 'path',
+        static: true,
+        type: 'string',
+        value: `'${options.path}'`,
+      })
+    }
+
+    if (options.method || options.path) {
+      const docMethod = `This is the HTTP method / verb for the API. Defaults to 'GET'`
+      gen.addProp({
+        doc: docMethod,
+        name: 'method',
+        static: true,
+        type: 'string',
+        value: `'${options.method || 'GET'}'`,
+      })
     }
 
     if (options.cors) {
-      shell.sed('-i', '// static cors = false', 'static cors = true', dest)
+      const docCors = `The URL path where this API will be located. Skip for private functions like cronjobs. Example: '/greetings/{name}'`
+      gen.addProp({
+        doc: docCors,
+        name: 'cors',
+        static: true,
+        type: 'boolean',
+        value: `${!!options.cors}`,
+      })
     }
 
-    if (options.method) {
-      shell.sed(
-        '-i',
-        `static method = 'GET'`,
-        `static method = '${options.method}'`,
-        dest
-      )
-    }
+    const docHandle = `This handle function executes your code. Return one of the following method invocations: 'text', 'json', 'redirect', 'missing', 'error'`
+    gen.addMethod({
+      async: true,
+      body: `return this.text('hello world')`,
+      doc: docHandle,
+      name: 'handle',
+      parameter: [{ name: 'request', type: 'Request' }],
+      returnType: 'Promise<Response>',
+    })
 
+    const pwd = shell.pwd().toString()
+    const dest = join(pwd, 'backend', 'api', `${name}.ts`)
+    gen.toFile(dest)
     log(`created api in: ${dest}`)
   }
 }
