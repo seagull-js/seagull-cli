@@ -88,4 +88,24 @@ class BuildCommandTest extends FunctionalTest {
     const file = join(this.appDir, '.seagull', 'assets', 'seagull.png')
     expect(existsSync(file)).to.be.equal(true)
   }
+
+  @test
+  'index file for store/page imports got created'() {
+    const file = join(this.appDir, '.seagull', 'dist', 'frontend', 'index.js')
+    expect(existsSync(file)).to.be.equal(true)
+  }
+
+  @test
+  'check that index file for store/page can be imported'() {
+    const indexFile = require(join(
+      this.appDir,
+      '.seagull',
+      'dist',
+      'frontend',
+      'index.js'
+    ))
+    // tslint:disable-next-line:no-unused-expression
+    expect(indexFile).to.exist
+    expect(indexFile.pages).to.contain.keys('hello')
+  }
 }

@@ -5,6 +5,7 @@ import { join } from 'path'
 import * as shell from 'shelljs'
 import App from '../lib/loader/app'
 import {
+  addImportIndex,
   bundle,
   lint,
   modifyScriptExports,
@@ -69,6 +70,7 @@ function compileScripts() {
     }
     tsc()
     modifyScriptExports()
+    addImportIndex()
   }
 }
 
