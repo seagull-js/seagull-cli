@@ -39,7 +39,10 @@ export default class extends Command {
 }
 
 function copyAssets() {
-  shell.cp('-R', 'frontend/assets/*', '.seagull/assets/')
+  if (!existsSync(join('frontend', 'assets'))) {
+    return
+  }
+  shell.cp('-R', 'frontend/assets/', '.seagull/assets/')
 }
 
 function initFolder() {
