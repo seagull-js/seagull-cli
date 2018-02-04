@@ -1,9 +1,11 @@
 import { Command, command, Context, metadata, option, Options } from 'clime'
 import { existsSync, writeFileSync } from 'fs'
+import * as dir from 'node-dir'
 import { join } from 'path'
 import * as shell from 'shelljs'
 import App from '../lib/loader/app'
 import {
+  addImportIndex,
   bundle,
   lint,
   modifyScriptExports,
@@ -42,7 +44,12 @@ function copyAssets() {
   if (!existsSync(join('frontend', 'assets'))) {
     return
   }
-  shell.cp('-R', 'frontend/assets/', '.seagull/assets/')
+
+  const files = dir.files('frontend/assets', { sync: true })
+  if (!files || files.length === 0) {
+    return
+  }
+  shell.cp('-R', 'frontend/assets/*', '.seagull/assets')
 }
 
 function initFolder() {
@@ -63,6 +70,7 @@ function compileScripts() {
     }
     tsc()
     modifyScriptExports()
+    addImportIndex()
   }
 }
 

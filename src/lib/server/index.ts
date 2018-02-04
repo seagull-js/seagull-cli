@@ -6,6 +6,11 @@ import App from '../loader/app'
 
 export default function wrap(app: App): express.Application {
   const server = express()
+  // deactivate all browser caching for dev serving
+  server.use((req, res, next) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store')
+    next()
+  })
   server.use(bodyParser.urlencoded({ extended: false }))
   server.use(bodyParser.json())
   if (app.frontend) {
