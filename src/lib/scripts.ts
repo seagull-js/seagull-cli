@@ -44,7 +44,7 @@ export async function bundle(optimize = true): Promise<void> {
     'entry.js'
   )
   const data: string = await streamToString(
-    browserify()
+    browserify({ ignoreMissing: true })
       .add(src)
       .bundle()
   )
