@@ -26,17 +26,32 @@ class BuildOptions extends Options {
   optimize: boolean
 }
 
+function timeit(fn) {
+  const hrstart = new Date()
+  fn()
+  const hrend = new Date().getTime() - hrstart.getTime()
+  // tslint:disable-next-line:no-console
+  console.info('Execution time (%s): %dms', fn.name, hrend)
+}
+
+async function asynctimeit(fn, arg) {
+  const hrstart = new Date()
+  await fn(arg)
+  const hrend = new Date().getTime() - hrstart.getTime()
+  // tslint:disable-next-line:no-console
+  console.info('Execution time (%s): %dms', fn.name, hrend)
+}
 // tslint:disable-next-line:max-classes-per-file
 @command({ description: 'compile a seagull app into a deployable bundle' })
 export default class extends Command {
   @metadata
   async execute(options?: BuildOptions) {
     const optimize = options ? options.optimize : false
-    initFolder()
-    compileScripts()
-    copyAssets()
-    createServerlessYaml()
-    await bundle(optimize)
+    timeit(initFolder)
+    timeit(compileScripts)
+    timeit(copyAssets)
+    timeit(createServerlessYaml)
+    await asynctimeit(bundle, optimize)
   }
 }
 
@@ -65,12 +80,12 @@ function initFolder() {
 function compileScripts() {
   if (existsSync(join(shell.pwd().toString(), 'backend', 'api'))) {
     if (process.env.NODE_ENV !== 'test') {
-      lint()
-      prettier()
+      timeit(lint)
+      timeit(prettier)
     }
-    tsc()
-    modifyScriptExports()
-    addImportIndex()
+    timeit(tsc)
+    timeit(modifyScriptExports)
+    timeit(addImportIndex)
   }
 }
 

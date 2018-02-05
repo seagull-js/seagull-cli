@@ -7,6 +7,8 @@ import * as shell from 'shelljs'
 import * as streamToString from 'stream-to-string'
 import * as UglifyJS from 'uglify-es'
 
+import { compile } from './build/compiler'
+
 /**
  * These functions assume that the current PWD === app of the user !
  *
@@ -28,8 +30,22 @@ export function prettier(): void {
 }
 
 export function tsc(): void {
-  shell.rm('-rf', '.seagull/dist')
-  shell.exec(`${binPath('tsc')}`)
+  // shell.rm('-rf', '.seagull/dist')
+  compile(['backend/**/*'], {
+    emitDecoratorMetadata: true,
+    experimentalDecorators: true,
+    jsx: 'react' as any,
+    module: 'commonjs' as any,
+    noImplicitAny: false,
+    outDir: './.seagull/dist',
+    preserveConstEnums: true,
+    removeComments: true,
+    rootDir: './',
+    skipLibCheck: true,
+    sourceMap: true,
+    target: 'es6' as any,
+  })
+  // shell.exec(`${binPath('tsc')}`)
 }
 
 export async function bundle(optimize = true): Promise<void> {
