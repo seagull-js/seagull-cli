@@ -37,7 +37,7 @@ export default class Json {
    * @param fn callback receiving the current value
    */
   update(key: string, fn: (value: any) => any): this {
-    this.file[key] = fn(this.file[key])
+    fn(this.file[key])
     return this
   }
 
