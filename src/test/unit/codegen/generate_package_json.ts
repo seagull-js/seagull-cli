@@ -4,7 +4,7 @@ import { join } from 'path'
 import { generatePackageJson } from '../../../lib/codegen'
 
 @suite
-class CodegenJsonTest {
+class CodegenPackageJsonTest {
   @test
   'can be initialized'() {
     const gen = generatePackageJson('demo')
