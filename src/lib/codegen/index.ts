@@ -4,6 +4,7 @@ export { default as Class } from './class'
 export { default as Function } from './function'
 
 // general framework elements
+export { default as App } from './app'
 export { default as generateAPI } from './generate_api'
 export { default as generateModel } from './generate_model'
 export { default as generatePage } from './generate_page'

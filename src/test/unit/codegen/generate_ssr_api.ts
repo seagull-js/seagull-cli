@@ -20,7 +20,7 @@ class CodegenGenerateSsrApiTest {
     expect(code).to.contain(`import { API, Request, Response } from '@seagull`)
     expect(code).to.contain(`import { Routing } from '@seagull`)
     expect(code).to.contain(`import { renderToString } from 'react-dom/server'`)
-    expect(code).to.contain(`import layout from '../frontend/layout'`)
+    expect(code).to.contain(`import layout from '../../frontend/layout'`)
   }
 
   @test

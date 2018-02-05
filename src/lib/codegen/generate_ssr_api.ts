@@ -7,6 +7,6 @@ export default function generateSsrAPI(): Class {
   const gen = generateAPI('Frontent', opts)
   gen.addNamedImports('@seagull-js/seagull', ['Routing'])
   gen.addNamedImports('react-dom/server', ['renderToString'])
-  gen.addDefaultImport('../frontend/layout', 'layout')
+  gen.addDefaultImport('../../frontend/layout', 'layout')
   return gen
 }
