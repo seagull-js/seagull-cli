@@ -1,8 +1,14 @@
+// basic language constructs
 export { default as Base } from './base'
 export { default as Class } from './class'
 export { default as Function } from './function'
+
+// general framework elements
 export { default as generateAPI } from './generate_api'
 export { default as generateModel } from './generate_model'
+export { default as generatePage } from './generate_page'
+
+// dedicated file generators
 export { default as generatePackageJson } from './generate_package_json'
 export { default as generateLayoutTsx } from './generate_layout_tsx'
 export { default as generateTsconfigJson } from './generate_tsconfig_json'
