@@ -9,7 +9,8 @@ export { default as generateModel } from './generate_model'
 export { default as generatePage } from './generate_page'
 
 // dedicated file generators
-export { default as generatePackageJson } from './generate_package_json'
 export { default as generateLayoutTsx } from './generate_layout_tsx'
+export { default as generatePackageJson } from './generate_package_json'
+export { default as generateSsrApi } from './generate_ssr_api'
 export { default as generateTsconfigJson } from './generate_tsconfig_json'
 export { default as generateTslintJson } from './generate_tslint_json'

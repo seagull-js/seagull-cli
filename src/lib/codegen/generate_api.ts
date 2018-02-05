@@ -4,6 +4,7 @@ export interface IOptions {
   path?: string
   method?: string
   cors?: boolean
+  body?: string
 }
 
 export default function generateAPI(name: string, options: IOptions): Class {
@@ -46,7 +47,7 @@ export default function generateAPI(name: string, options: IOptions): Class {
   const docHandle = `This handle function executes your code. Return one of the following method invocations: 'text', 'json', 'redirect', 'missing', 'error'`
   gen.addMethod({
     async: true,
-    body: `return this.text('hello world')`,
+    body: options.body || `return this.text('hello world')`,
     doc: docHandle,
     name: 'handle',
     parameter: [{ name: 'request', type: 'Request' }],
