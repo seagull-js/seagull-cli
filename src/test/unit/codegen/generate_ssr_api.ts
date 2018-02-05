@@ -9,9 +9,7 @@ class CodegenGenerateSsrApiTest {
   'can generate SSR API'() {
     const gen = generateSsrApi()
     const code = gen.toString()
-    // tslint:disable-next-line:no-console
-    console.log(code)
-    expect(code).to.contain('export default class Frontend extends API {')
+    expect(code).to.contain('export default class Frontent extends API {')
     expect(code).to.contain('async handle(request: Request): Promise<Response>')
   }
 
