@@ -1,6 +1,6 @@
 import GenFunction from './function'
 
-export default function generateLayoutTsx(): GenFunction {
+export default function generateLayoutTsx(appName: string): GenFunction {
   const gen = new GenFunction('Layout')
   gen.addDefaultImport('react', 'React', true)
   gen.addParam('{ children }')
@@ -8,7 +8,7 @@ export default function generateLayoutTsx(): GenFunction {
   return (
     <html>
       <head>
-        <title>APP_NAME</title>
+        <title>${appName}</title>
       </head>
       <body>
         <div id='root'>{children}</div>

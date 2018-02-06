@@ -78,7 +78,7 @@ class ServeCommandTest extends FunctionalTest {
   @test
   async 'does serve assets'() {
     this.server = await this.serve()
-    const data = await fetch('http://localhost:3000/assets/seagull.png')
+    const data = await fetch('http://localhost:3000/assets/seagull-logo.png')
     expect(data.headers._headers['content-type']).to.be.deep.equal([
       'image/png',
     ])

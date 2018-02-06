@@ -11,10 +11,10 @@ export default class extends Command {
     name: string
   ) {
     log('scaffolding new seagull app...')
-    // const dest = join(shell.pwd().toString(), name)
-    // const app = new App(name)
-    // app.toFolder(dest)
-    const dest = copyTemplateFolder(name)
+    const dest = join(shell.pwd().toString(), name)
+    const app = new App(name)
+    app.toFolder(dest)
+    // const dest = copyTemplateFolder(name)
     if (process.env.NODE_ENV === 'test') {
       log('skipping dependencies...')
     } else {

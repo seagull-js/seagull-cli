@@ -86,7 +86,7 @@ class BuildCommandTest extends FunctionalTest {
 
   @test
   'assets get copied'() {
-    const file = join(this.appDir, '.seagull', 'assets', 'seagull.png')
+    const file = join(this.appDir, '.seagull', 'assets', 'seagull-logo.png')
     expect(existsSync(file)).to.be.equal(true)
   }
 
