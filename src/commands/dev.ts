@@ -2,6 +2,7 @@ import { Command, command, metadata, option, Options, param } from 'clime'
 import * as express from 'express'
 import { join } from 'path'
 import * as shell from 'shelljs'
+import { log } from '../lib/logger'
 
 export class SomeOptions extends Options {
   @option({
@@ -32,13 +33,5 @@ export default class extends Command {
     nodemon.on('restart', files => {
       log('App restarted due to: ', files)
     })
-  }
-}
-
-// suppress all logging when in testing mode
-function log(...args) {
-  if (process.env.NODE_ENV !== 'test') {
-    // tslint:disable-next-line:no-console
-    console.log(...args)
   }
 }

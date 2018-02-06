@@ -2,6 +2,7 @@ import { Command, command, option, Options, param } from 'clime'
 import { join } from 'path'
 import * as shell from 'shelljs'
 import { generateAPI } from '../../lib/codegen'
+import { log } from '../../lib/logger'
 
 export class SomeOptions extends Options {
   @option({
@@ -47,13 +48,5 @@ export default class extends Command {
     const dest = join(pwd, 'backend', 'api', `${name}.ts`)
     gen.toFile(dest)
     log(`created api in: ${dest}`)
-  }
-}
-
-// suppress all logging when in testing mode
-function log(msg: string) {
-  if (process.env.NODE_ENV !== 'test') {
-    // tslint:disable-next-line:no-console
-    console.log(msg)
   }
 }

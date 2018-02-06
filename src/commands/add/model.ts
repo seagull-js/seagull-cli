@@ -2,6 +2,7 @@ import { Command, command, option, Options, param } from 'clime'
 import { join } from 'path'
 import * as shell from 'shelljs'
 import { generateModel } from '../../lib/codegen'
+import { log } from '../../lib/logger'
 
 // tslint:disable-next-line:max-classes-per-file
 @command({ description: 'scaffold a new data model' })
@@ -33,13 +34,5 @@ export default class extends Command {
     const dest = join(shell.pwd().toString(), 'models', `${name}.ts`)
     gen.toFile(dest)
     log(`created model in: ${dest}`)
-  }
-}
-
-// suppress all logging when in testing mode
-function log(msg: string) {
-  if (process.env.NODE_ENV !== 'test') {
-    // tslint:disable-next-line:no-console
-    console.log(msg)
   }
 }

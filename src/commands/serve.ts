@@ -5,6 +5,7 @@ import { join } from 'path'
 import * as shell from 'shelljs'
 import * as stoppable from 'stoppable'
 import App from '../lib/loader/app'
+import { log } from '../lib/logger'
 import wrap from '../lib/server/'
 import BuildCommand from './build'
 
@@ -38,13 +39,5 @@ export default class extends Command {
     } else {
       server.listen(port, () => log(`static server ready on localhost:${port}`))
     }
-  }
-}
-
-// suppress all logging when in testing mode
-function log(msg: string) {
-  if (process.env.NODE_ENV !== 'test') {
-    // tslint:disable-next-line:no-console
-    console.log(msg)
   }
 }
