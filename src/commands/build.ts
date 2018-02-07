@@ -3,6 +3,7 @@ import { existsSync, writeFileSync } from 'fs'
 import * as dir from 'node-dir'
 import { join } from 'path'
 import * as shell from 'shelljs'
+import { cleanBuildDirectory } from '../lib/build/helper'
 import App from '../lib/loader/app'
 import {
   addImportIndex,
@@ -69,7 +70,7 @@ function copyAssets() {
 
 function initFolder() {
   if (existsSync(join(shell.pwd().toString(), '.seagull'))) {
-    shell.rm('-rf', '.seagull')
+    cleanBuildDirectory()
   }
   shell.mkdir('-p', '.seagull')
   shell.cp('package.json', '.seagull/package.json')

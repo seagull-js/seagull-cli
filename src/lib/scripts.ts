@@ -6,7 +6,7 @@ import { join } from 'path'
 import * as shell from 'shelljs'
 import * as streamToString from 'stream-to-string'
 import * as UglifyJS from 'uglify-es'
-import { compile } from './build/compiler'
+import { Compiler } from './build/compiler'
 import { binPath } from './build/helper'
 
 /**
@@ -28,22 +28,7 @@ export function prettier(): void {
 }
 
 export function tsc(): void {
-  // shell.rm('-rf', '.seagull/dist')
-  compile({
-    emitDecoratorMetadata: true,
-    experimentalDecorators: true,
-    jsx: 'react' as any,
-    module: 'commonjs' as any,
-    noImplicitAny: false,
-    outDir: './.seagull/dist',
-    preserveConstEnums: true,
-    removeComments: true,
-    rootDir: './',
-    skipLibCheck: true,
-    sourceMap: true,
-    target: 'es6' as any,
-  })
-  // shell.exec(`${binPath('tsc')}`)
+  Compiler.compile()
 }
 
 export async function bundle(optimize = true): Promise<void> {

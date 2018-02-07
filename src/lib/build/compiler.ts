@@ -1,19 +1,44 @@
 import { readFileSync } from 'fs'
 import { join } from 'path'
 import * as ts from 'typescript'
+import * as shell from 'shelljs'
+import { binPath } from './helper'
 
+export class Compiler {
+  conf: ts.ParsedCommandLine
+  host: ts.WatchCompilerHostOfFilesAndCompilerOptions<ts.BuilderProgram>
 
+  constructor() {
+    // ts config
+    const tsConfig = JSON.parse(
+      readFileSync(join(process.cwd(), 'tsconfig.json'), 'utf-8')
+    )
+    // load and configure tsc config object
+    this.conf = ts.parseJsonConfigFileContent(tsConfig, ts.sys, process.cwd())
+    this.conf.options.diagnostics = true
+    this.conf.options.extendedDiagnostics = true
 
+    // create host config
+    this.host = ts.createWatchCompilerHost(this.conf.fileNames, this.conf.options, ts.sys, undefined)
+  }
+
+  // start watching compilation
+  watch(){
+    ts.createWatchProgram(this.host)
+  }
+
+  // useful so we can get semantic errors
+  // incremental tsc compiling does only support syntactic checking
+  static compile(){
+    shell.config.fatal = true
+    shell.exec(`${binPath('tsc')}`)
+  }
+}
+/*
 export function compile(
   options: ts.CompilerOptions
 ): void {
-  const jsonConf = JSON.parse(
-    readFileSync(join(process.cwd(), 'tsconfig.json'), 'utf-8')
-  )
-  const conf = ts.parseJsonConfigFileContent(jsonConf, ts.sys, process.cwd())
 
-  conf.options.diagnostics = true
-  conf.options.extendedDiagnostics = true
   const whost = ts.createWatchCompilerHost(
     conf.fileNames,
     conf.options,
@@ -63,5 +88,5 @@ export function compile(
     // tslint:disable-next-line:no-console
     console.log('onwathc', diagnostric, newline)
   }
-  const wprogram = ts.createWatchProgram(whost)
 }
+*/
