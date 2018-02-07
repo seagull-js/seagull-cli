@@ -6,8 +6,8 @@ import { join } from 'path'
 import * as shell from 'shelljs'
 import * as streamToString from 'stream-to-string'
 import * as UglifyJS from 'uglify-es'
-
 import { compile } from './build/compiler'
+import { binPath } from './build/helper'
 
 /**
  * These functions assume that the current PWD === app of the user !
@@ -15,9 +15,7 @@ import { compile } from './build/compiler'
  * additionally, all shelljs commands are **synchronous** and return *void*
  */
 
-function binPath(name: string): string {
-  return join(__dirname, '..', '..', 'node_modules', '.bin', name)
-}
+
 
 export function lint(): void {
   shell.exec(`${binPath('tslint')} -c tslint.json --fix src/**/*.ts`)
