@@ -15,8 +15,6 @@ import { binPath } from './build/helper'
  * additionally, all shelljs commands are **synchronous** and return *void*
  */
 
-
-
 export function lint(): void {
   shell.exec(`${binPath('tslint')} -c tslint.json --fix src/**/*.ts`)
 }

@@ -6,8 +6,15 @@ import { log } from '../logger'
 import { binPath } from './helper'
 
 export class Compiler {
-  conf: ts.ParsedCommandLine
-  host: ts.WatchCompilerHostOfFilesAndCompilerOptions<ts.BuilderProgram>
+  // useful so we can get semantic errors
+  // incremental tsc compiling does only support syntactic checking
+  static compile() {
+    shell.config.fatal = true
+    shell.exec(`${binPath('tsc')}`)
+  }
+
+  private conf: ts.ParsedCommandLine
+  private host: ts.WatchCompilerHostOfFilesAndCompilerOptions<ts.BuilderProgram>
 
   constructor() {
     // ts config
@@ -20,22 +27,27 @@ export class Compiler {
     this.conf.options.extendedDiagnostics = true
 
     // create host config
-    this.host = ts.createWatchCompilerHost(this.conf.fileNames, this.conf.options, ts.sys, undefined)
+    this.host = ts.createWatchCompilerHost(
+      this.conf.fileNames,
+      this.conf.options,
+      ts.sys,
+      undefined
+    )
     this.host.trace = this.onTrace
     this.host.onWatchStatusChange = this.onWatchStatusChange
     this.host.afterProgramCreate = this.onCompilerMessage
   }
 
   // start watching compilation
-  watch(){
+  watch() {
     ts.createWatchProgram(this.host)
   }
 
   onTrace(message: string) {
     log('trace', message)
   }
-  
-  onWatchStatusChange(diagnostric: ts.Diagnostic, newline:string) {
+
+  onWatchStatusChange(diagnostric: ts.Diagnostic, newline: string) {
     log('watch', diagnostric, newline)
   }
 
@@ -61,12 +73,5 @@ export class Compiler {
         log(`  Error: ${message}`)
       }
     })
-  }
-
-  // useful so we can get semantic errors
-  // incremental tsc compiling does only support syntactic checking
-  static compile(){
-    shell.config.fatal = true
-    shell.exec(`${binPath('tsc')}`)
   }
 }
