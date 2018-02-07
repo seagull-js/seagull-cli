@@ -29,7 +29,7 @@ export function prettier(): void {
 
 export function tsc(): void {
   // shell.rm('-rf', '.seagull/dist')
-  compile(['backend/**/*'], {
+  compile({
     emitDecoratorMetadata: true,
     experimentalDecorators: true,
     jsx: 'react' as any,

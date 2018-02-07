@@ -5,7 +5,6 @@ import * as ts from 'typescript'
 
 
 export function compile(
-  fileNames: string[],
   options: ts.CompilerOptions
 ): void {
   const jsonConf = JSON.parse(
