@@ -1,7 +1,8 @@
 import { readFileSync } from 'fs'
 import { join } from 'path'
-import * as ts from 'typescript'
 import * as shell from 'shelljs'
+import * as ts from 'typescript'
+import { log } from '../logger'
 import { binPath } from './helper'
 
 export class Compiler {
@@ -20,6 +21,9 @@ export class Compiler {
 
     // create host config
     this.host = ts.createWatchCompilerHost(this.conf.fileNames, this.conf.options, ts.sys, undefined)
+    this.host.trace = this.onTrace
+    this.host.onWatchStatusChange = this.onWatchStatusChange
+    this.host.afterProgramCreate = this.onCompilerMessage
   }
 
   // start watching compilation
@@ -27,34 +31,17 @@ export class Compiler {
     ts.createWatchProgram(this.host)
   }
 
-  // useful so we can get semantic errors
-  // incremental tsc compiling does only support syntactic checking
-  static compile(){
-    shell.config.fatal = true
-    shell.exec(`${binPath('tsc')}`)
+  onTrace(message: string) {
+    log('trace', message)
   }
-}
-/*
-export function compile(
-  options: ts.CompilerOptions
-): void {
+  
+  onWatchStatusChange(diagnostric: ts.Diagnostic, newline:string) {
+    log('watch', diagnostric, newline)
+  }
 
-  const whost = ts.createWatchCompilerHost(
-    conf.fileNames,
-    conf.options,
-    ts.sys,
-    undefined,
-    diagnostic => {
-      // tslint:disable-next-line:no-console
-      console.log('inline', diagnostic)
-    }
-  )
-
-  whost.afterProgramCreate = acprogram => {
-    // tslint:disable-next-line:no-console
-    console.log('afterProgramCreate', acprogram)
-
-    const allDiagnostics = [].concat(acprogram.getSyntacticDiagnostics())
+  onCompilerMessage(programInfo: ts.BuilderProgram) {
+    log('onCompilerMessage', programInfo)
+    const allDiagnostics = [].concat(programInfo.getSyntacticDiagnostics())
 
     allDiagnostics.forEach(diagnostic => {
       const message = ts.flattenDiagnosticMessageText(
@@ -66,27 +53,20 @@ export function compile(
           line,
           character,
         } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start!)
-        // tslint:disable-next-line:no-console
-        console.log(
+        log(
           `  Error ${diagnostic.file.fileName} (${line + 1},${character +
             1}): ${message}`
         )
       } else {
-        // tslint:disable-next-line:no-console
-        console.log(`  Error: ${message}`)
+        log(`  Error: ${message}`)
       }
     })
+  }
 
-    return
-  }
-  // tslint:disable-next-line:no-console
-  whost.trace = s => {
-    // tslint:disable-next-line:no-console
-    console.log('trace', s)
-  }
-  whost.onWatchStatusChange = (diagnostric, newline) => {
-    // tslint:disable-next-line:no-console
-    console.log('onwathc', diagnostric, newline)
+  // useful so we can get semantic errors
+  // incremental tsc compiling does only support syntactic checking
+  static compile(){
+    shell.config.fatal = true
+    shell.exec(`${binPath('tsc')}`)
   }
 }
-*/
