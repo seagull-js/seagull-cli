@@ -15,6 +15,7 @@ export class Compiler {
 
   private conf: ts.ParsedCommandLine
   private host: ts.WatchCompilerHostOfFilesAndCompilerOptions<ts.BuilderProgram>
+  private tsc: ts.WatchOfFilesAndCompilerOptions<ts.BuilderProgram>
 
   constructor() {
     // ts config
@@ -40,38 +41,48 @@ export class Compiler {
 
   // start watching compilation
   watch() {
-    ts.createWatchProgram(this.host)
+    this.tsc = ts.createWatchProgram(this.host)
   }
 
-  onTrace(message: string) {
-    log('trace', message)
+  private onTrace(message: string) {
+    // example: FileWatcher:: Trigger: $absolutePath 1 PathInfo: $absolutePath
+    if (message.includes(':: Trigger:') && message.includes('1 PathInfo')) {
+      log(message)
+    }
   }
 
-  onWatchStatusChange(diagnostric: ts.Diagnostic, newline: string) {
-    log('watch', diagnostric, newline)
+  private onWatchStatusChange(diagnostic: ts.Diagnostic, newline: string) {
+    switch (diagnostic.code) {
+      case 6032:
+        // log('Started compilation')
+        break
+      case 6042:
+        log('Compile finished. Waiting for file changes')
+        break
+      default:
+        break
+    }
   }
 
-  onCompilerMessage(programInfo: ts.BuilderProgram) {
-    log('onCompilerMessage', programInfo)
-    const allDiagnostics = [].concat(programInfo.getSyntacticDiagnostics())
-
-    allDiagnostics.forEach(diagnostic => {
-      const message = ts.flattenDiagnosticMessageText(
-        diagnostic.messageText,
-        '\n'
-      )
-      if (diagnostic.file) {
-        const {
-          line,
-          character,
-        } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start!)
-        log(
-          `  Error ${diagnostic.file.fileName} (${line + 1},${character +
-            1}): ${message}`
-        )
-      } else {
-        log(`  Error: ${message}`)
-      }
+  private onCompilerMessage(programInfo: ts.BuilderProgram) {
+    const diagnostics = programInfo.getSyntacticDiagnostics()
+    diagnostics.forEach(diagnostic => {
+      this.logDiagnostic(diagnostic)
     })
+  }
+
+  private logDiagnostic(dg: ts.Diagnostic) {
+    const message = ts.flattenDiagnosticMessageText(dg.messageText, '\n')
+
+    if (!dg.file) {
+      log(`  Error: ${message}`)
+      return
+    }
+
+    const pos = dg.file.getLineAndCharacterOfPosition(dg.start!)
+    log(
+      `Error ${dg.file.fileName} (${pos.line + 1},${pos.character +
+        1}): ${message}`
+    )
   }
 }
