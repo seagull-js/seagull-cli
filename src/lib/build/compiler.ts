@@ -2,19 +2,17 @@ import { readFileSync } from 'fs'
 import { join } from 'path'
 import * as ts from 'typescript'
 
+
+
 export function compile(
   fileNames: string[],
   options: ts.CompilerOptions
 ): void {
-  // tslint:disable-next-line:no-console
-  console.log(join(process.cwd(), 'tsconfig.json'))
   const jsonConf = JSON.parse(
     readFileSync(join(process.cwd(), 'tsconfig.json'), 'utf-8')
   )
-  const host = ts.createCompilerHost(ts.getDefaultCompilerOptions())
   const conf = ts.parseJsonConfigFileContent(jsonConf, ts.sys, process.cwd())
 
-  const program = ts.createProgram(conf.fileNames, conf.options, host)
   conf.options.diagnostics = true
   conf.options.extendedDiagnostics = true
   const whost = ts.createWatchCompilerHost(
@@ -67,8 +65,4 @@ export function compile(
     console.log('onwathc', diagnostric, newline)
   }
   const wprogram = ts.createWatchProgram(whost)
-
-  const emitResult = program.emit()
-
-  const exitCode = emitResult.emitSkipped ? 1 : 0
 }
