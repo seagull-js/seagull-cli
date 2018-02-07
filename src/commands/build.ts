@@ -68,6 +68,9 @@ function copyAssets() {
 }
 
 function initFolder() {
+  if (existsSync(join(shell.pwd().toString(), '.seagull'))) {
+    shell.rm('-rf', '.seagull')
+  }
   shell.mkdir('-p', '.seagull')
   shell.cp('package.json', '.seagull/package.json')
   // dont link existing link

@@ -1,6 +1,6 @@
 {
     "name": "@seagull-js/seagull-cli",
-    "version": "0.6.5",
+    "version": "0.6.7",
     "description": "CLI for developing seagull apps",
     "main": "dist/index.js",
     "bin": {
@@ -50,6 +50,7 @@
         "stoppable": "^1.0.4",
         "stream-to-string": "^1.1.0",
         "ts-node": "^3.3.0",
+        "ts-simple-ast": "^6.8.0",
         "tsify": "^3.0.3",
         "tslint": "^5.7.0",
         "tslint-config-prettier": "^1.3.0",

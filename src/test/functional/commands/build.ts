@@ -13,6 +13,7 @@ class BuildCommandTest extends FunctionalTest {
   async 'can build a project'() {
     this.addApi('hello', { path: '/' })
     this.addModel('todo')
+    this.addPage('SomePage', { path: '/some_url' })
     await this.build()
   }
 
@@ -85,7 +86,7 @@ class BuildCommandTest extends FunctionalTest {
 
   @test
   'assets get copied'() {
-    const file = join(this.appDir, '.seagull', 'assets', 'seagull.png')
+    const file = join(this.appDir, '.seagull', 'assets', 'seagull-logo.png')
     expect(existsSync(file)).to.be.equal(true)
   }
 

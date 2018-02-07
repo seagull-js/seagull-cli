@@ -1,6 +1,8 @@
 import { Command, command, option, Options, param } from 'clime'
 import { join } from 'path'
 import * as shell from 'shelljs'
+import { generateAPI } from '../../lib/codegen'
+import { log } from '../../lib/logger'
 
 export class SomeOptions extends Options {
   @option({
@@ -41,51 +43,10 @@ export default class extends Command {
     name: string,
     options: SomeOptions
   ) {
+    const gen = generateAPI(name, options)
     const pwd = shell.pwd().toString()
     const dest = join(pwd, 'backend', 'api', `${name}.ts`)
-    const src = join(
-      __dirname,
-      '..',
-      '..',
-      '..',
-      'templates',
-      'api',
-      'handler.ts'
-    )
-    shell.mkdir('-p', 'backend/api')
-    shell.cp(src, dest)
-    shell.sed('-i', 'APINAME', name, dest)
-
-    if (options.path) {
-      shell.sed(
-        '-i',
-        "// static path = '/'",
-        `static path = '${options.path}'`,
-        dest
-      )
-    }
-
-    if (options.cors) {
-      shell.sed('-i', '// static cors = false', 'static cors = true', dest)
-    }
-
-    if (options.method) {
-      shell.sed(
-        '-i',
-        `static method = 'GET'`,
-        `static method = '${options.method}'`,
-        dest
-      )
-    }
-
+    gen.toFile(dest)
     log(`created api in: ${dest}`)
-  }
-}
-
-// suppress all logging when in testing mode
-function log(msg: string) {
-  if (process.env.NODE_ENV !== 'test') {
-    // tslint:disable-next-line:no-console
-    console.log(msg)
   }
 }

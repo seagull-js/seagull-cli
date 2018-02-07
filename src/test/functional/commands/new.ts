@@ -12,14 +12,6 @@ class NewCommandTest extends FunctionalTest {
   }
 
   @test
-  'project contains README file'() {
-    const file = join(this.appDir, 'README.md')
-    expect(existsSync(file)).to.be.equal(true)
-    const text = readFileSync(file, { encoding: 'utf-8' })
-    expect(text).to.include(this.appName)
-  }
-
-  @test
   'project contains package.json file'() {
     const file = join(this.appDir, 'package.json')
     expect(existsSync(file)).to.be.equal(true)

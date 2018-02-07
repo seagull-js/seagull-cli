@@ -39,6 +39,15 @@ class ServeCommandTest extends FunctionalTest {
 
   @timeout(80000)
   @test
+  async 'can start dev server on arbitrary port'() {
+    this.server = await this.serve({ port: 4001 })
+    const data = await fetch('http://localhost:4001/hello')
+    const text = await data.text()
+    expect(text).to.be.equal('hello world')
+  }
+
+  @timeout(80000)
+  @test
   async 'does render html pages (SSR)'() {
     this.server = await this.serve()
     const data = await fetch('http://localhost:3000/')
@@ -69,7 +78,7 @@ class ServeCommandTest extends FunctionalTest {
   @test
   async 'does serve assets'() {
     this.server = await this.serve()
-    const data = await fetch('http://localhost:3000/assets/seagull.png')
+    const data = await fetch('http://localhost:3000/assets/seagull-logo.png')
     expect(data.headers._headers['content-type']).to.be.deep.equal([
       'image/png',
     ])
