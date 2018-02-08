@@ -6,6 +6,7 @@ import { join } from 'path'
 import * as shell from 'shelljs'
 import * as streamToString from 'stream-to-string'
 import * as UglifyJS from 'uglify-es'
+import { Bundler } from './build/bundler'
 import { Compiler } from './build/compiler'
 import { binPath } from './build/helper'
 
@@ -27,41 +28,16 @@ export function prettier(): void {
 
 export async function tsc(): Promise<void> {
   // Compiler.compile()
+  const bundler = new Bundler(false)
   for await (const bla of new Compiler().watch()) {
     // tslint:disable-next-line:no-console
     console.log('johoo')
+    modifyScriptExports()
+    addImportIndex()
+    await bundler.bundle()
+    // tslint:disable-next-line:no-console
+    console.log('johoo')
   }
-}
-
-export async function bundle(optimize = true): Promise<void> {
-  const src = join(
-    process.cwd(),
-    '.seagull',
-    'node_modules',
-    '@seagull-js',
-    'seagull',
-    'dist',
-    'lib',
-    'spa',
-    'entry.js'
-  )
-
-  const browserifyInstance = browserify(
-    Object.assign({ ignoreMissing: true }, browserifyInc.args, {})
-  )
-  browserifyInc(browserifyInstance, {
-    cacheFile: '.seagull/browserify-cache.json',
-  })
-
-  const data: string = await streamToString(
-    browserifyInstance.add(src).bundle()
-  )
-  let blob = data
-  if (optimize) {
-    blob = UglifyJS.minify(data).code
-  }
-  const dist = join(process.cwd(), '.seagull', 'assets', 'bundle.js')
-  writeFileSync(dist, blob, { encoding: 'utf-8' })
 }
 
 export function modifyScriptExports(): void {
