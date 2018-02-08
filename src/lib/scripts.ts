@@ -27,7 +27,8 @@ export function prettier(): void {
 }
 
 export async function tsc(): Promise<void> {
-  // Compiler.compile()
+  Compiler.compile()
+
   const bundler = new Bundler(false)
   for await (const bla of new Compiler().watch()) {
     // tslint:disable-next-line:no-console
