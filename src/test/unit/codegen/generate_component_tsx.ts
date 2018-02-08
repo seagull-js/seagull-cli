@@ -22,8 +22,6 @@ class CodegenGenerateComponentTsxTest {
   'contains props-children param'() {
     const gen = generateComponentTsx('MyDiv')
     const code = gen.toString()
-    // tslint:disable-next-line:no-console
-    console.log(code)
     expect(code).to.contain(`function MyDiv({ children }) {`)
   }
 }
