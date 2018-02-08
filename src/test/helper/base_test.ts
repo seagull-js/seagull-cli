@@ -2,6 +2,7 @@ import { join } from 'path'
 import * as shell from 'shelljs'
 
 import AddApiCommand from '../../commands/add/api'
+import AddComponentCommand from '../../commands/add/component'
 import AddModelCommand from '../../commands/add/model'
 import AddPageCommand from '../../commands/add/page'
 import BuildCommand from '../../commands/build'
@@ -20,6 +21,7 @@ export default class BaseTest {
 
   // static command helpers
   static addApi = new AddApiCommand().execute
+  static addComponent = new AddComponentCommand().execute
   static addModel = new AddModelCommand().execute
   static addPage = new AddPageCommand().execute
   static build = new BuildCommand().execute
@@ -33,6 +35,7 @@ export default class BaseTest {
 
   // command helpers
   addApi = new AddApiCommand().execute
+  addComponent = new AddComponentCommand().execute
   addModel = new AddModelCommand().execute
   addPage = new AddPageCommand().execute
   build = new BuildCommand().execute
