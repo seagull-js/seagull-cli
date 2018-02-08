@@ -49,7 +49,7 @@ export default class extends Command {
   async execute(options?: BuildOptions) {
     const optimize = options ? options.optimize : false
     timeit(initFolder)
-    timeit(compileScripts)
+    await asynctimeit(compileScripts, undefined)
     timeit(copyAssets)
     timeit(createServerlessYaml)
     await asynctimeit(bundle, optimize)
@@ -81,13 +81,13 @@ function initFolder() {
   shell.mkdir('-p', '.seagull/assets')
 }
 
-function compileScripts() {
+async function compileScripts() {
   if (existsSync(join(shell.pwd().toString(), 'backend', 'api'))) {
     if (process.env.NODE_ENV !== 'test') {
       timeit(lint)
       timeit(prettier)
     }
-    timeit(tsc)
+    await asynctimeit(tsc, undefined)
     timeit(modifyScriptExports)
     timeit(addImportIndex)
   }

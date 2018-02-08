@@ -5,6 +5,10 @@ import * as ts from 'typescript'
 import { log } from '../logger'
 import { binPath } from './helper'
 
+// polyfill
+;(Symbol as any).asyncIterator =
+  Symbol.asyncIterator || Symbol.for('Symbol.asyncIterator')
+
 export class Compiler {
   // useful so we can get semantic errors
   // incremental tsc compiling does only support syntactic checking
@@ -16,8 +20,10 @@ export class Compiler {
   private conf: ts.ParsedCommandLine
   private host: ts.WatchCompilerHostOfFilesAndCompilerOptions<ts.BuilderProgram>
   private tsc: ts.WatchOfFilesAndCompilerOptions<ts.BuilderProgram>
-  private succesfullCompile: Promise<null>
-  private resolveCompile: () => void
+  private wait: {
+    compile?: Promise<null>
+    resolve?: () => void
+  }
 
   constructor() {
     // ts config
@@ -36,26 +42,31 @@ export class Compiler {
       ts.sys,
       undefined
     )
-    this.host.trace = this.onTrace
-    this.host.onWatchStatusChange = this.onWatchStatusChange
-    this.host.afterProgramCreate = this.onCompilerMessage
+
+    this.host.trace = this.onTrace.bind(this)
+    this.host.onWatchStatusChange = this.onWatchStatusChange.bind(this)
+    this.host.afterProgramCreate = this.onCompilerMessage.bind(this)
 
     // set first compile promise
-    this.succesfullCompile = new Promise(resolve => {
-      this.resolveCompile = resolve
-    })
+    this.createCompilePromise()
   }
 
   // start watching compilation
-  watch = async function*() {
+  watch = async function*(this: Compiler) {
     this.tsc = ts.createWatchProgram(this.host)
     while (true) {
-      await this.succesfullCompile
-      this.succesfullCompile = new Promise(resolve => {
-        this.resolveCompile = resolve
-      })
+      await this.wait.compile
+      this.createCompilePromise()
       yield
     }
+  }
+
+  private createCompilePromise() {
+    const resolver = resolve => {
+      this.wait.resolve = resolve
+    }
+    this.wait = {}
+    this.wait.compile = new Promise(resolver)
   }
 
   private onTrace(message: string) {
@@ -72,7 +83,7 @@ export class Compiler {
         break
       case 6042:
         log('Compile finished. Waiting for file changes')
-        this.resolveCompile()
+        this.wait.resolve()
         break
       default:
         break
