@@ -7,13 +7,14 @@ import { cleanBuildDirectory } from '../lib/build/helper'
 import App from '../lib/loader/app'
 import {
   addImportIndex,
-  bundle,
   lint,
   modifyScriptExports,
   prettier,
   tsc,
 } from '../lib/scripts'
 import generateYAML from '../lib/serverless/generate-yaml'
+
+import { Bundler } from '../lib/build/bundler'
 
 class BuildOptions extends Options {
   @option({
@@ -52,7 +53,8 @@ export default class extends Command {
     await asynctimeit(compileScripts, undefined)
     timeit(copyAssets)
     timeit(createServerlessYaml)
-    await asynctimeit(bundle, optimize)
+    const bundler = new Bundler(optimize)
+    await asynctimeit(bundler.bundle, undefined)
   }
 }
 
