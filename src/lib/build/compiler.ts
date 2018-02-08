@@ -91,6 +91,7 @@ export class Compiler {
   }
 
   private onCompilerMessage(programInfo: ts.BuilderProgram) {
+    programInfo.emit()
     const diagnostics = programInfo.getSyntacticDiagnostics()
     diagnostics.forEach(diagnostic => {
       this.logDiagnostic(diagnostic)
