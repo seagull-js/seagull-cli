@@ -34,4 +34,12 @@ class CodegenBaseTest {
     const code = gen.toString()
     expect(code).to.contain(`import { a, b } from 'mod'`)
   }
+
+  @test
+  'can add interface to file'() {
+    const gen = new Base()
+    gen.addInterface('ITest')
+    const code = gen.toString()
+    expect(code).to.contain(`interface ITest {}`)
+  }
 }

@@ -62,6 +62,17 @@ export default class Base {
   }
 
   /**
+   * Add a simple interface declaration and export it
+   *
+   * @param name name of the interface
+   */
+  addInterface(name: string): this {
+    const intf = { name, export: true }
+    this.sourceFile.addInterface(intf)
+    return this
+  }
+
+  /**
    * Return textual representation of the current AST state, already prettified
    */
   toString(): string {

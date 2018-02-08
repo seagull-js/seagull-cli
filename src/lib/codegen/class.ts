@@ -30,8 +30,12 @@ export interface IMethod {
 export default class extends Base {
   private classDeclaration: ClassDeclaration
 
-  constructor(name: string, parent?: string) {
+  constructor(name: string, parent?: string, addDefaultInterfaces?: boolean) {
     super()
+    if (addDefaultInterfaces) {
+      this.addInterface('IProps')
+      this.addInterface('IState')
+    }
     this.classDeclaration = this.sourceFile.addClass({ name })
     this.classDeclaration.setIsDefaultExport(true)
     if (parent) {

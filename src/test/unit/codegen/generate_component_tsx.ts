@@ -29,7 +29,7 @@ class CodegenGenerateComponentTsxTest {
   'when class, contains constructor'() {
     const gen = generateComponentTsx('MyDiv', true)
     const code = gen.toString()
-    expect(code).to.contain(`constructor(props) {`)
+    expect(code).to.contain(`constructor(props: IProps) {`)
     expect(code).to.contain(`super(props)`)
     expect(code).to.contain(`this.state = {}`)
   }
