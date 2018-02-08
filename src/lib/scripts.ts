@@ -25,8 +25,12 @@ export function prettier(): void {
   shell.exec(cmd, { silent: true })
 }
 
-export function tsc(): void {
-  Compiler.compile()
+export async function tsc(): Promise<void> {
+  // Compiler.compile()
+  for await (const bla of new Compiler().watch()) {
+    // tslint:disable-next-line:no-console
+    console.log('johoo')
+  }
 }
 
 export async function bundle(optimize = true): Promise<void> {

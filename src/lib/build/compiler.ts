@@ -16,6 +16,8 @@ export class Compiler {
   private conf: ts.ParsedCommandLine
   private host: ts.WatchCompilerHostOfFilesAndCompilerOptions<ts.BuilderProgram>
   private tsc: ts.WatchOfFilesAndCompilerOptions<ts.BuilderProgram>
+  private succesfullCompile: Promise<null>
+  private resolveCompile: () => void
 
   constructor() {
     // ts config
@@ -37,11 +39,23 @@ export class Compiler {
     this.host.trace = this.onTrace
     this.host.onWatchStatusChange = this.onWatchStatusChange
     this.host.afterProgramCreate = this.onCompilerMessage
+
+    // set first compile promise
+    this.succesfullCompile = new Promise(resolve => {
+      this.resolveCompile = resolve
+    })
   }
 
   // start watching compilation
-  watch() {
+  watch = async function*() {
     this.tsc = ts.createWatchProgram(this.host)
+    while (true) {
+      await this.succesfullCompile
+      this.succesfullCompile = new Promise(resolve => {
+        this.resolveCompile = resolve
+      })
+      yield
+    }
   }
 
   private onTrace(message: string) {
@@ -58,6 +72,7 @@ export class Compiler {
         break
       case 6042:
         log('Compile finished. Waiting for file changes')
+        this.resolveCompile()
         break
       default:
         break
