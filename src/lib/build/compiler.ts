@@ -1,5 +1,5 @@
-import { readFileSync } from 'fs'
-import { join } from 'path'
+import { readFileSync, unlinkSync } from 'fs'
+import { extname, join, relative } from 'path'
 import * as shell from 'shelljs'
 import * as ts from 'typescript'
 import { log } from '../logger'
@@ -20,10 +20,12 @@ export class Compiler {
   private conf: ts.ParsedCommandLine
   private host: ts.WatchCompilerHostOfFilesAndCompilerOptions<ts.BuilderProgram>
   private tsc: ts.WatchOfFilesAndCompilerOptions<ts.BuilderProgram>
+  private watchedFiles: string[]
   private wait: {
     compile?: Promise<null>
     resolve?: () => void
   }
+  private counter = 0
 
   constructor() {
     // ts config
@@ -46,7 +48,7 @@ export class Compiler {
     this.host.trace = this.onTrace.bind(this)
     this.host.onWatchStatusChange = this.onWatchStatusChange.bind(this)
     this.host.afterProgramCreate = this.onCompilerMessage.bind(this)
-
+    this.watchedFiles = this.conf.fileNames
     // set first compile promise
     this.createCompilePromise()
   }
@@ -70,10 +72,62 @@ export class Compiler {
   }
 
   private onTrace(message: string) {
+    log('INPUT', message)
+    // todo return if not watched path
+
+    // increment / resolve on deletion for bundle
+    // investigate renaming
+    // folders....
+
+
     // example: FileWatcher:: Trigger: $absolutePath 1 PathInfo: $absolutePath
-    if (message.includes(':: Trigger:') && message.includes('1 PathInfo')) {
-      log(message)
+    if (!message.includes(':: Trigger:')) {
+      return
     }
+
+    const triggeredFile = message
+      .match(/Trigger: (.*?) \d?\s?PathInfo:/)[1]
+      .toLowerCase()
+
+    // changed
+    if (message.includes('1 PathInfo')) {
+      this.counter++
+      log(message)
+      return
+    }
+
+    // renamed, old name is gone
+    if (message.includes('2 PathInfo')) {
+      this.watchedFiles = this.watchedFiles.filter(
+        file => file !== triggeredFile
+      )
+      this.tsc.updateRootFileNames(this.watchedFiles)
+      let compiledFile = join(
+        '.seagull',
+        'dist',
+        relative(process.cwd().toLowerCase(), triggeredFile)
+      )
+      const ext = extname(compiledFile)
+      compiledFile = compiledFile.replace(RegExp(`${ext}$`), '')
+      unlinkSync(compiledFile + '.js')
+      unlinkSync(compiledFile + '.js.map')
+      log('Removing file', triggeredFile)
+      return
+    }
+
+    // added file
+    Object.keys(this.conf.wildcardDirectories).forEach(path => {
+      if (
+        this.tsc &&
+        triggeredFile.startsWith(path) &&
+        this.watchedFiles.indexOf(triggeredFile) < 0
+      ) {
+        this.counter++
+        log('Watching new file:', triggeredFile)
+        this.watchedFiles = this.watchedFiles.concat(triggeredFile)
+        this.tsc.updateRootFileNames(this.watchedFiles)
+      }
+    })
   }
 
   private onWatchStatusChange(diagnostic: ts.Diagnostic, newline: string) {
@@ -82,8 +136,13 @@ export class Compiler {
         // log('Started compilation')
         break
       case 6042:
-        log('Compile finished. Waiting for file changes')
-        this.wait.resolve()
+        if (this.counter === 1) {
+          log('Compile finished. Waiting for file changes')
+        }
+        if (this.counter > 0) {
+          this.counter--
+          this.wait.resolve()
+        }
         break
       default:
         break
