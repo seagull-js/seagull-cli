@@ -19,9 +19,25 @@ class CodegenGenerateComponentTsxTest {
   }
 
   @test
-  'contains props-children param'() {
-    const gen = generateComponentTsx('MyDiv')
+  'when function, contains props-children param'() {
+    const gen = generateComponentTsx('MyDiv', false)
     const code = gen.toString()
     expect(code).to.contain(`function MyDiv({ children }) {`)
+  }
+
+  @test
+  'when class, contains constructor'() {
+    const gen = generateComponentTsx('MyDiv', true)
+    const code = gen.toString()
+    expect(code).to.contain(`constructor(props) {`)
+    expect(code).to.contain(`super(props)`)
+    expect(code).to.contain(`this.state = {}`)
+  }
+
+  @test
+  'when class, contains render method'() {
+    const gen = generateComponentTsx('MyDiv', true)
+    const code = gen.toString()
+    expect(code).to.contain(`render() {`)
   }
 }

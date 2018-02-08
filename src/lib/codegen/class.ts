@@ -1,4 +1,5 @@
 import Ast, { ClassDeclaration } from 'ts-simple-ast'
+import { ConstructorDeclarationStructure } from 'ts-simple-ast'
 import Base from './base'
 
 export interface IProp {
@@ -36,6 +37,11 @@ export default class extends Base {
     if (parent) {
       this.classDeclaration.setExtends(parent)
     }
+  }
+
+  addConstructor(params: ConstructorDeclarationStructure): this {
+    this.classDeclaration.addConstructor(params)
+    return this
   }
 
   addMethod(params: IMethod): this {
