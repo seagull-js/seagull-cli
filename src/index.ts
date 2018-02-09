@@ -1,11 +1,13 @@
-#!/usr/bin/env node
-import { CLI, Shim } from 'clime'
-import * as Path from 'path'
-
-// The second parameter is the path to folder that contains command modules.
-const cli = new CLI('seagull', Path.join(__dirname, 'commands'))
-
-// Clime in its core provides an object-based command-line infrastructure.
-// To have it work as a common CLI, a shim needs to be applied:
-const shim = new Shim(cli)
-shim.execute(process.argv)
+/**
+ * Export all available commands for usage within external Apps, UIs, ...
+ */
+export { default as AddApi } from './commands/add/api'
+export { default as AddComponent } from './commands/add/component'
+export { default as AddModel } from './commands/add/model'
+export { default as AddPage } from './commands/add/page'
+export { default as Build } from './commands/build'
+export { default as Default } from './commands/default'
+export { default as Dev } from './commands/dev'
+export { default as FMT } from './commands/fmt'
+export { default as New } from './commands/new'
+export { default as Serve } from './commands/serve'
