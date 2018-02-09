@@ -1,8 +1,17 @@
 import { expect } from 'chai'
-import { existsSync, readFileSync, renameSync, unlinkSync, writeFileSync } from 'fs'
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  renameSync,
+  rmdirSync,
+  unlinkSync,
+  writeFileSync,
+} from 'fs'
 import { skip, slow, suite, test, timeout } from 'mocha-typescript'
 import { join } from 'path'
-import { sleep } from 'villa';
+import * as shell from 'shelljs'
+import { sleep } from 'villa'
 import { Compiler } from '../../../lib/build/compiler'
 import App from '../../../lib/loader/app'
 import { log } from '../../../lib/logger'
@@ -30,7 +39,7 @@ class CompilerBuilderTest extends FunctionalTest {
   @test
   async 'watching compiler notifies about finished initial compile'() {
     this.addPage('SomePage', { path: '/some_url' })
-    const compiler = new Compiler() 
+    const compiler = new Compiler()
     for await (const noMsg of compiler.watch()) {
       expect(true).equals(true)
       break
@@ -58,6 +67,41 @@ class CompilerBuilderTest extends FunctionalTest {
 
     await compilationIterator.next()
     expect(existsSync(file)).to.be.equal(true)
+
+    compiler.stop()
+  }
+
+  @test
+  async 'watching compiler compiles multiple added files'() {
+    const file1 = join(
+      this.appDir,
+      '.seagull',
+      'dist',
+      'frontend',
+      'pages',
+      'AddedFile1.js'
+    )
+    const file2 = join(
+      this.appDir,
+      '.seagull',
+      'dist',
+      'frontend',
+      'pages',
+      'AddedFile2.js'
+    )
+    const compiler = new Compiler()
+    const compilationIterator = compiler.watch()
+
+    await compilationIterator.next()
+    expect(existsSync(file1)).to.be.equal(false)
+    expect(existsSync(file2)).to.be.equal(false)
+
+    this.addPage('AddedFile1', { path: '/some_url' })
+    this.addPage('AddedFile2', { path: '/some_url' })
+
+    await compilationIterator.next()
+    expect(existsSync(file1)).to.be.equal(true)
+    expect(existsSync(file2)).to.be.equal(true)
 
     compiler.stop()
   }
@@ -101,7 +145,10 @@ class CompilerBuilderTest extends FunctionalTest {
     compiler.stop()
 
     await sleep(500)
-    writeFileSync(join(this.appDir, 'frontend', 'pages', 'SomeStoppedChangedPage.tsx'), changedCode)
+    writeFileSync(
+      join(this.appDir, 'frontend', 'pages', 'SomeStoppedChangedPage.tsx'),
+      changedCode
+    )
 
     await sleep(500)
     expect(readFileSync(file, 'utf8')).to.be.not.equal(changedCode)
@@ -124,7 +171,10 @@ class CompilerBuilderTest extends FunctionalTest {
     const compilationIterator = compiler.watch()
     await compilationIterator.next()
 
-    writeFileSync(join(this.appDir, 'frontend', 'pages', 'SomeChangedPage.tsx'), changedCode)
+    writeFileSync(
+      join(this.appDir, 'frontend', 'pages', 'SomeChangedPage.tsx'),
+      changedCode
+    )
 
     await compilationIterator.next()
     await sleep(500)
@@ -157,14 +207,16 @@ class CompilerBuilderTest extends FunctionalTest {
     await compilationIterator.next()
     expect(existsSync(file)).to.be.equal(true)
 
-    renameSync(join(this.appDir, 'frontend', 'pages', 'SomeRenamedPage.tsx'), 'Renamed.tsx')
+    renameSync(
+      join(this.appDir, 'frontend', 'pages', 'SomeRenamedPage.tsx'),
+      'Renamed.tsx'
+    )
 
     await compilationIterator.next()
     expect(existsSync(file)).to.be.equal(false)
     expect(existsSync(renamed)).to.be.equal(false)
     compiler.stop()
   }
-  
 
   @test
   async 'watching compiler removes deleted file'() {
@@ -176,7 +228,6 @@ class CompilerBuilderTest extends FunctionalTest {
       'pages',
       'SomeDeletedPage.js'
     )
-    const changedCode = 'const x = 3'
 
     this.addPage('SomeDeletedPage', { path: '/some_url' })
     const compiler = new Compiler()
@@ -187,6 +238,56 @@ class CompilerBuilderTest extends FunctionalTest {
 
     await compilationIterator.next()
     expect(existsSync(file)).to.be.equal(false)
+    compiler.stop()
+  }
+
+  @test
+  async 'watching compiler removes deleted file in deleted folder'() {
+    const file = join(
+      this.appDir,
+      '.seagull',
+      'dist',
+      'frontend',
+      'pages',
+      'SomeDeletedPage.js'
+    )
+
+    this.addPage('SomeDeletedPage', { path: '/some_url' })
+    const compiler = new Compiler()
+    const compilationIterator = compiler.watch()
+    await compilationIterator.next()
+    shell.rm('-Rf', join(this.appDir, 'frontend', 'pages'))
+
+    await compilationIterator.next()
+    expect(existsSync(file)).to.be.equal(false)
+    compiler.stop()
+  }
+
+  @test
+  async 'watching compiler compiles file in new folder'() {
+    const file = join(
+      this.appDir,
+      '.seagull',
+      'dist',
+      'frontend',
+      'pager',
+      'newFolderFile.js'
+    )
+    const compiler = new Compiler()
+    const compilationIterator = compiler.watch()
+
+    await compilationIterator.next()
+    expect(existsSync(file)).to.be.equal(false)
+
+    mkdirSync(join(this.appDir, 'frontend', 'pager'))
+
+    writeFileSync(
+      join(this.appDir, 'frontend', 'pager', 'newFolderFile.ts'),
+      'const x = 3'
+    )
+    await compilationIterator.next()
+    expect(existsSync(file)).to.be.equal(true)
+
     compiler.stop()
   }
 }
