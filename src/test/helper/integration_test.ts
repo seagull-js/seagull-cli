@@ -10,12 +10,12 @@ export default class IntegrationTest extends BaseTest {
   before() {
     this.create(this.appName)
     shell.ln('-s', '../node_modules', `./${this.appName}/node_modules`)
-    shell.cd(this.appName)
+    shell.cd(this.appDir)
   }
 
   // clean up the temporary folder after all test runs
   after() {
     shell.cd(this.cwd)
-    shell.rm('-rf', this.appName)
+    shell.rm('-rf', this.appDir)
   }
 }
