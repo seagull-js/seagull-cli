@@ -14,6 +14,8 @@ class BuildCommandTest extends FunctionalTest {
     this.addApi('hello', { path: '/' })
     this.addModel('todo')
     this.addPage('SomePage', { path: '/some_url' })
+    this.addComponent('FunctionComp')
+    this.addComponent('ClassComp', { class: true })
     await this.build()
   }
 

@@ -1,4 +1,5 @@
 import Ast, { ClassDeclaration } from 'ts-simple-ast'
+import { ConstructorDeclarationStructure } from 'ts-simple-ast'
 import Base from './base'
 
 export interface IProp {
@@ -29,13 +30,22 @@ export interface IMethod {
 export default class extends Base {
   private classDeclaration: ClassDeclaration
 
-  constructor(name: string, parent?: string) {
+  constructor(name: string, parent?: string, addDefaultInterfaces?: boolean) {
     super()
+    if (addDefaultInterfaces) {
+      this.addInterface('IProps')
+      this.addInterface('IState')
+    }
     this.classDeclaration = this.sourceFile.addClass({ name })
     this.classDeclaration.setIsDefaultExport(true)
     if (parent) {
       this.classDeclaration.setExtends(parent)
     }
+  }
+
+  addConstructor(params: ConstructorDeclarationStructure): this {
+    this.classDeclaration.addConstructor(params)
+    return this
   }
 
   addMethod(params: IMethod): this {
