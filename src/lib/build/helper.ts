@@ -1,5 +1,10 @@
+import { existsSync, readFileSync, writeFileSync } from 'fs'
+import * as dir from 'node-dir'
 import { join } from 'path'
 import * as shell from 'shelljs'
+import App from '../loader/app'
+import generateYAML from '../serverless/generate-yaml'
+
 
 export function binPath(name: string): string {
   return join(__dirname, '..', '..', '..', 'node_modules', '.bin', name)
@@ -17,4 +22,38 @@ export function prettier(): void {
   const args = '--single-quote --no-semi --trailing-comma es5'
   const cmd = `${binPath('prettier')} ${args} --write src/**/*.ts`
   shell.exec(cmd, { silent: true })
+}
+
+export function copyAssets() {
+  if (!existsSync(join('frontend', 'assets'))) {
+    return
+  }
+
+  const files = dir.files('frontend/assets', { sync: true })
+  if (!files || files.length === 0) {
+    return
+  }
+  shell.cp('-R', 'frontend/assets/*', '.seagull/assets')
+}
+
+export function initFolder() {
+  if (existsSync(join(shell.pwd().toString(), '.seagull'))) {
+    cleanBuildDirectory()
+  }
+  shell.mkdir('-p', '.seagull')
+  shell.cp('package.json', '.seagull/package.json')
+  // dont link existing link
+  if (!existsSync(join(shell.pwd().toString(), '.seagull', 'node_modules'))) {
+    shell.ln('-s', '../node_modules', `./.seagull/node_modules`)
+  }
+  shell.mkdir('-p', '.seagull/assets')
+}
+
+export function createServerlessYaml() {
+  const pwd = shell.pwd().toString()
+  const app = new App(pwd)
+
+  const yml = generateYAML(app)
+  const ymlPath = join(pwd, '.seagull', 'serverless.yml')
+  writeFileSync(ymlPath, yml)
 }
