@@ -5,9 +5,9 @@ import { join } from 'path'
 import { sleep } from 'villa';
 import { Bundler } from '../../../lib/build/bundler'
 import { Compiler } from '../../../lib/build/compiler'
+import { addImportIndexFile, modifyScriptExports } from '../../../lib/build/transforms';
 import App from '../../../lib/loader/app'
 import { log } from '../../../lib/logger'
-import { addImportIndex, modifyScriptExports } from '../../../lib/scripts';
 import FunctionalTest from '../../helper/functional_test'
 
 import * as shell from 'shelljs'
@@ -15,7 +15,7 @@ import * as shell from 'shelljs'
 function compileAndModifySteps () {
   Compiler.compile()
   modifyScriptExports()
-  addImportIndex()
+  addImportIndexFile()
 }
 
 

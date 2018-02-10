@@ -4,12 +4,14 @@ import * as dir from 'node-dir'
 import { join } from 'path'
 import * as shell from 'shelljs'
 import { cleanBuildDirectory } from '../lib/build/helper'
+import {
+  lint,
+  prettier,
+} from '../lib/build/helper'
+import {addImportIndexFile, modifyScriptExports } from '../lib/build/transforms'
+
 import App from '../lib/loader/app'
 import {
-  addImportIndex,
-  lint,
-  modifyScriptExports,
-  prettier,
   tsc,
 } from '../lib/scripts'
 import generateYAML from '../lib/serverless/generate-yaml'
@@ -91,7 +93,7 @@ async function compileScripts() {
     }
     await asynctimeit(tsc, undefined)
     timeit(modifyScriptExports)
-    timeit(addImportIndex)
+    timeit(addImportIndexFile)
   }
 }
 
