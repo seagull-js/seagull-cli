@@ -16,10 +16,10 @@ import {
   modifyScriptExports,
 } from '../lib/build/transforms'
 
-import { tsc } from '../lib/scripts'
 import generateYAML from '../lib/serverless/generate-yaml'
 
 import { Bundler } from '../lib/build/bundler'
+import { Compiler } from '../lib/build/compiler'
 
 class BuildOptions extends Options {
   @option({
@@ -38,24 +38,18 @@ class BuildOptions extends Options {
 export default class extends Command {
   @metadata
   async execute(options?: BuildOptions) {
-    const optimize = options ? options.optimize : false
-    initFolder()
-    await compileScripts()
-    copyAssets()
-    createServerlessYaml()
-    const bundler = new Bundler(optimize)
-    await bundler.bundle()
-  }
-}
-
-async function compileScripts() {
-  if (existsSync(join(shell.pwd().toString(), 'backend', 'api'))) {
+    const optimize =
+      options && process.env.NODE_ENV !== 'test' ? options.optimize : false
     if (process.env.NODE_ENV !== 'test') {
       lint()
       prettier()
     }
-    await tsc()
+    initFolder()
+    Compiler.compile()
     modifyScriptExports()
     addImportIndexFile()
+    copyAssets()
+    await Bundler.bundle(optimize)
+    createServerlessYaml()
   }
 }
