@@ -99,6 +99,12 @@ export class Compiler {
         fileName: string,
         eventKind: ts.FileWatcherEventKind
       ) => {
+        // events
+        /*
+          Created = 0,
+          Changed = 1,
+          Deleted = 2,
+        */
         if (!this.isInWatchedDir(fileName)) {
           return callback(fileName, eventKind)
         }
@@ -108,12 +114,7 @@ export class Compiler {
         if (eventKind === 2) {
           this.deletedWatchedFile(fileName)
         }
-        // events
-        /*
-          Created = 0,
-          Changed = 1,
-          Deleted = 2,
-        */
+        callback(fileName, eventKind)
       }
       const watcher = ts.sys.watchFile(path, wrappedCB, pollingInterval)
       this.tscFileWatcher.push(watcher)
