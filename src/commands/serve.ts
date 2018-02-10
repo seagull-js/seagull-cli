@@ -25,9 +25,7 @@ export class SomeOptions extends Options {
 export default class extends Command {
   @metadata
   async execute(options?: SomeOptions) {
-    if (!existsSync(join('.seagull', 'assets', 'bundle.js'))) {
-      await new BuildCommand().execute({ optimize: false })
-    }
+    await new BuildCommand().execute({ optimize: true })
     const app = new App(process.cwd())
     await app.loadFrontendBundle()
     const server = stoppable(wrap(app), 0)
