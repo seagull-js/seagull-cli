@@ -44,6 +44,7 @@ export default class extends Command {
       lint()
       prettier()
     }
+    cleanBuildDirectory()
     initFolder()
     Compiler.compile()
     modifyScriptExports()
