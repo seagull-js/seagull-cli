@@ -81,6 +81,7 @@ class CompilerBuilderTest extends FunctionalTest {
       'pages',
       'AddedFile1.js'
     )
+
     const file2 = join(
       this.appDir,
       '.seagull',
@@ -144,7 +145,7 @@ class CompilerBuilderTest extends FunctionalTest {
     await compilationIterator.next()
     compiler.stop()
 
-    await sleep(500)
+    await sleep(100)
     writeFileSync(
       join(this.appDir, 'frontend', 'pages', 'SomeStoppedChangedPage.tsx'),
       changedCode
@@ -177,8 +178,9 @@ class CompilerBuilderTest extends FunctionalTest {
     )
 
     await compilationIterator.next()
-    await sleep(500)
-    expect(readFileSync(file, 'utf8')).to.be.not.equal(changedCode)
+    const newFileContent = readFileSync(file, 'utf8')
+    // tslint:disable-next-line:no-unused-expression
+    expect(newFileContent.indexOf(changedCode) > -1).to.be.true
     compiler.stop()
   }
 
