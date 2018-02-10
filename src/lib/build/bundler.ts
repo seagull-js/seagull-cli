@@ -1,12 +1,12 @@
 import * as browserify from 'browserify'
-import * as browserifyInc from 'browserify-incremental'
+import * as browserifyIncremental from 'browserify-incremental'
 import { writeFileSync } from 'fs'
 import { join } from 'path'
 import * as streamToString from 'stream-to-string'
 import * as UglifyJS from 'uglify-es'
+import { log } from '../logger'
 
 const entry = join(
-  process.cwd(),
   '.seagull',
   'node_modules',
   '@seagull-js',
@@ -20,11 +20,11 @@ const entry = join(
 export class Bundler {
 
   static async bundle(minify = false) {
-    const bfy = browserify({ignoreMissing:true})
-    const stream = bfy.add(entry).bundle()
+    const bfy = browserify({ignoreMissing: true})
+    const stream = bfy.add(join(process.cwd(), entry)).bundle()
     const bundle = minify 
-      ? await streamToString(stream) 
-      : UglifyJS.minify(await streamToString(stream)).code
+      ? UglifyJS.minify(await streamToString(stream)).code
+      : await streamToString(stream) 
   
     const dist = join(process.cwd(), '.seagull', 'assets', 'bundle.js')
     writeFileSync(dist, bundle, { encoding: 'utf-8' })
@@ -33,28 +33,36 @@ export class Bundler {
 
   private minify = false
   private browserify
-  private browserifyInc
+  private browserifyIncremental
+  private incrementalCache = {}
+  private incrementalPackageCache = {}
+
 
   constructor(minify = false) {
     this.minify = minify
+    const browserifyArgs = {
+      cache: this.incrementalCache,
+      fullPaths:true,
+      ignoreMissing: true,
+      packageCache: this.incrementalPackageCache,
+    }
 
-    this.browserify = browserify(
-      Object.assign({ ignoreMissing: true }, browserifyInc.args, {})
-    )
-    this.browserifyInc = browserifyInc(this.browserify, {
-      cacheFile: '.seagull/browserify-cache.json',
+    this.browserify = browserify(browserifyArgs)
+    this.browserifyIncremental = browserifyIncremental(this.browserify)
+    this.browserify = this.browserify.add(join(process.cwd(), entry))
+    this.browserify.on('time', (time) => {
+      log(' Bundling took(ms):', time)
     })
   }
 
-  async bundle() {
-
-
-    const data: string = await streamToString(this.browserify.add(entry).bundle())
-    let blob = data
-    if (this.minify) {
-      blob = UglifyJS.minify(data).code
-    }
+  async bundle(): Promise<string> {
+    const stream = this.browserify.bundle()
+    const bundle = this.minify 
+      ? UglifyJS.minify(await streamToString(stream)).code
+      : await streamToString(stream) 
+  
     const dist = join(process.cwd(), '.seagull', 'assets', 'bundle.js')
-    writeFileSync(dist, blob, { encoding: 'utf-8' })
+    writeFileSync(dist, bundle, { encoding: 'utf-8' })
+    return bundle
   }
 }
