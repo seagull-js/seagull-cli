@@ -1,8 +1,7 @@
-import { existsSync,  writeFileSync } from 'fs'
+import { existsSync, writeFileSync } from 'fs'
 import * as dir from 'node-dir'
 import { join } from 'path'
 import * as shell from 'shelljs'
-
 
 export function modifyScriptExports(): void {
   const files = dir

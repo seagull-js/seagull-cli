@@ -5,7 +5,6 @@ import * as shell from 'shelljs'
 import App from '../loader/app'
 import generateYAML from '../serverless/generate-yaml'
 
-
 export function binPath(name: string): string {
   return join(__dirname, '..', '..', '..', 'node_modules', '.bin', name)
 }

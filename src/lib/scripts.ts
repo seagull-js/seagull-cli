@@ -9,7 +9,7 @@ import * as UglifyJS from 'uglify-es'
 import { Bundler } from './build/bundler'
 import { Compiler } from './build/compiler'
 import { binPath } from './build/helper'
-import {addImportIndexFile, modifyScriptExports } from './build/transforms'
+import { addImportIndexFile, modifyScriptExports } from './build/transforms'
 
 /**
  * These functions assume that the current PWD === app of the user !
@@ -22,12 +22,9 @@ export async function tsc(): Promise<void> {
 
   const bundler = new Bundler(false)
   for await (const bla of new Compiler().watch()) {
-    // tslint:disable-next-line:no-console
-    console.log('johoo')
     modifyScriptExports()
     addImportIndexFile()
     await bundler.bundle()
-    // tslint:disable-next-line:no-console
-    console.log('johoo')
+    break
   }
 }

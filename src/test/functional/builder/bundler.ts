@@ -1,42 +1,40 @@
 import { expect } from 'chai'
-import { existsSync, mkdirSync, readFileSync, renameSync, unlinkSync, writeFileSync } from 'fs'
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  renameSync,
+  unlinkSync,
+  writeFileSync,
+} from 'fs'
 import { skip, slow, suite, test, timeout } from 'mocha-typescript'
 import { join } from 'path'
-import { sleep } from 'villa';
+import { sleep } from 'villa'
 import { Bundler } from '../../../lib/build/bundler'
 import { Compiler } from '../../../lib/build/compiler'
-import { addImportIndexFile, modifyScriptExports } from '../../../lib/build/transforms';
+import {
+  addImportIndexFile,
+  modifyScriptExports,
+} from '../../../lib/build/transforms'
 import App from '../../../lib/loader/app'
 import { log } from '../../../lib/logger'
 import FunctionalTest from '../../helper/functional_test'
 
 import * as shell from 'shelljs'
 
-function compileAndModifySteps () {
+function compileAndModifySteps() {
   Compiler.compile()
   modifyScriptExports()
   addImportIndexFile()
 }
 
-
-
-
 @suite('builder::bundler')
 class CompilerBuilderTest extends FunctionalTest {
-  private buildDir = join(
-    this.appDir,
-    '.seagull'
-  )
-  private bundleDir = join(
-    this.buildDir,
-    'assets',
-  )
-  private bundlePath = join(
-    this.bundleDir,
-    'bundle.js'
-  )
+  private buildDir = join(this.appDir, '.seagull')
+  private bundleDir = join(this.buildDir, 'assets')
+  private bundlePath = join(this.bundleDir, 'bundle.js')
 
-  before(){
+  before() {
     process.chdir(this.appDir)
     shell.mkdir('-p', this.bundleDir)
     if (!existsSync(join(this.appDir, '.seagull', 'node_modules'))) {
@@ -133,13 +131,30 @@ class CompilerBuilderTest extends FunctionalTest {
     expect(bundle.indexOf('deleted_string') > -1).to.be.true
 
     unlinkSync(join(this.appDir, 'frontend', 'pages', 'DeletedFile.tsx'))
-    unlinkSync(join(this.appDir, '.seagull', 'dist', 'frontend', 'pages', 'DeletedFile.js'))
-    unlinkSync(join(this.appDir, '.seagull', 'dist', 'frontend', 'pages', 'DeletedFile.js.map'))
-  
+    unlinkSync(
+      join(
+        this.appDir,
+        '.seagull',
+        'dist',
+        'frontend',
+        'pages',
+        'DeletedFile.js'
+      )
+    )
+    unlinkSync(
+      join(
+        this.appDir,
+        '.seagull',
+        'dist',
+        'frontend',
+        'pages',
+        'DeletedFile.js.map'
+      )
+    )
+
     compileAndModifySteps()
     bundle = await bundler.bundle()
     // tslint:disable-next-line:no-unused-expression
     expect(bundle.indexOf('deleted_string') > -1).to.be.false
   }
-
 }

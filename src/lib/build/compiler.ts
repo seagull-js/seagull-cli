@@ -182,8 +182,14 @@ export class Compiler {
     )
     const ext = extname(compiledFile)
     compiledFile = compiledFile.replace(RegExp(`${ext}$`), '')
-    unlinkSync(compiledFile + '.js')
-    unlinkSync(compiledFile + '.js.map')
+    const obseleteJs = compiledFile + '.js'
+    const obseleteJsMap = compiledFile + '.js.map'
+    if (existsSync(obseleteJs)) {
+      unlinkSync(obseleteJs)
+    }
+    if (existsSync(obseleteJsMap)) {
+      unlinkSync(obseleteJsMap)
+    }
     log('Removing file', filePath)
   }
 
