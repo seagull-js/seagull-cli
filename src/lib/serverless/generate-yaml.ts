@@ -88,15 +88,19 @@ export default function generate(
   const distribution = new Distribution({
     apiService: app.name,
     targets: [
-      new S3Target(appBucketName, [
+      new S3Target(
+        appBucketName,
+        [
           { path: 'favicon*', ttl: 60 * 60 },
           { path: 'mstile*', ttl: 60 * 60 },
-          { path: 'apple-touch-icon*', ttl: 60 * 60 }
-      ], {
-        accessOriginResourceName: distributionAccessIdentityResourceName,
-        originId: 's3-favicon',
-        targetPathPraefix: '/assets/favicons',
-      }),
+          { path: 'apple-touch-icon*', ttl: 60 * 60 },
+        ],
+        {
+          accessOriginResourceName: distributionAccessIdentityResourceName,
+          originId: 's3-favicon',
+          targetPathPraefix: '/assets/favicons',
+        }
+      ),
       new S3Target(appBucketName, [{ path: 'assets/*', ttl: 60 * 60 }], {
         accessOriginResourceName: distributionAccessIdentityResourceName,
         originId: 's3-assets',

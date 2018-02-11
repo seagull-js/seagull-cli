@@ -83,4 +83,14 @@ class ServeCommandTest extends FunctionalTest {
       'image/png',
     ])
   }
+
+  @timeout(80000)
+  @test
+  async 'does serve favicons'() {
+    this.server = await this.serve()
+    const data = await fetch('http://localhost:3000/favicon-128.png')
+    expect(data.headers._headers['content-type']).to.be.deep.equal([
+      'image/png',
+    ])
+  }
 }
