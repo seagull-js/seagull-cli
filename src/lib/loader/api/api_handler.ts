@@ -1,4 +1,5 @@
 import { API } from '@seagull-js/seagull'
+import * as decache from 'decache'
 import tsnode = require('ts-node')
 tsnode.register({ fast: true })
 
@@ -33,7 +34,7 @@ export default class ApiHandler {
   }
 
   private loadModule() {
-    delete require.cache[this.filePath] // do not remove this!
+    decache(this.filePath)
     this.module = require(this.filePath).default
   }
 }

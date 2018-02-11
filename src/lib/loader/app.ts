@@ -1,8 +1,8 @@
+import * as decache from 'decache'
 import { readFileSync } from 'fs'
 import { join } from 'path'
 import { ApiHandler, default as apiLoader } from './api'
 import { DdbModel, default as modelLoader } from './models'
-
 // abstracts away all non-generated code inside the .seagull folder
 export default class App {
   backend: ApiHandler[] = []
@@ -26,6 +26,7 @@ export default class App {
 
   private loadPackageJson() {
     const file = join(this.folder, '.seagull', 'package.json')
+    decache(file)
     this.package = require(file)
     this.name = this.package.name
   }
