@@ -30,15 +30,18 @@ export class Bundler {
   }
 
   private minify = false
+  private sourceMaps = false
   private browserify
   private browserifyIncremental
   private incrementalCache = {}
   private incrementalPackageCache = {}
 
-  constructor(minify = false) {
-    this.minify = minify
+  constructor(optimize = false) {
+    this.minify = optimize
+    this.sourceMaps = !optimize
     const browserifyArgs = {
       cache: this.incrementalCache,
+      debug: this.sourceMaps,
       fullPaths: true,
       ignoreMissing: true,
       packageCache: this.incrementalPackageCache,
