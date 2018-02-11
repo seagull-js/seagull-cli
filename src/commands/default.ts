@@ -30,10 +30,14 @@ export default class extends Command {
   @metadata
   async execute(options: SomeOptions) {
     if (options.version) {
-      const { version } = require(join(__dirname, '../../package.json'))
+      const current = require(join(__dirname, '../../package.json'))
       const latest: any = await getLatestVersion('@seagull-js/seagull-cli')
+      const isLatest = current.version === latest.version
+      const isLatestMessage = `${current.version} (latest)`
+      const isBehindMessage = `${current.version} (latest: ${latest.version})`
+      const versionMessage = isLatest ? isLatestMessage : isBehindMessage
       // tslint:disable-next-line:no-console
-      console.log(`Seagull CLI version: ${version}, latest: `, latest.version)
+      console.log(`Seagull CLI version: ${versionMessage}`)
     } else {
       shell.exec('seagull -h')
     }
