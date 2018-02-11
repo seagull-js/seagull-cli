@@ -22,4 +22,13 @@ class LoaderAppTest extends IntegrationTest {
     expect(text).to.be.equal('hello world')
     server.close()
   }
+
+  @timeout(80000)
+  @test
+  async 'does render html favicons'() {
+    const server = await this.serve()
+    const data = await fetch('http://localhost:3000/')
+    const html = await data.text()
+    expect(html).to.include(`apple-touch-icon-120x120.png`)
+  }
 }

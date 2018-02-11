@@ -14,6 +14,7 @@ import {
 import {
   addImportIndexFile,
   modifyScriptExports,
+  optimizeLayoutFile,
 } from '../lib/build/transforms'
 
 import generateYAML from '../lib/serverless/generate-yaml'
@@ -51,6 +52,7 @@ export default class extends Command {
     modifyScriptExports()
     addImportIndexFile()
     copyAssets()
+    optimizeLayoutFile()
     await Bundler.bundle(optimize)
 
     const accountId = await getAccountId()

@@ -13,6 +13,7 @@ import {
 import {
   addImportIndexFile,
   modifyScriptExports,
+  optimizeLayoutFile,
 } from '../lib/build/transforms'
 import { log } from '../lib/logger'
 
@@ -55,6 +56,7 @@ export default class extends Command {
     for await (const compiled of new Compiler().watch()) {
       modifyScriptExports()
       addImportIndexFile()
+      optimizeLayoutFile()
       await bundler.bundle()
       // refresh serving app
       app = new App(process.cwd())
