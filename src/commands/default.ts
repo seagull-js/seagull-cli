@@ -1,7 +1,7 @@
 import { Command, command, metadata, option, Options, param } from 'clime'
 import { join } from 'path'
 import * as shell from 'shelljs'
-import { getLatestVersion } from '../lib/npm'
+import { getCLIVersions } from '../lib/npm'
 
 export class SomeOptions extends Options {
   @option({
@@ -30,11 +30,10 @@ export default class extends Command {
   @metadata
   async execute(options: SomeOptions) {
     if (options.version) {
-      const current = require(join(__dirname, '../../package.json'))
-      const latest: any = await getLatestVersion('@seagull-js/seagull-cli')
-      const isLatest = current.version === latest.version
-      const isLatestMessage = `${current.version} (latest)`
-      const isBehindMessage = `${current.version} (latest: ${latest.version})`
+      const { current, latest } = await getCLIVersions()
+      const isLatest = current === latest
+      const isLatestMessage = `${current} (latest)`
+      const isBehindMessage = `${current} (latest: ${latest})`
       const versionMessage = isLatest ? isLatestMessage : isBehindMessage
       // tslint:disable-next-line:no-console
       console.log(`Seagull CLI version: ${versionMessage}`)
