@@ -9,8 +9,8 @@ import { log } from '../logger'
 const entry = join(
   '.seagull',
   'node_modules',
-  '@seagull-js',
-  'seagull',
+  '@seagull',
+  'core',
   'dist',
   'lib',
   'spa',
