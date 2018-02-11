@@ -19,6 +19,9 @@ export class Server {
     })
     this.server.use(bodyParser.urlencoded({ extended: false }))
     this.server.use(bodyParser.json())
+    // favicons
+    const faviconsFolder = join(process.cwd(), '.seagull', 'assets', 'favicons')
+    this.server.use('/favicon*', express.static(faviconsFolder, { maxAge: '0' }))
     // assets
     const assetFolder = join(process.cwd(), '.seagull', 'assets')
     this.server.use('/assets', express.static(assetFolder, { maxAge: '0' }))
