@@ -7,7 +7,14 @@ import { S3Target } from './distribution/s3Target'
 import { generateS3Bucket } from './s3/bucket'
 import { generateS3BucketPermission } from './s3/permission'
 
-export default function generate(app: App): string {
+export interface IGenerateYmlOpts {
+  accountId: string
+}
+
+export default function generate(
+  app: App,
+  { accountId }: IGenerateYmlOpts
+): string {
   // create instance with defaults
   const sls = new Builder(app.name)
 
@@ -64,7 +71,7 @@ export default function generate(app: App): string {
   )
 
   // add default app / assets bucket
-  const appBucketName = `${app.name}-app-bucket`
+  const appBucketName = `${app.name}-${accountId}-assets-bucket`
   const appBucketResource = 'appBucket'
   sls.addS3Bucket(appBucketResource, generateS3Bucket(appBucketName))
 
@@ -81,9 +88,23 @@ export default function generate(app: App): string {
   const distribution = new Distribution({
     apiService: app.name,
     targets: [
-      new S3Target(appBucketName, distributionAccessIdentityResourceName, [
-        { path: 'assets/*', ttl: 60 * 60 },
-      ]),
+      new S3Target(
+        appBucketName,
+        [
+          { path: 'favicon*', ttl: 60 * 60 },
+          { path: 'mstile*', ttl: 60 * 60 },
+          { path: 'apple-touch-icon*', ttl: 60 * 60 },
+        ],
+        {
+          accessOriginResourceName: distributionAccessIdentityResourceName,
+          originId: 's3-favicon',
+          targetPathPraefix: '/assets/favicons',
+        }
+      ),
+      new S3Target(appBucketName, [{ path: 'assets/*', ttl: 60 * 60 }], {
+        accessOriginResourceName: distributionAccessIdentityResourceName,
+        originId: 's3-assets',
+      }),
       // GWTarget uses a reference to the default APIG 'APIRestGateway' in the background
       new GWTarget('apiGateway', [{ path: '*', ttl: 0 }]),
     ],

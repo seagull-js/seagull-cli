@@ -35,11 +35,15 @@ export default class App {
     mkdirSync(join(path, 'frontend'))
     mkdirSync(join(path, 'frontend/pages'))
     mkdirSync(join(path, 'frontend/assets'))
+    mkdirSync(join(path, 'frontend/assets/favicons'))
   }
 
   copyExampleAssetFile(path: string) {
     const srcFile = join(__dirname, '../../..', 'media', 'seagull-logo.png')
     const destFile = join(path, 'frontend', 'assets', 'seagull-logo.png')
     shell.cp(srcFile, destFile)
+    const srcFavDir = join(__dirname, '../../..', 'media', 'favicons', '*')
+    const destFavDir = join(path, 'frontend', 'assets', 'favicons')
+    shell.cp('-R', srcFavDir, destFavDir)
   }
 }

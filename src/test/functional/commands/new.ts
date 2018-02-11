@@ -73,4 +73,22 @@ class NewCommandTest extends FunctionalTest {
     const file = join(this.appDir, 'frontend', 'pages', 'hello.tsx')
     expect(existsSync(file)).to.be.equal(true)
   }
+
+  @test
+  'project frontend assets folder contains seagull png asset'() {
+    const file = join(this.appDir, 'frontend', 'assets', 'seagull-logo.png')
+    expect(existsSync(file)).to.be.equal(true)
+  }
+
+  @test
+  'project frontend assets folder contains favicons'() {
+    const file = join(
+      this.appDir,
+      'frontend',
+      'assets',
+      'favicons',
+      'favicon.ico'
+    )
+    expect(existsSync(file)).to.be.equal(true)
+  }
 }

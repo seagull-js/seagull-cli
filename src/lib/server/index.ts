@@ -1,6 +1,8 @@
 import { API, Request, Response } from '@seagull-js/seagull'
 import * as bodyParser from 'body-parser'
 import * as express from 'express'
+import { RequestHandler } from 'express'
+import { Handler } from 'express-serve-static-core'
 import { join } from 'path'
 import * as stoppable from 'stoppable'
 import App from '../loader/app'
@@ -19,6 +21,11 @@ export class Server {
     })
     this.server.use(bodyParser.urlencoded({ extended: false }))
     this.server.use(bodyParser.json())
+    // favicons
+    const faviconsFolder = join(process.cwd(), '.seagull', 'assets', 'favicons')
+    wrapFaviconRoutes(this.server, '/favicon', faviconsFolder)
+    wrapFaviconRoutes(this.server, '/mstile', faviconsFolder)
+    wrapFaviconRoutes(this.server, '/apple-touch-icon', faviconsFolder)
     // assets
     const assetFolder = join(process.cwd(), '.seagull', 'assets')
     this.server.use('/assets', express.static(assetFolder, { maxAge: '0' }))
@@ -69,4 +76,11 @@ export type HttpMethod = 'GET' | 'POST' // TODO: change to string in framework
 function mapRequestFormat(req: express.Request): Request {
   const method = req.method as HttpMethod
   return new Request(method, req.path, req.query, req.body)
+}
+
+function wrapFaviconRoutes(server, path: string, faviconsFolder: string) {
+  server.use(path + '*', (req, resp, next) => {
+    req.url = req.originalUrl
+    express.static(faviconsFolder, { maxAge: '0' })(req, resp, next)
+  })
 }
