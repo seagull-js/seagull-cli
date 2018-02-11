@@ -44,6 +44,6 @@ export default class App {
     shell.cp(srcFile, destFile)
     const srcFavDir = join(__dirname, '../../..', 'media', 'favicons', '*')
     const destFavDir = join(path, 'frontend', 'assets', 'favicons')
-    shell.cp('-R', srcFile, destFile)
+    shell.cp('-R', srcFavDir, destFavDir)
   }
 }
