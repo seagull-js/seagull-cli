@@ -22,6 +22,8 @@ export class Server {
     // favicons
     const faviconsFolder = join(process.cwd(), '.seagull', 'assets', 'favicons')
     this.server.use('/favicon*', express.static(faviconsFolder, { maxAge: '0' }))
+    this.server.use('/mstile*', express.static(faviconsFolder, { maxAge: '0' }))
+    this.server.use('/apple-touch-icon*', express.static(faviconsFolder, { maxAge: '0' }))
     // assets
     const assetFolder = join(process.cwd(), '.seagull', 'assets')
     this.server.use('/assets', express.static(assetFolder, { maxAge: '0' }))

@@ -88,7 +88,11 @@ export default function generate(
   const distribution = new Distribution({
     apiService: app.name,
     targets: [
-      new S3Target(appBucketName, [{ path: 'favicon*', ttl: 60 * 60 }], {
+      new S3Target(appBucketName, [
+          { path: 'favicon*', ttl: 60 * 60 },
+          { path: 'mstile*', ttl: 60 * 60 },
+          { path: 'apple-touch-icon*', ttl: 60 * 60 }
+      ], {
         accessOriginResourceName: distributionAccessIdentityResourceName,
         originId: 's3-favicon',
         targetPathPraefix: '/assets/favicons',
