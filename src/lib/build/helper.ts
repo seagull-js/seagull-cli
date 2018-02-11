@@ -48,11 +48,11 @@ export function initFolder() {
   shell.mkdir('-p', '.seagull/assets')
 }
 
-export function createServerlessYaml() {
+export function createServerlessYaml(accountId: string) {
   const pwd = shell.pwd().toString()
   const app = new App(pwd)
 
-  const yml = generateYAML(app)
+  const yml = generateYAML(app, { accountId })
   const ymlPath = join(pwd, '.seagull', 'serverless.yml')
   writeFileSync(ymlPath, yml)
 }

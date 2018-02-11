@@ -20,6 +20,7 @@ import generateYAML from '../lib/serverless/generate-yaml'
 
 import { Bundler } from '../lib/build/bundler'
 import { Compiler } from '../lib/build/compiler'
+import { getAccountId } from '../lib/context'
 
 class BuildOptions extends Options {
   @option({
@@ -51,6 +52,8 @@ export default class extends Command {
     addImportIndexFile()
     copyAssets()
     await Bundler.bundle(optimize)
-    createServerlessYaml()
+
+    const accountId = await getAccountId()
+    createServerlessYaml(accountId)
   }
 }

@@ -21,7 +21,7 @@ class ServeCommandTest extends FunctionalTest {
   @test
   'can generate a serverless.yml in memory'() {
     const app = new App(this.appDir)
-    const yml = YAML.parse(generate(app))
+    const yml = YAML.parse(generate(app, { accountId: 'TESTACCID' }))
     expect(yml.provider.name).to.be.equal('aws')
     expect(yml.provider.runtime).to.be.equal('nodejs6.10')
     expect(yml.provider.region).to.be.equal('eu-central-1')
@@ -31,7 +31,7 @@ class ServeCommandTest extends FunctionalTest {
   @test
   'yaml contains functions'() {
     const app = new App(this.appDir)
-    const yml = YAML.parse(generate(app))
+    const yml = YAML.parse(generate(app, { accountId: 'TESTACCID' }))
     expect(yml.functions).to.be.an('object')
     expect(yml.functions).to.have.keys('api-Hello', 'api-Frontend')
   }
@@ -39,7 +39,7 @@ class ServeCommandTest extends FunctionalTest {
   @test
   'yaml functions have correct data fields'() {
     const app = new App(this.appDir)
-    const yml = YAML.parse(generate(app))
+    const yml = YAML.parse(generate(app, { accountId: 'TESTACCID' }))
     const fn = yml.functions['api-Hello']
     expect(fn.timeout).to.be.equal(30)
     expect(fn.events).to.be.an('array')
@@ -49,7 +49,7 @@ class ServeCommandTest extends FunctionalTest {
   @test
   'frontend function has correct paths (/ and /*)'() {
     const app = new App(this.appDir)
-    const yml = YAML.parse(generate(app))
+    const yml = YAML.parse(generate(app, { accountId: 'TESTACCID' }))
     const fn = yml.functions['api-Frontend']
     expect(fn.timeout).to.be.equal(30)
     expect(fn.events).to.be.an('array')
@@ -60,7 +60,7 @@ class ServeCommandTest extends FunctionalTest {
   @test
   'yaml contains tables'() {
     const app = new App(this.appDir)
-    const yml = YAML.parse(generate(app))
+    const yml = YAML.parse(generate(app, { accountId: 'TESTACCID' }))
     expect(yml.resources.Resources.todos).to.be.an('object')
     const table = yml.resources.Resources.todos
     expect(table.Type).to.be.equal('AWS::DynamoDB::Table')
@@ -69,21 +69,21 @@ class ServeCommandTest extends FunctionalTest {
   @test
   'yaml contains cloudfront distribution'() {
     const app = new App(this.appDir)
-    const yml = YAML.parse(generate(app))
+    const yml = YAML.parse(generate(app, { accountId: 'TESTACCID' }))
     expect(yml.resources.Resources.distribution).to.be.an('object')
   }
 
   @test
   'yaml contains s3 bucket'() {
     const app = new App(this.appDir)
-    const yml = YAML.parse(generate(app))
+    const yml = YAML.parse(generate(app, { accountId: 'TESTACCID' }))
     expect(yml.resources.Resources.appBucket).to.be.an('object')
   }
 
   @test
   'yaml contains s3 permission'() {
     const app = new App(this.appDir)
-    const yml = YAML.parse(generate(app))
+    const yml = YAML.parse(generate(app, { accountId: 'TESTACCID' }))
     expect(yml.resources.Resources.appBucketPermission).to.be.an('object')
   }
   @test
@@ -95,7 +95,7 @@ class ServeCommandTest extends FunctionalTest {
   @test
   'yaml contains distribution access identity'() {
     const app = new App(this.appDir)
-    const yml = YAML.parse(generate(app))
+    const yml = YAML.parse(generate(app, { accountId: 'TESTACCID' }))
     expect(yml.resources.Resources.appDistributionAccessIdentity).to.be.an(
       'object'
     )
