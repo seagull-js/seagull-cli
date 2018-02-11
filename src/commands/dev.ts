@@ -2,7 +2,24 @@ import { Command, command, metadata, option, Options, param } from 'clime'
 import * as express from 'express'
 import { join } from 'path'
 import * as shell from 'shelljs'
+import {
+  cleanBuildDirectory,
+  copyAssets,
+  createServerlessYaml,
+  initFolder,
+  lint,
+  prettier,
+} from '../lib/build/helper'
+import {
+  addImportIndexFile,
+  modifyScriptExports,
+} from '../lib/build/transforms'
 import { log } from '../lib/logger'
+
+import { Bundler } from '../lib/build/bundler'
+import { Compiler } from '../lib/build/compiler'
+import App from '../lib/loader/app'
+import { Server } from '../lib/server/index'
 
 export class SomeOptions extends Options {
   @option({
@@ -21,17 +38,28 @@ export class SomeOptions extends Options {
 })
 export default class extends Command {
   @metadata
-  execute(options?: SomeOptions) {
+  async execute(options?: SomeOptions) {
     const port = options && options.port ? options.port : 3000
     log(`> starting dev server with live reload on port ${port}...`)
-    const nodemon = require('nodemon')
-    nodemon({
-      exec: `seagull build -o false && NODE_ENV=dev seagull serve -p ${port}`,
-      ext: 'json,ts,tsx',
-      watch: ['frontend', 'backend', 'package.json'],
-    })
-    nodemon.on('restart', files => {
-      log('App restarted due to: ', files)
-    })
+    const server = new Server()
+    server.start(port)
+    lint()
+    prettier()
+    const bundler = new Bundler(false)
+    cleanBuildDirectory()
+    initFolder()
+    copyAssets()
+    Compiler.compile()
+    let app = new App(process.cwd())
+    server.loadApp(app)
+    for await (const compiled of new Compiler().watch()) {
+      modifyScriptExports()
+      addImportIndexFile()
+      await bundler.bundle()
+      // refresh serving app
+      app = new App(process.cwd())
+      await app.loadFrontendBundle()
+      server.loadApp(app)
+    }
   }
 }
