@@ -1,4 +1,4 @@
-import { Model } from '@seagull-js/seagull'
+import { Model } from '@seagull/core'
 import tsnode = require('ts-node')
 tsnode.register({ fast: true })
 

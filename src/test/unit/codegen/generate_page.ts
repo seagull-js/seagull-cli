@@ -23,7 +23,7 @@ class CodegenGeneratePageTest {
   'contains correct Page import'() {
     const gen = generatePage('MyPage', { path: '/something' })
     const code = gen.toString()
-    expect(code).to.contain(`import { Page } from '@seagull-js/seagull'`)
+    expect(code).to.contain(`import { Page } from '@seagull/core'`)
   }
 
   @test

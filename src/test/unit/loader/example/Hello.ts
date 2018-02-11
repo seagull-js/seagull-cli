@@ -1,4 +1,4 @@
-import { API, Request, Response } from '@seagull-js/seagull'
+import { API, Request, Response } from '@seagull/core'
 
 export default class Hello extends API {
   /**

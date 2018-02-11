@@ -9,7 +9,7 @@ export interface IOptions {
 
 export default function generateAPI(name: string, options: IOptions): Class {
   const gen = new Class(name, 'API')
-  gen.addNamedImports('@seagull-js/seagull', ['API', 'Request', 'Response'])
+  gen.addNamedImports('@seagull/core', ['API', 'Request', 'Response'])
 
   if (options.path) {
     const docPath = `The URL path where this API will be located. Skip for private functions like cronjobs. Example: '/greetings/{name}'`

@@ -12,7 +12,7 @@ export default function generatePackageJson(name: string): Json {
   gen.set('engineStrict', true)
   gen.set('engines', { node: '>= 6.10.3 < 7' })
   // add dependencies
-  gen.set('dependencies', { '@seagull-js/seagull': `^${frameworkVersion()}` })
+  gen.set('dependencies', { '@seagull/core': `^${frameworkVersion()}` })
   gen.set('devDependencies', {
     '@types/history': '^4.6.0',
     '@types/node': '^8.0.25',
@@ -28,5 +28,5 @@ export default function generatePackageJson(name: string): Json {
 function frameworkVersion(): string {
   const file = join(__dirname, '..', '..', '..', 'package.json')
   const pkg = require(file)
-  return pkg.dependencies['@seagull-js/seagull']
+  return pkg.dependencies['@seagull/core']
 }

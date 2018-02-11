@@ -10,7 +10,7 @@ export interface IOptions {
 
 export default function generateModel(name: string, options: IOptions): Class {
   const gen = new Class(name, 'Model')
-  gen.addNamedImports('@seagull-js/seagull', ['field', 'Model'])
+  gen.addNamedImports('@seagull/core', ['field', 'Model'])
   if (!options.fields || !options.fields.length) {
     return gen
   }

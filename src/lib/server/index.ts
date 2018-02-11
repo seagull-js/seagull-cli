@@ -1,4 +1,4 @@
-import { API, Request, Response } from '@seagull-js/seagull'
+import { API, Request, Response } from '@seagull/core'
 import * as bodyParser from 'body-parser'
 import * as express from 'express'
 import { RequestHandler } from 'express'

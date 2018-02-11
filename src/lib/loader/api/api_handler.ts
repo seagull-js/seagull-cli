@@ -1,4 +1,4 @@
-import { API } from '@seagull-js/seagull'
+import { API } from '@seagull/core'
 import * as decache from 'decache'
 import tsnode = require('ts-node')
 tsnode.register({ fast: true })

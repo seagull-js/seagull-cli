@@ -7,7 +7,7 @@ export interface IOptions {
 export default function generatePage(name: string, options: IOptions): Class {
   const gen = new Class(name, 'Page<{}, {}>')
   gen.addDefaultImport('react', 'React', true)
-  gen.addNamedImports('@seagull-js/seagull', ['Page'])
+  gen.addNamedImports('@seagull/core', ['Page'])
 
   const docPath = `the url path this page will be mounted on`
   gen.addProp({
