@@ -6,7 +6,7 @@ import * as shell from 'shelljs'
 import * as stoppable from 'stoppable'
 import App from '../lib/loader/app'
 import { log } from '../lib/logger'
-import wrap from '../lib/server/'
+import { Server } from '../lib/server/'
 import BuildCommand from './build'
 
 export class SomeOptions extends Options {
@@ -26,16 +26,12 @@ export default class extends Command {
   @metadata
   async execute(options?: SomeOptions) {
     await new BuildCommand().execute({ optimize: true })
+
     const app = new App(process.cwd())
     await app.loadFrontendBundle()
-    const server = stoppable(wrap(app), 0)
+    const server = new Server()
     const port = options && options.port ? options.port : 3000
-    if (process.env.NODE_ENV === 'test') {
-      return server.listen(port, () =>
-        log(`static server ready on localhost:${port}`)
-      )
-    } else {
-      server.listen(port, () => log(`static server ready on localhost:${port}`))
-    }
+    server.loadApp(app)
+    return server.start(port)
   }
 }
