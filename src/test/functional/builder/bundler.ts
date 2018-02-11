@@ -51,6 +51,7 @@ class CompilerBuilderTest extends FunctionalTest {
   }
 
   @slow(5000)
+  @timeout(30000)
   @test
   async 'can bundle a project staticly'() {
     const entry = join(
@@ -73,6 +74,7 @@ class CompilerBuilderTest extends FunctionalTest {
   }
 
   @slow(5000)
+  @timeout(30000)
   @test
   async 'can bundle a project dynamicly'() {
     this.addPage('SomePage', { path: '/some_url' })
@@ -83,6 +85,7 @@ class CompilerBuilderTest extends FunctionalTest {
     expect(existsSync(this.bundlePath)).to.be.equal(true)
   }
 
+  @timeout(30000)
   @test
   async 'can bundle an added file dynamicly'() {
     Compiler.compile()
@@ -100,6 +103,7 @@ class CompilerBuilderTest extends FunctionalTest {
     expect(existsSync(this.bundlePath)).to.be.equal(true)
   }
 
+  @timeout(30000)
   @test
   async 'can bundle a changed file dynamicly'() {
     const bundler = new Bundler()
@@ -120,6 +124,7 @@ class CompilerBuilderTest extends FunctionalTest {
     expect(bundle.indexOf('changed_some') > -1).to.be.true
   }
 
+  @timeout(30000)
   @test
   async 'can remove a deleted file from bundle'() {
     const bundler = new Bundler()
