@@ -36,7 +36,7 @@ class CompilerBuilderTest extends FunctionalTest {
   }
 
   @slow(5000)
-  @timeout(30000)
+  @timeout(60000)
   @test
   async 'watching compiler notifies about finished initial compile'() {
     this.addPage('SomePage', { path: '/some_url' })
@@ -48,7 +48,7 @@ class CompilerBuilderTest extends FunctionalTest {
     compiler.stop()
   }
 
-  @timeout(30000)
+  @timeout(60000)
   @test
   async 'watching compiler compiles added file'() {
     const file = join(
@@ -73,7 +73,7 @@ class CompilerBuilderTest extends FunctionalTest {
     compiler.stop()
   }
 
-  @timeout(30000)
+  @timeout(60000)
   @test
   async 'watching compiler compiles multiple added files'() {
     const file1 = join(
@@ -110,7 +110,7 @@ class CompilerBuilderTest extends FunctionalTest {
     compiler.stop()
   }
 
-  @timeout(30000)
+  @timeout(60000)
   @test
   async 'stopped watching compiler does not compile added'() {
     const file = join(
@@ -132,7 +132,7 @@ class CompilerBuilderTest extends FunctionalTest {
     expect(existsSync(file)).to.be.equal(false)
   }
 
-  @timeout(30000)
+  @timeout(60000)
   @test
   async 'stopped watching compiler does not compile changed'() {
     const file = join(
@@ -160,7 +160,7 @@ class CompilerBuilderTest extends FunctionalTest {
     expect(readFileSync(file, 'utf8')).to.be.not.equal(changedCode)
   }
 
-  @timeout(30000)
+  @timeout(60000)
   @test
   async 'watching compiler compiles changed file'() {
     const file = join(
@@ -190,7 +190,7 @@ class CompilerBuilderTest extends FunctionalTest {
     compiler.stop()
   }
 
-  @timeout(30000)
+  @timeout(60000)
   @test
   async 'watching compiler compiles renamed file'() {
     const file = join(
@@ -227,7 +227,7 @@ class CompilerBuilderTest extends FunctionalTest {
     compiler.stop()
   }
 
-  @timeout(30000)
+  @timeout(60000)
   @test
   async 'watching compiler removes deleted file'() {
     const file = join(
@@ -251,7 +251,7 @@ class CompilerBuilderTest extends FunctionalTest {
     compiler.stop()
   }
 
-  @timeout(30000)
+  @timeout(60000)
   @test
   async 'watching compiler removes deleted file in deleted folder'() {
     const file = join(
@@ -274,7 +274,7 @@ class CompilerBuilderTest extends FunctionalTest {
     compiler.stop()
   }
 
-  @timeout(30000)
+  @timeout(60000)
   @test
   async 'watching compiler compiles file in new folder'() {
     const file = join(
