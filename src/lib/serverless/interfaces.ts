@@ -1,3 +1,8 @@
+export interface IAWSCredentials {
+  accessKeyId?: string,
+  secretAccessKey?: string
+}
+
 export interface IFunctionEvent {
   [source: string]: {
     path: string
