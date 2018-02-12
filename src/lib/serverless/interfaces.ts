@@ -1,5 +1,5 @@
 export interface IAWSCredentials {
-  accessKeyId?: string,
+  accessKeyId?: string
   secretAccessKey?: string
 }
 
