@@ -15,8 +15,8 @@ import { sleep } from 'villa'
 import { Compiler } from '../../../lib/build/compiler'
 import App from '../../../lib/loader/app'
 import { log } from '../../../lib/logger'
+import { skipCI } from '../../helper/ci'
 import FunctionalTest from '../../helper/functional_test'
-
 @suite('builder::compiler')
 class CompilerBuilderTest extends FunctionalTest {
   @slow(5000)
@@ -48,6 +48,7 @@ class CompilerBuilderTest extends FunctionalTest {
     compiler.stop()
   }
 
+  @skipCI
   @timeout(60000)
   @test
   async 'watching compiler compiles added file'() {
@@ -73,6 +74,7 @@ class CompilerBuilderTest extends FunctionalTest {
     compiler.stop()
   }
 
+  @skipCI
   @timeout(60000)
   @test
   async 'watching compiler compiles multiple added files'() {
@@ -274,6 +276,7 @@ class CompilerBuilderTest extends FunctionalTest {
     compiler.stop()
   }
 
+  @skipCI
   @timeout(60000)
   @test
   async 'watching compiler compiles file in new folder'() {

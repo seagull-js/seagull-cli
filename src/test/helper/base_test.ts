@@ -1,3 +1,4 @@
+import { context } from 'mocha-typescript'
 import { join } from 'path'
 import * as shell from 'shelljs'
 
@@ -27,6 +28,8 @@ export default class BaseTest {
   static build = new BuildCommand().execute
   static create = new NewCommand().execute
   static serve = new ServeCommand().execute
+
+  @context mocha
 
   // local variables
   cwd = cwd
