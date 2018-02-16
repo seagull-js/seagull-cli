@@ -41,11 +41,12 @@ export class Server {
 
   start(port = 3000) {
     if (process.env.NODE_ENV === 'test') {
-      return this.server.listen(port, () =>
+      this.server = this.server.listen(port, () =>
         log(`static server ready on localhost:${port}`)
       )
+      return this.server
     } else {
-      this.server.listen(port, () =>
+      this.server = this.server.listen(port, () =>
         log(`static server ready on localhost:${port}`)
       )
     }
