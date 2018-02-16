@@ -51,6 +51,10 @@ export class Server {
     }
   }
 
+  stop() {
+    this.server.close()
+  }
+
   loadApp(app: App) {
     this.router = express.Router()
     for (const api of app.backend) {
