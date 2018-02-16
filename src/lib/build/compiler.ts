@@ -27,7 +27,7 @@ export class Compiler {
 
   private wait: {
     compile?: Promise<null>
-    resolve?: () => void
+    resolve?: (running: boolean) => void
   }
   private counter = 0
 
@@ -67,10 +67,9 @@ export class Compiler {
   watch = async function*(this: Compiler) {
     this.counter = 1
     this.tsc = ts.createWatchProgram(this.host)
-    while (true) {
-      await this.wait.compile
+    while (await this.wait.compile) {
       this.createCompilePromise()
-      yield
+      yield true
     }
   }
 
@@ -86,6 +85,7 @@ export class Compiler {
     this.host.afterProgramCreate = () => {
       return
     }
+    this.wait.resolve(false)
   }
 
   private getTsSys(): ts.System {
@@ -153,7 +153,10 @@ export class Compiler {
 
   private createCompilePromise() {
     this.wait = {}
-    this.wait.compile = new Promise(resolve => (this.wait.resolve = resolve))
+    const handle = (res, rej) => {
+      this.wait.resolve = res
+    }
+    this.wait.compile = new Promise(handle)
   }
 
   private changedWatchedFile(filePath) {
@@ -203,7 +206,7 @@ export class Compiler {
     }
     if (this.counter > 0) {
       this.counter--
-      this.wait.resolve()
+      this.wait.resolve(true)
     }
   }
 

@@ -48,6 +48,42 @@ class CompilerBuilderTest extends FunctionalTest {
     compiler.stop()
   }
 
+  @slow(5000)
+  @timeout(60000)
+  @test
+  async 'watching compiler should stop on stop message'() {
+    this.addPage('SomePage', { path: '/some_url' })
+    const compiler = new Compiler()
+    const watchIterator = compiler.watch()
+    // initial
+    await watchIterator.next()
+    compiler.stop()
+    for await (const noMsg of watchIterator) {
+      expect(true).equals(false)
+    }
+  }
+
+  @slow(5000)
+  @timeout(60000)
+  @test
+  async 'watching compiler should break await loop on stop message'() {
+    this.addPage('SomePage', { path: '/some_url' })
+    const compiler = new Compiler()
+    const watchIterator = compiler.watch()
+    // initial
+    let iterations = 0
+    for await (const noMsg of watchIterator) {
+      if (iterations === 0) {
+        compiler.stop()
+        iterations++
+        expect(true).equals(true)
+        continue
+      }
+      // should never be called
+      expect(true).equals(false)
+    }
+  }
+
   @skipCI
   @timeout(60000)
   @test
