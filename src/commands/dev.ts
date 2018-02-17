@@ -46,6 +46,7 @@ export default class extends Command {
     process.env.NODE_ENV = 'dev'
     const port = options && options.port ? options.port : 3000
     log(`> starting dev server with live reload on port ${port}...`)
+    this.compiler = new Compiler()
     this.server = new Server()
     this.server.start(port)
     lint()
@@ -57,7 +58,6 @@ export default class extends Command {
     Compiler.compile()
     let app = new App(process.cwd())
     this.server.loadApp(app)
-    this.compiler = new Compiler()
     for await (const compiled of this.compiler.watch()) {
       modifyScriptExports()
       addImportIndexFile()

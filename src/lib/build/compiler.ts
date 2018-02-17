@@ -75,7 +75,9 @@ export class Compiler {
 
   stop() {
     this.tscFileWatcher.forEach(w => w.close())
-    this.tsc.updateRootFileNames([])
+    if (this.tsc) {
+      this.tsc.updateRootFileNames([])
+    }
     this.host.trace = () => {
       return
     }

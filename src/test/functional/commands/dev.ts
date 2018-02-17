@@ -9,7 +9,7 @@ import FunctionalTest from '../../helper/functional_test'
 @suite('Commands::Dev')
 class DevCommandTest extends FunctionalTest {
   @timeout(210000)
-  @slow(5000)
+  @slow(10000)
   @test
   async 'can cleanly stop a sg dev'() {
     this.addApi('hello', { path: '/' })
@@ -19,7 +19,7 @@ class DevCommandTest extends FunctionalTest {
     this.addComponent('ClassComp', { class: true })
     const dev = new DevCommand()
     const promise = dev.execute()
-    await sleep(4000)
+    await sleep(8000)
     dev.stop()
     await promise
     process.env.NODE_ENV = 'test'
