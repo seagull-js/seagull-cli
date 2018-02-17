@@ -19,7 +19,9 @@ export function lint(): void {
 
 export function prettier(): void {
   const args = '--single-quote --no-semi --trailing-comma es5'
-  const cmd = `${binPath('prettier')} ${args} --write src/**/*.ts`
+  const cmd = `${binPath(
+    'prettier'
+  )} ${args} --write frontend/**/*.ts backend/**/*.ts`
   shell.exec(cmd, { silent: true })
 }
 
