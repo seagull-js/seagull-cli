@@ -5,7 +5,9 @@ export default function generateSsrAPI(): Class {
   const body = `
     const appRouter = new Routing(true, request)
     const page = appRouter.initialMatchedPage()
-    await page.componentDidMount()
+    if (page && typeof page.componentDidMount === 'function'){
+      await page.componentDidMount()
+    }
     return this.html(renderToString(layout({ children: appRouter.load() })))
   `
   const opts = { path: '/*', method: 'GET', body }
