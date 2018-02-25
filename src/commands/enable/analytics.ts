@@ -16,7 +16,8 @@ export default class extends Command {
     // create API handler
     const body = `
       // tslint:disable-next-line
-      console.log(request.body)
+      const { name } = request.body
+      console.log(name, JSON.stringify(request.body))
       return this.text('ok')
     `
     const gen = generateAPI('Track', { path: '/track', method: 'POST', body })
