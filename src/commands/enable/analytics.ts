@@ -15,8 +15,8 @@ export default class extends Command {
   ) {
     // create API handler
     const body = `
-      // tslint:disable-next-line
       const { name } = request.body
+      // tslint:disable-next-line
       console.log(name, JSON.stringify(request.body))
       return this.text('ok')
     `
