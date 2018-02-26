@@ -31,13 +31,14 @@ export default class extends Command {
   @metadata
   async execute(options?: DeployOptions) {
     const cwd = shell.pwd()
+    const currentProfile = process.env.AWS_PROFILE
     try {
       const profile = options ? options.profile : undefined
       if (hasValidAWSCredentials(profile)) {
         await new Build().execute()
         shell.cd('.seagull')
         shell.exec('sls deploy')
-        syncS3Data()
+        await syncS3Data()
       } else {
         log(
           `Missing credentials!        
@@ -50,6 +51,7 @@ consult https://docs.aws.amazon.com/cli/latest/topic/config-vars.html.`
       // tslint:disable-next-line:no-console
       console.log(e)
     }
+    process.env.AWS_PROFILE = currentProfile
     shell.cd(cwd)
   }
 }

@@ -20,6 +20,7 @@ export function hasValidAWSCredentials(profile?: string): boolean {
   const creds = new aws.SharedIniFileCredentials({ profile })
   if (profile && creds.accessKeyId && creds.secretAccessKey) {
     aws.config.credentials = creds
+    process.env.AWS_PROFILE = profile
     return true
   }
   if (process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) {
@@ -29,6 +30,7 @@ export function hasValidAWSCredentials(profile?: string): boolean {
     profile: process.env.AWS_PROFILE ? process.env.AWS_PROFILE : 'default',
   })
   if (altCreds.accessKeyId && altCreds.secretAccessKey) {
+    aws.config.credentials = altCreds
     return true
   }
   return false
