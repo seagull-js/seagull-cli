@@ -1,74 +1,35 @@
+import * as aws from 'aws-sdk'
 import * as fs from 'fs'
 import * as readline from 'readline'
 
 import { IAWSCredentials } from './interfaces'
 
-export function retrieveCredentials(): IAWSCredentials {
-  // TODO: immplement method to check whether aws credentials are set
+/**
+ * From: https://docs.aws.amazon.com/cli/latest/topic/config-vars.html
+ *
+ * Credentials from environment variables have precedence over credentials
+ * from the shared credentials and AWS CLI config file. Credentials specified
+ * in the shared credentials file have precedence over credentials in the AWS
+ * CLI config file. If AWS_PROFILE environment variable is set and the
+ * AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables are set,
+ * then the credentials provided by AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
+ * will override the credentials located in the profile provided by AWS_PROFILE.
+ */
+
+export function hasValidAWSCredentials(profile?: string): boolean {
+  const creds = new aws.SharedIniFileCredentials({ profile })
+  if (profile && creds.accessKeyId && creds.secretAccessKey) {
+    aws.config.credentials = creds
+    return true
+  }
   if (process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) {
-    return {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    }
+    return true
   }
-  const profile = process.env.AWS_PROFILE
-  if (profile && profile.length > 0) {
-    const lines = fileToStringArray('~/.aws/credentials')
-    let index = 0
-    for (const line of lines) {
-      if (line && line.indexOf(`[${profile}]`) >= 0) {
-        return readProfileCredentials(lines, index)
-      }
-      index++
-    }
+  const altCreds = new aws.SharedIniFileCredentials({
+    profile: process.env.AWS_PROFILE ? process.env.AWS_PROFILE : 'default',
+  })
+  if (altCreds.accessKeyId && altCreds.secretAccessKey) {
+    return true
   }
-  return {}
-}
-
-function readProfileCredentials(
-  lines: string[],
-  index: number
-): IAWSCredentials {
-  const result = {
-    accessKeyId: undefined,
-    secretAccessKey: undefined,
-  }
-  let i = index + 1
-  while (lines && lines.length > i) {
-    if (!lines[i]) {
-      continue
-    }
-    if (lines[i].indexOf('[') >= 0) {
-      break
-    }
-    readProfileLine(result, lines[i])
-    i++
-  }
-  return result
-}
-
-function readProfileLine(result: IAWSCredentials, line: string): void {
-  const id = 'aws_access_key_id = '
-  const sec = 'aws_secret_access_key = '
-  const iid = line.indexOf(id)
-  if (iid >= 0) {
-    result.accessKeyId = line.substring(iid + id.length, line.length)
-  }
-  const isec = line.indexOf(sec)
-  if (isec >= 0) {
-    result.secretAccessKey = line.substring(isec + sec.length, line.length)
-  }
-}
-
-function fileToStringArray(inputFile: string): string[] {
-  const lines = []
-  if (fs.existsSync(inputFile)) {
-    const instream = fs.createReadStream(inputFile)
-    const outstream = new (require('stream'))()
-    const rl = readline.createInterface(instream, outstream)
-    rl.on('line', line => {
-      lines.push(line)
-    })
-  }
-  return lines
+  return false
 }
