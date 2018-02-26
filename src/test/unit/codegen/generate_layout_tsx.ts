@@ -22,14 +22,14 @@ class CodegenGenerateLayoutTsxTest {
   'contains props-children param'() {
     const gen = generateLayoutTsx('Demo App')
     const code = gen.toString()
-    expect(code).to.contain(`function Layout({ children }) {`)
+    expect(code).to.contain(`function Layout({ content }) {`)
   }
 
   @test
   'contains props-children insertion slot'() {
     const gen = generateLayoutTsx('Demo App')
     const code = gen.toString()
-    expect(code).to.contain(`<div id="root">{children}</div>`)
+    expect(code).to.contain(`<Body renderedContent={content}>`)
   }
 
   @test

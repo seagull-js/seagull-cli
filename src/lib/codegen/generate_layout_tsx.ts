@@ -3,19 +3,17 @@ import GenFunction from './function'
 export default function generateLayoutTsx(appName: string): GenFunction {
   const gen = new GenFunction('Layout')
   gen.addDefaultImport('react', 'React', true)
-  gen.addNamedImports('@seagull/core', ['Favicons'])
-  gen.addParam('{ children }')
+  gen.addNamedImports('@seagull/core', ['Favicons', 'Head', 'Body'])
+  gen.addParam('{ content }')
   gen.setBodyText(`
   return (
     <html>
-      <head>
-        <title>${appName}</title>
+      <Head>
         <Favicons favicons={['favicon.ico']} />
-      </head>
-      <body>
-        <div id='root'>{children}</div>
+      </Head>
+      <Body renderedContent={content}>
         <script src='/assets/bundle.js'></script>
-      </body>
+      </Body>
     </html>
   );
   `)

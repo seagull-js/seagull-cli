@@ -52,7 +52,7 @@ class ServeCommandTest extends FunctionalTest {
     this.server = await this.serve()
     const data = await fetch('http://localhost:3000/')
     const html = await data.text()
-    expect(html).to.include(`<title>${this.appName}</title>`)
+    expect(html).to.include(`<title data-react-helmet="true"></title>`)
   }
 
   @timeout(80000)
