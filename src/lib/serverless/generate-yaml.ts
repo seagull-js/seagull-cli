@@ -87,8 +87,8 @@ export default function generate(
 
   // add distribution to serve api and app assets
   const distribution = new Distribution({
-    alias:{
-      domains: get(app, 'package.seagull.domains')
+    alias: {
+      domains: get(app, 'package.seagull.domains'),
     },
     apiService: app.name,
     targets: [
