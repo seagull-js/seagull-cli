@@ -1,3 +1,4 @@
+import { get } from 'lodash'
 import App from '../loader/app'
 import Builder from './builder'
 import { generateDistributionAccessIdentity } from './distribution/accessIdentity'
@@ -86,6 +87,9 @@ export default function generate(
 
   // add distribution to serve api and app assets
   const distribution = new Distribution({
+    alias:{
+      domains: get(app, 'package.seagull.domains')
+    },
     apiService: app.name,
     targets: [
       new S3Target(
