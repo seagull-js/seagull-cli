@@ -13,7 +13,6 @@ export default class App {
     dir['tsconfig.json'] = Gen.generateTsconfigJson()
     dir['tslint.json'] = Gen.generateTslintJson()
     dir['backend/api/Frontend.ts'] = Gen.generateSsrApi()
-    dir['frontend/layout.tsx'] = Gen.generateLayoutTsx(name)
     dir['frontend/pages/hello.tsx'] = Gen.generatePage('HelloPage', {
       path: '/',
     })

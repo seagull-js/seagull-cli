@@ -1,4 +1,5 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs'
+import { set } from 'lodash'
 import * as dir from 'node-dir'
 import { basename, join } from 'path'
 import * as shell from 'shelljs'
@@ -50,8 +51,8 @@ export function addImportIndexFile(): void {
   writeFileSync(join(frontendDir, 'index.js'), indexExport)
 }
 
-export function optimizeLayoutFile() {
-  const frontendDir = join('.seagull', 'dist', 'frontend')
+export function writeConfig() {
+  const configDir = '.seagull'
   const faviconDir = join('.seagull', 'assets', 'favicons')
   if (!existsSync(faviconDir)) {
     return null
@@ -62,11 +63,10 @@ export function optimizeLayoutFile() {
       sync: true,
     })
     .map(path => basename(path))
-    .join("','")
 
-  let layout = readFileSync(join(frontendDir, 'layout.js'), 'utf-8')
-  const regex = /(React\.createElement\(core.1\.Favicons, \{ favicons:)(.+)(\})/m
-  const subst = `$1\[\'${faviconFiles}\'\]$3`
-  layout = layout.replace(regex, subst)
-  writeFileSync(join(frontendDir, 'layout.js'), layout)
+  const conf = JSON.parse(
+    readFileSync(join(configDir, 'package.json'), 'utf-8')
+  )
+  set(conf, 'seagull.faviconFiles', faviconFiles)
+  writeFileSync(join(configDir, 'package.json'), JSON.stringify(conf))
 }

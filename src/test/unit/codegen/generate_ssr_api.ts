@@ -18,9 +18,8 @@ class CodegenGenerateSsrApiTest {
     const gen = generateSsrApi()
     const code = gen.toString()
     expect(code).to.contain(`import { API, Request, Response } from '@seagull`)
-    expect(code).to.contain(`import { Routing } from '@seagull`)
+    expect(code).to.contain(`import { Routing, Document } from '@seagull`)
     expect(code).to.contain(`import { renderToString } from 'react-dom/server'`)
-    expect(code).to.contain(`import layout from '../../frontend/layout'`)
   }
 
   @test

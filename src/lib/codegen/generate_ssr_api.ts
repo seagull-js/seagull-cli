@@ -9,13 +9,12 @@ export default function generateSsrAPI(): Class {
       await page.componentDidMount()
     }
     const content = renderToString(appRouter.load())
-    const html = renderToString(layout({content}))
+    const html = renderToString(Document({content}))
     return this.html(html)
   `
   const opts = { path: '/*', method: 'GET', body }
   const gen = generateAPI('Frontent', opts)
-  gen.addNamedImports('@seagull/core', ['Routing'])
+  gen.addNamedImports('@seagull/core', ['Routing', 'Document'])
   gen.addNamedImports('react-dom/server', ['renderToString'])
-  gen.addDefaultImport('../../frontend/layout', 'layout')
   return gen
 }

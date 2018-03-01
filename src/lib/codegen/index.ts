@@ -11,7 +11,6 @@ export { default as generatePage } from './generate_page'
 
 // dedicated file generators
 export { default as generateComponentTsx } from './generate_component_tsx'
-export { default as generateLayoutTsx } from './generate_layout_tsx'
 export { default as generatePackageJson } from './generate_package_json'
 export { default as generateSsrApi } from './generate_ssr_api'
 export { default as generateTsconfigJson } from './generate_tsconfig_json'
