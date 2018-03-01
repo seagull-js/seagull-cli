@@ -29,7 +29,6 @@ export function copyAssets() {
   if (!existsSync(join('frontend', 'assets'))) {
     return
   }
-
   const files = dir.files('frontend/assets', { sync: true })
   if (!files || files.length === 0) {
     return

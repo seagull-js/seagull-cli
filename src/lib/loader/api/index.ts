@@ -14,6 +14,7 @@ export default function loader(appName: string, folder: string): ApiHandler[] {
   const handlers = dir
     .files(folder, { sync: true })
     .filter(file => /\.(ts)|(js)$/.test(file))
+    .filter(file => !(file as string).endsWith('.d.ts'))
     .map(file => new ApiHandler(appName, file))
   return sorted(handlers)
 }
