@@ -1,4 +1,5 @@
 {
+
     "name": "@seagull/cli",
     "version": "0.9.0",
     "description": "CLI for developing seagull apps",
@@ -38,6 +39,7 @@
         "browserify": "^14.4.0",
         "browserify-incremental": "3.1.1",
         "chai": "^4.1.1",
+        "chalk": "^2.3.1",
         "clime": "^0.5.9",
         "decache": "4.4.0",
         "express": "^4.15.4",
