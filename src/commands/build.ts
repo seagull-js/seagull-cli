@@ -1,3 +1,8 @@
+import {
+  addImportIndexFile,
+  modifyScriptExports,
+  writeConfig,
+} from '@seagull/build-tools'
 import { Command, command, Context, metadata, option, Options } from 'clime'
 import { existsSync, writeFileSync } from 'fs'
 import * as dir from 'node-dir'
@@ -11,16 +16,11 @@ import {
   lint,
   prettier,
 } from '../lib/build/helper'
-import {
-  addImportIndexFile,
-  modifyScriptExports,
-  writeConfig,
-} from '../lib/build/transforms'
 
 import generateYAML from '../lib/serverless/generate-yaml'
 
-import { Bundler } from '../lib/build/bundler'
-import { Compiler } from '../lib/build/compiler'
+import { Bundler } from '@seagull/build-tools'
+import { Compiler } from '@seagull/build-tools'
 import { getAccountId } from '../lib/context'
 
 class BuildOptions extends Options {

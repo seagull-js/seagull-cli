@@ -1,3 +1,8 @@
+import {
+  addImportIndexFile,
+  modifyScriptExports,
+  writeConfig,
+} from '@seagull/build-tools'
 import { Command, command, metadata, option, Options, param } from 'clime'
 import * as express from 'express'
 import { join } from 'path'
@@ -10,15 +15,10 @@ import {
   lint,
   prettier,
 } from '../lib/build/helper'
-import {
-  addImportIndexFile,
-  modifyScriptExports,
-  writeConfig,
-} from '../lib/build/transforms'
 import { log } from '../lib/logger'
 
-import { Bundler } from '../lib/build/bundler'
-import { Compiler } from '../lib/build/compiler'
+import { Bundler } from '@seagull/build-tools'
+import { Compiler } from '@seagull/build-tools'
 import App from '../lib/loader/app'
 import { Server } from '../lib/server/index'
 
