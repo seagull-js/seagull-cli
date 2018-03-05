@@ -1,6 +1,6 @@
 {
   "name": "@seagull/cli",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "CLI for developing seagull apps",
   "main": "dist/index.js",
   "bin": {
@@ -39,7 +39,7 @@
   "dependencies": {
     "@seagull/code-generators": "^0.2.4",
     "@seagull/build-tools": "^0.1.2",
-    "@seagull/core": "0.8.0",
+    "@seagull/core": "0.8.1",
     "aws-data-science": "^0.2.2",
     "aws-sdk": "^2.202.0",
     "body-parser": "^1.18.2",
