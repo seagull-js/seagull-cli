@@ -1,7 +1,7 @@
+import { generateAPI } from '@seagull/code-generators'
 import { Command, command, option, Options, param } from 'clime'
 import { join } from 'path'
 import * as shell from 'shelljs'
-import { generateAPI } from '../../lib/codegen'
 import { log } from '../../lib/logger'
 
 export class SomeOptions extends Options {

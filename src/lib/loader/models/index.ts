@@ -14,5 +14,6 @@ export default function loader(appName: string, folder: string): DdbModel[] {
   return dir
     .files(folder, { sync: true })
     .filter(file => /\.(ts)|(js)$/.test(file))
+    .filter(file => !(file as string).endsWith('.d.ts'))
     .map(file => new DdbModel(appName, file))
 }

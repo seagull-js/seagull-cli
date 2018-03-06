@@ -1,7 +1,7 @@
+import { generateModel } from '@seagull/code-generators'
 import { Command, command, option, Options, param } from 'clime'
 import { join } from 'path'
 import * as shell from 'shelljs'
-import { generateModel } from '../../lib/codegen'
 import { log } from '../../lib/logger'
 
 // tslint:disable-next-line:max-classes-per-file

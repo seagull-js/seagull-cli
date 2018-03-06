@@ -57,12 +57,6 @@ class NewCommandTest extends FunctionalTest {
   }
 
   @test
-  'project frontend folder contains layout.tsx file'() {
-    const file = join(this.appDir, 'frontend', 'layout.tsx')
-    expect(existsSync(file)).to.be.equal(true)
-  }
-
-  @test
   'project frontend folder contains pages folder'() {
     const file = join(this.appDir, 'frontend', 'pages')
     expect(existsSync(file)).to.be.equal(true)
