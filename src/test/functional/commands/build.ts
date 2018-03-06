@@ -16,6 +16,7 @@ class BuildCommandTest extends FunctionalTest {
     this.addPage('SomePage', { path: '/some_url' })
     this.addComponent('FunctionComp')
     this.addComponent('ClassComp', { class: true })
+    this.addRobots()
     await this.build()
   }
 
@@ -65,21 +66,6 @@ class BuildCommandTest extends FunctionalTest {
     expect(api.handler).to.be.a('function')
   }
 
-  @test.skip
-  'frontend folders get added and compiled'() {
-    const file = join(
-      this.appDir,
-      '.seagull',
-      'dist',
-      'frontend',
-      'pages',
-      'example.js'
-    )
-    expect(existsSync(file)).to.be.equal(true)
-    const text = readFileSync(file, { encoding: 'utf-8' })
-    expect(text).to.include('example')
-  }
-
   @test
   'frontend gets browserified into a single file'() {
     const file = join(this.appDir, '.seagull', 'assets', 'bundle.js')
@@ -95,6 +81,19 @@ class BuildCommandTest extends FunctionalTest {
   @test
   'index file for store/page imports got created'() {
     const file = join(this.appDir, '.seagull', 'dist', 'frontend', 'index.js')
+    expect(existsSync(file)).to.be.equal(true)
+  }
+
+  @test
+  'robots txt handler gets exported'() {
+    const file = join(
+      this.appDir,
+      '.seagull',
+      'dist',
+      'backend',
+      'api',
+      'RobotsTxt.js'
+    )
     expect(existsSync(file)).to.be.equal(true)
   }
 
