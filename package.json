@@ -31,7 +31,7 @@
     "author": "",
     "license": "LGPL-3.0",
     "dependencies": {
-        "@seagull/code-generators": "^0.2.4",
+        "@seagull/code-generators": "^0.3.0",
         "@seagull/core": "0.8.1",
         "aws-data-science": "^0.2.2",
         "aws-sdk": "^2.202.0",
