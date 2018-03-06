@@ -64,7 +64,7 @@ function logDeployStart() {
   log(
     `\n${chalk.red(
       `The first deployment may take up to 30min, due to the Cloudfront deployment`
-    )}\x1b[5m\nPlease be as patient you can... :)\n`
+    )}\nPlease be as patient you can... :)\n`
   )
 }
 
