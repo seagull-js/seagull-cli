@@ -1,4 +1,5 @@
 import { generateAPI } from '@seagull/code-generators'
+import { PackageJson } from '@seagull/package-config'
 import { Command, command, param } from 'clime'
 import { writeFileSync } from 'fs'
 import { join } from 'path'
@@ -29,14 +30,7 @@ export default class extends Command {
 
     // update package.json
     const pkgPath = join(pwd, 'package.json')
-    const pkg: any = require(pkgPath)
-    const sgConfig = pkg.seagull || {}
-    sgConfig.analytics = {
-      enabled: true,
-      ga: id,
-    }
-    pkg.seagull = sgConfig
-    writeFileSync(pkgPath, JSON.stringify(pkg, null, 2), 'utf-8')
+    new PackageJson(pkgPath).enableAnalytics(id)
     log('updated package.json seagull settings')
   }
 }

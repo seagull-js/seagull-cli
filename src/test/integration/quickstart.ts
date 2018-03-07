@@ -29,6 +29,6 @@ class LoaderAppTest extends IntegrationTest {
     const server = await this.serve()
     const data = await fetch('http://localhost:3000/')
     const html = await data.text()
-    expect(html).to.include(`apple-touch-icon-120x120.png`)
+    expect(html).to.include(`favicon.ico`)
   }
 }
