@@ -1,7 +1,7 @@
 import { API } from '@seagull/core'
 import * as decache from 'decache'
 import tsnode = require('ts-node')
-tsnode.register({ fast: true })
+tsnode.register()
 
 export default class ApiHandler {
   module: typeof API

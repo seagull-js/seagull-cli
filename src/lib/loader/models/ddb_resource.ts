@@ -1,6 +1,6 @@
 import { Model } from '@seagull/core'
 import tsnode = require('ts-node')
-tsnode.register({ fast: true })
+tsnode.register()
 
 export default class DdbModel {
   schema: { [key: string]: string }
