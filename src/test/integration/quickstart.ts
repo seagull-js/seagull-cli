@@ -30,5 +30,6 @@ class LoaderAppTest extends IntegrationTest {
     const data = await fetch('http://localhost:3000/')
     const html = await data.text()
     expect(html).to.include(`favicon.ico`)
+    server.close()
   }
 }
