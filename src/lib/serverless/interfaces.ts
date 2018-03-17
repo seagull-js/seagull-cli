@@ -35,6 +35,10 @@ export interface ITable {
   }
 }
 
+export interface ISimpleDB {
+  Type: string
+}
+
 export interface IIAMRoleStatement {
   Effect: string
   Action: string[]
@@ -68,6 +72,7 @@ export interface IServerless {
         | IDistributionAccessIdentity
         | IS3Bucket
         | IS3BucketPermission
+        | ISimpleDB
     }
   }
 }

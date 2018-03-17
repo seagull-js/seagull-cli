@@ -17,6 +17,7 @@ class BuildCommandTest extends FunctionalTest {
     this.addComponent('FunctionComp')
     this.addComponent('ClassComp', { class: true })
     this.addRobots()
+    this.addShrimp('Scampi')
     await this.build()
   }
 
@@ -109,5 +110,18 @@ class BuildCommandTest extends FunctionalTest {
     // tslint:disable-next-line:no-unused-expression
     expect(indexFile).to.exist
     expect(indexFile.pages).to.contain.keys('hello')
+  }
+
+  @test
+  'shrimp gets exported'() {
+    const file = join(
+      this.appDir,
+      '.seagull',
+      'dist',
+      'backend',
+      'shrimps',
+      'Scampi.js'
+    )
+    expect(existsSync(file)).to.be.equal(true)
   }
 }

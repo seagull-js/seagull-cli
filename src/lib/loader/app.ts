@@ -3,6 +3,7 @@ import { readFileSync } from 'fs'
 import { join } from 'path'
 import { ApiHandler, default as apiLoader } from './api'
 import { DdbModel, default as modelLoader } from './models'
+import { default as shrimpLoader } from './shrimps'
 // abstracts away all non-generated code inside the .seagull folder
 export default class App {
   backend: ApiHandler[] = []
@@ -10,12 +11,14 @@ export default class App {
   package: any // package.json
   frontend: string
   models: DdbModel[] = []
+  shrimps: string[] = []
 
   // requires the full (absolute) path to the users' project .seagull folder
   constructor(public folder: string) {
     this.loadPackageJson()
     this.loadApiHandlers()
     this.loadDdbModels()
+    this.loadShrimps()
   }
 
   async loadFrontendBundle() {
@@ -39,5 +42,10 @@ export default class App {
   private loadDdbModels() {
     const folder = join(this.folder, '.seagull', 'dist', 'models')
     this.models = modelLoader(this.name, folder)
+  }
+
+  private loadShrimps() {
+    const folder = join(this.folder, '.seagull', 'dist', 'backend', 'shrimps')
+    this.shrimps = shrimpLoader(this.name, folder)
   }
 }

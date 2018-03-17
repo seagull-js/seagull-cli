@@ -7,6 +7,7 @@ import AddComponentCommand from '../../commands/add/component'
 import AddModelCommand from '../../commands/add/model'
 import AddPageCommand from '../../commands/add/page'
 import AddRobotsTxtCommand from '../../commands/add/robots'
+import AddShrimpCommand from '../../commands/add/shrimp'
 import BuildCommand from '../../commands/build'
 import NewCommand from '../../commands/new'
 import ServeCommand from '../../commands/serve'
@@ -27,6 +28,7 @@ export default class BaseTest {
   static addModel = new AddModelCommand().execute
   static addPage = new AddPageCommand().execute
   static addRobots = new AddRobotsTxtCommand().execute
+  static addShrimp = new AddShrimpCommand().execute
   static build = new BuildCommand().execute
   static create = new NewCommand().execute
   static serve = new ServeCommand().execute
@@ -44,6 +46,7 @@ export default class BaseTest {
   addModel = new AddModelCommand().execute
   addPage = new AddPageCommand().execute
   addRobots = new AddRobotsTxtCommand().execute
+  addShrimp = new AddShrimpCommand().execute
   build = new BuildCommand().execute
   create = new NewCommand().execute
   serve = new ServeCommand().execute

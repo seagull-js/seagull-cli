@@ -38,6 +38,10 @@ export default function generate(
     sls.addFunction(api.name, fn)
   }
 
+  for (const name of app.shrimps) {
+    sls.addSimpleDBDomain(name)
+  }
+
   for (const model of app.models) {
     const table = {
       Properties: {

@@ -65,6 +65,11 @@ export default class Builder {
     return this
   }
 
+  addSimpleDBDomain(name: string): Builder {
+    this.data.resources.Resources[name] = { Type: 'AWS::SDB::Domain' }
+    return this
+  }
+
   toYAML(): string {
     // Use json.parse/stringify to remove undefined values from json
     // yml.stringify would insert null for them...
