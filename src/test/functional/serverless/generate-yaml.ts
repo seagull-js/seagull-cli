@@ -24,7 +24,7 @@ class ServeCommandTest extends FunctionalTest {
     const yml = YAML.parse(generate(app, { accountId: 'TESTACCID' }))
     expect(yml.provider.name).to.be.equal('aws')
     expect(yml.provider.runtime).to.be.equal('nodejs6.10')
-    expect(yml.provider.region).to.be.equal('eu-central-1')
+    expect(yml.provider.region).to.be.equal('eu-west-1')
     expect(yml.provider.timeout).to.be.equal(30)
   }
 

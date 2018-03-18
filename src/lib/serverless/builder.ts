@@ -14,8 +14,8 @@ import {
 export default class Builder {
   private data: IServerless
 
-  constructor(name: string) {
-    this.data = this.createDefaultServerless()
+  constructor(name: string, region = 'eu-west-1') {
+    this.data = this.createDefaultServerless(region)
     this.data.service = name
   }
 
@@ -79,22 +79,22 @@ export default class Builder {
     return YAML.stringify(json, 42, 2)
   }
 
-  private createDefaultServerless(): IServerless {
+  private createDefaultServerless(region = 'eu-west-1'): IServerless {
     return {
       frameworkVersion: '=1.19.0',
       functions: {},
       plugins: [],
-      provider: this.createDefaultProvider(),
+      provider: this.createDefaultProvider(region),
       resources: { Resources: {} },
       service: '',
     }
   }
 
-  private createDefaultProvider(): IProvider {
+  private createDefaultProvider(region): IProvider {
     return {
       iamRoleStatements: [],
       name: 'aws',
-      region: 'eu-central-1',
+      region,
       runtime: 'nodejs6.10',
       stage: 'dev',
       timeout: 30,

@@ -1,3 +1,4 @@
+import { PackageJson } from '@seagull/package-config'
 import { get } from 'lodash'
 import App from '../loader/app'
 import Builder from './builder'
@@ -8,6 +9,9 @@ import { S3Target } from './distribution/s3Target'
 import { generateS3Bucket } from './s3/bucket'
 import { generateS3BucketPermission } from './s3/permission'
 
+const pkg = new PackageJson()
+const region = pkg.config.region
+
 export interface IGenerateYmlOpts {
   accountId: string
 }
@@ -17,7 +21,7 @@ export default function generate(
   { accountId }: IGenerateYmlOpts
 ): string {
   // create instance with defaults
-  const sls = new Builder(app.name)
+  const sls = new Builder(app.name, region)
 
   // add backend routes as serverless functions (lambda + apiG)
   for (const api of app.backend) {

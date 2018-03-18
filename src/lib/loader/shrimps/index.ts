@@ -16,5 +16,5 @@ export default function loader(appName: string, folder: string): string[] {
     .filter(file => /\.(ts)|(js)$/.test(file))
     .filter(file => !(file as string).endsWith('.d.ts'))
     .map(file => require(file).default)
-    .map(shrimp => `${pkg.name}-${new shrimp()._name}`)
+    .map(shrimp => new shrimp()._name)
 }
