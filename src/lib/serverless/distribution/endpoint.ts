@@ -33,8 +33,6 @@ export abstract class Endpoint {
         Headers: this.targetHeaders,
         QueryString: true,
       },
-      MaxTTL: this.ttl,
-      MinTTL: this.ttl,
       PathPattern: this.path, // in case of defaultcachebehavior undefined
       TargetOriginId: this.origin,
       ViewerProtocolPolicy: 'redirect-to-https',

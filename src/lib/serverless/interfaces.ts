@@ -93,8 +93,6 @@ export interface IDistribution {
           Headers: string[]
           QueryString: boolean
         }
-        MaxTTL: number
-        MinTTL: number
         PathPattern: string
         TargetOriginId: string
         ViewerProtocolPolicy: string
@@ -113,8 +111,6 @@ export interface IDistribution {
           Headers: string[]
           QueryString: boolean
         }
-        MaxTTL: number
-        MinTTL: number
         PathPattern: string
         TargetOriginId: string
         ViewerProtocolPolicy: string

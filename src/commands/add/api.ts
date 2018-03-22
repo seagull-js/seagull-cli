@@ -33,6 +33,15 @@ export class SomeOptions extends Options {
     required: false,
   })
   method?: string
+
+  @option({
+    default: 0,
+    description: 'cache time in seconds',
+    name: 'cache',
+    placeholder: '60',
+    required: false,
+  })
+  cache?: number
 }
 
 // tslint:disable-next-line:max-classes-per-file

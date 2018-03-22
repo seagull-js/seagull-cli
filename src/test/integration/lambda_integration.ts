@@ -1,4 +1,4 @@
-import { expect } from 'chai'
+import 'chai/register-should'
 import { skip, slow, suite, test, timeout } from 'mocha-typescript'
 import { join } from 'path'
 import IntegrationTest from '../helper/integration_test'
@@ -9,7 +9,8 @@ class AwsLambdaIntegrationTest extends IntegrationTest {
   @slow(5000)
   @test
   async 'can invoke a function handler'() {
-    this.addApi('hello', { path: '/hello' })
+    const cache = 60
+    this.addApi('hello', { path: '/hello', cache })
     await this.build()
     const event = {
       httpMethod: 'GET',
@@ -31,8 +32,8 @@ class AwsLambdaIntegrationTest extends IntegrationTest {
         error ? reject(error) : resolve(result)
       })
     })
-    // tslint:disable-next-line:no-console
-    // console.log('response: ', response)
-    expect(response.body).to.be.equal('hello world')
+    response.body.should.to.be.equal('hello world')
+    response.headers.should.to.have.property('Cache-Control')
+    response.headers['Cache-Control'].should.equal(`max-age=${cache}`)
   }
 }
