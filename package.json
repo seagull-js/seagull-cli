@@ -1,6 +1,6 @@
 {
   "name": "@seagull/cli",
-  "version": "0.11.0",
+  "version": "0.11.1",
   "description": "CLI for developing seagull apps",
   "main": "dist/index.js",
   "bin": {
