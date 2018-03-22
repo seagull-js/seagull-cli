@@ -1,8 +1,10 @@
 import { API, Request, Response } from '@seagull/core'
+import { APIGatewayEvent, Context } from 'aws-lambda'
 import * as bodyParser from 'body-parser'
 import * as express from 'express'
 import { RequestHandler } from 'express'
 import { Handler } from 'express-serve-static-core'
+import { defaultTo } from 'lodash'
 import { join } from 'path'
 import * as stoppable from 'stoppable'
 import App from '../loader/app'
@@ -62,9 +64,21 @@ export class Server {
       const fn = async (req: express.Request, res: express.Response) => {
         const request = mapRequestFormat(req)
         const handler: API = new (api.module as any)()
-        const response = await handler.handle(request)
+        // Todo: 'correct' mappoing of express request to api gateway event
+        const response: Response = await api.module.dispatchPromise(
+          {
+            httpMethod: request.method,
+            path: request.path,
+            queryStringParameters: request.params,
+          } as APIGatewayEvent,
+          {} as Context
+        )
         res.status(response.statusCode)
         res.setHeader('Content-Type', response.headers['Content-Type'])
+        res.setHeader(
+          'Cache-Control',
+          defaultTo(response.headers['Cache-Control'], 'no-cache, no-store')
+        )
         res.send(response.body)
       }
       const method = (api.module as any).method.toString().toLowerCase()

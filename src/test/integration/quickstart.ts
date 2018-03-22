@@ -1,4 +1,4 @@
-import { expect } from 'chai'
+import 'chai/register-should'
 import { skip, slow, suite, test, timeout } from 'mocha-typescript'
 import * as fetch from 'node-fetch'
 import IntegrationTest from '../helper/integration_test'
@@ -15,11 +15,16 @@ class LoaderAppTest extends IntegrationTest {
   @timeout(60000)
   @test
   async 'can build and serve an app with api routes'() {
-    this.addApi('hello', { path: '/hello' })
+    const cache = 60
+    this.addApi('hello', { path: '/hello', cache })
     const server = await this.serve()
     const data = await fetch('http://localhost:3000/hello')
+
+    data.headers._headers['cache-control'][0].should.be.equal(
+      `max-age=${cache}`
+    )
     const text = await data.text()
-    expect(text).to.be.equal('hello world')
+    text.should.to.be.equal('hello world')
     server.close()
   }
 
@@ -29,7 +34,7 @@ class LoaderAppTest extends IntegrationTest {
     const server = await this.serve()
     const data = await fetch('http://localhost:3000/')
     const html = await data.text()
-    expect(html).to.include(`favicon.ico`)
+    html.should.to.include(`favicon.ico`)
     server.close()
   }
 }

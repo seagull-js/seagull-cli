@@ -39,7 +39,7 @@
   "dependencies": {
     "@seagull/build-tools": "^0.1.4",
     "@seagull/code-generators": "^0.5.0",
-    "@seagull/core": "0.10.1",
+    "@seagull/core": "0.10.2",
     "aws-data-science": "^0.2.2",
     "aws-sdk": "^2.209.0",
     "body-parser": "^1.18.2",
