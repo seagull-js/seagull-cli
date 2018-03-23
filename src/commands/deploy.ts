@@ -11,8 +11,16 @@ import {
 } from 'clime'
 import * as shell from 'shelljs'
 
+import { join } from 'path'
+import { getAccountId } from '../lib/context'
+import App from '../lib/loader/app'
 import { log } from '../lib/logger'
 import { hasValidAWSCredentials } from '../lib/serverless/credentials'
+import {
+  findMainCloudFrontResourceID,
+  invalidateDistribution,
+} from '../lib/serverless/distribution/util'
+import generateSLS from '../lib/serverless/generate-sls-config'
 import { syncS3Data } from '../lib/serverless/s3/sync'
 import Build from './build'
 
@@ -42,6 +50,7 @@ export default class extends Command {
         logDeployStart()
         shell.exec('sls deploy')
         await syncS3Data()
+        await this.invalidateCloudFrontCache()
         logDeployDone()
       } else {
         log(
@@ -57,6 +66,20 @@ consult https://docs.aws.amazon.com/cli/latest/topic/config-vars.html.`)
     }
     process.env.AWS_PROFILE = currentProfile
     shell.cd(cwd)
+  }
+
+  async invalidateCloudFrontCache() {
+    const pwd = join(shell.pwd().toString(), '..')
+
+    const app = new App(pwd)
+
+    const accountId = await getAccountId()
+    const yml = generateSLS(app, { accountId })
+    const region = yml.getRegion()
+    const stackName = yml.getStackName()
+    const cfId = await findMainCloudFrontResourceID(region, stackName)
+    await invalidateDistribution(cfId, ['/*'])
+    log(`\nMain CloudFront Distribution invalidated`)
   }
 }
 
