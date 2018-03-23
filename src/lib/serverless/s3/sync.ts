@@ -9,6 +9,6 @@ export async function syncS3Data() {
   const accountId = await getAccountId()
   const name = require(`${shell.pwd()}/package.json`).name.replace(/\s/g, '')
   shell.exec(
-    `aws s3 sync --region=${region} --delete ./assets s3://${name}-${accountId}-assets-bucket/assets`
+    `aws s3 sync --region=${region} --delete ./assets s3://${name}-${accountId}-assets-bucket/assets --cache-control=600`
   )
 }
