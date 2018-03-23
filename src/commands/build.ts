@@ -17,8 +17,6 @@ import {
   prettier,
 } from '../lib/build/helper'
 
-import generateYAML from '../lib/serverless/generate-yaml'
-
 import { Bundler } from '@seagull/build-tools'
 import { Compiler } from '@seagull/build-tools'
 import { getAccountId } from '../lib/context'
