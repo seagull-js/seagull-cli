@@ -19,7 +19,7 @@ export interface IGenerateYmlOpts {
 export default function generate(
   app: App,
   { accountId }: IGenerateYmlOpts
-): string {
+): Builder {
   // create instance with defaults
   const sls = new Builder(app.name, region)
 
@@ -124,5 +124,5 @@ export default function generate(
   sls.addDistribution('distribution', distribution)
 
   // serialize to YAML
-  return sls.toYAML()
+  return sls
 }

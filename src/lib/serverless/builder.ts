@@ -79,6 +79,14 @@ export default class Builder {
     return YAML.stringify(json, 42, 2)
   }
 
+  getStackName(): string {
+    return `${this.data.service}-${this.data.provider.stage}`
+  }
+
+  getRegion(): string {
+    return this.data.provider.region
+  }
+
   private createDefaultServerless(region = 'eu-west-1'): IServerless {
     return {
       frameworkVersion: '=1.19.0',

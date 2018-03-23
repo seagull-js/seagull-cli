@@ -3,7 +3,7 @@ import * as dir from 'node-dir'
 import { join } from 'path'
 import * as shell from 'shelljs'
 import App from '../loader/app'
-import generateYAML from '../serverless/generate-yaml'
+import generateSLS from '../serverless/generate-sls-config'
 
 export function binPath(name: string): string {
   return join(__dirname, '..', '..', '..', 'node_modules', '.bin', name)
@@ -53,7 +53,7 @@ export function createServerlessYaml(accountId: string) {
   const pwd = shell.pwd().toString()
   const app = new App(pwd)
 
-  const yml = generateYAML(app, { accountId })
+  const yml = generateSLS(app, { accountId }).toYAML()
   const ymlPath = join(pwd, '.seagull', 'serverless.yml')
   writeFileSync(ymlPath, yml)
 }
