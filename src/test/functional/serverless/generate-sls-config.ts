@@ -81,6 +81,15 @@ class ServeCommandTest extends FunctionalTest {
   }
 
   @test
+  'yaml contains s3 bucket with correct name'() {
+    const app = new App(this.appDir)
+    const yml = YAML.parse(generate(app, { accountId: 'TESTACCID' }).toYAML())
+    yml.resources.Resources.appBucket.Properties.BucketName.should.be.equal(
+      '__tmp__-eu-west-1-TESTACCID-resources-bucket'
+    )
+  }
+
+  @test
   'yaml contains s3 permission'() {
     const app = new App(this.appDir)
     const yml = YAML.parse(generate(app, { accountId: 'TESTACCID' }).toYAML())

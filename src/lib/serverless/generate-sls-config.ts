@@ -10,6 +10,7 @@ import { generateS3Bucket } from './s3/bucket'
 import { generateS3BucketPermission } from './s3/permission'
 
 const pkg = new PackageJson()
+// has default region if not set in package json
 const region = pkg.config.region
 
 export interface IGenerateYmlOpts {
@@ -80,7 +81,7 @@ export default function generate(
   )
 
   // add default app / assets bucket
-  const appBucketName = `${app.name}-${accountId}-assets-bucket`
+  const appBucketName = `${app.name}-${region}-${accountId}-resources-bucket`
   const appBucketResource = 'appBucket'
   sls.addS3Bucket(appBucketResource, generateS3Bucket(appBucketName))
 
