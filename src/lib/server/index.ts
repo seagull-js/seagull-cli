@@ -66,11 +66,13 @@ export class Server {
         const handler: API = new (api.module as any)()
         // Todo: 'correct' mappoing of express request to api gateway event
         const response: Response = await api.module.dispatchPromise(
-          {
+          ({
+            body: JSON.stringify(req.body),
+            headers: req.headers,
             httpMethod: request.method,
             path: request.path,
             queryStringParameters: request.params,
-          } as APIGatewayEvent,
+          } as any) as APIGatewayEvent,
           {} as Context
         )
         res.status(response.statusCode)
