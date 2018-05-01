@@ -66,11 +66,20 @@ export default function generate(
           ReadCapacityUnits: model.reads,
           WriteCapacityUnits: model.writes,
         },
-        TableName: `${model.appName}-${model.name}`,
+        TableName: model.tableName,
+        TimeToLiveSpecification: {
+          AttributeName: 'deleteAt',
+          Enabled: model.ttl,
+        },
       },
       Type: 'AWS::DynamoDB::Table',
     }
     sls.addTable(model.name, table)
+    sls.addIAMRoleStatement({
+      Action: ['dynamodb:*'],
+      Effect: 'Allow',
+      Resource: `arn:aws:dynamodb:${region}:*:table/${model.tableName}`,
+    })
   }
 
   // add access identity so s3 and cloudfront can communicate
