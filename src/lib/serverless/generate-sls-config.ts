@@ -43,6 +43,13 @@ export default function generate(
     sls.addFunction(api.name, fn)
   }
 
+  // add backend routes as serverless functions (lambda + apiG)
+  for (const job of app.jobs) {
+    const events = [{ schedule: (job.module as any).cycle }]
+    const fn = { handler: job.handler, timeout: 30, events }
+    sls.addFunction(job.name, fn)
+  }
+
   for (const name of app.shrimps) {
     sls.addSimpleDBDomain(name)
   }

@@ -2,11 +2,14 @@ import * as decache from 'decache'
 import { readFileSync } from 'fs'
 import { join } from 'path'
 import { ApiHandler, default as apiLoader } from './api'
+import { default as jobLoader, JobHandler } from './jobs'
 import { DdbModel, default as modelLoader } from './models'
 import { default as shrimpLoader } from './shrimps'
+
 // abstracts away all non-generated code inside the .seagull folder
 export default class App {
   backend: ApiHandler[] = []
+  jobs: JobHandler[] = []
   name: string = ''
   package: any // package.json
   frontend: string
@@ -17,6 +20,7 @@ export default class App {
   constructor(public folder: string) {
     this.loadPackageJson()
     this.loadApiHandlers()
+    this.loadJobHandlers()
     this.loadDdbModels()
     this.loadShrimps()
   }
@@ -37,6 +41,11 @@ export default class App {
   private loadApiHandlers() {
     const folder = join(this.folder, '.seagull', 'dist', 'backend', 'api')
     this.backend = apiLoader(this.name, folder)
+  }
+
+  private loadJobHandlers() {
+    const folder = join(this.folder, '.seagull', 'dist', 'backend', 'jobs')
+    this.jobs = jobLoader(this.name, folder)
   }
 
   private loadDdbModels() {
