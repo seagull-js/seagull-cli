@@ -24,32 +24,6 @@ export default function generate(
   // create instance with defaults
   const sls = new Builder(app.name, region)
 
-  // add backend routes as serverless functions (lambda + apiG)
-  for (const api of app.backend) {
-    const { method, path } = api.module as { method: string; path: string }
-    let events
-    if (path.endsWith('*')) {
-      // if you want a wildcard you WANT a url like 'bla/*'
-      // -> 'bla*' is forbidden
-      const proxyPath = path.replace(/\/+\*$/, '')
-      events = [
-        { http: { method, path: `${proxyPath}/` } },
-        { http: { method, path: `${proxyPath}/{proxy+}` } },
-      ]
-    } else {
-      events = [{ http: { method, path } }]
-    }
-    const fn = { handler: api.handler, timeout: 30, events }
-    sls.addFunction(api.name, fn)
-  }
-
-  // add backend routes as serverless functions (lambda + apiG)
-  for (const job of app.jobs) {
-    const events = [{ schedule: (job.module as any).cycle }]
-    const fn = { handler: job.handler, timeout: 30, events }
-    sls.addFunction(job.name, fn)
-  }
-
   for (const name of app.shrimps) {
     sls.addSimpleDBDomain(name)
   }
@@ -109,6 +83,36 @@ export default function generate(
       distributionAccessIdentityResourceName
     )
   )
+
+  const environment = {
+    S3BUCKET: appBucketName 
+  }
+
+  // add backend routes as serverless functions (lambda + apiG)
+  for (const api of app.backend) {
+    const { method, path } = api.module as { method: string; path: string }
+    let events
+    if (path.endsWith('*')) {
+      // if you want a wildcard you WANT a url like 'bla/*'
+      // -> 'bla*' is forbidden
+      const proxyPath = path.replace(/\/+\*$/, '')
+      events = [
+        { http: { method, path: `${proxyPath}/` } },
+        { http: { method, path: `${proxyPath}/{proxy+}` } },
+      ]
+    } else {
+      events = [{ http: { method, path } }]
+    }
+    const fn = { handler: api.handler, timeout: 30, environment, events }
+    sls.addFunction(api.name, fn)
+  }
+
+  // add backend routes as serverless functions (lambda + apiG)
+  for (const job of app.jobs) {
+    const events = [{ schedule: (job.module as any).cycle }]
+    const fn = { handler: job.handler, timeout: 30, environment, events }
+    sls.addFunction(job.name, fn)
+  }
 
   // add distribution to serve api and app assets
   const distribution = new Distribution({

@@ -10,9 +10,14 @@ export interface IFunctionEvent {
   }
 }
 
+export interface ILambdaEnvironment {
+  S3BUCKET: string
+}
+
 export interface IFunction {
   handler: string
   timeout: number
+  environment: ILambdaEnvironment
   events: IFunctionEvent[]
 }
 
