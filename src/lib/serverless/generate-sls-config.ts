@@ -85,7 +85,7 @@ export default function generate(
   )
 
   const environment = {
-    S3BUCKET: appBucketName 
+    S3BUCKET: appBucketName,
   }
 
   // add backend routes as serverless functions (lambda + apiG)
