@@ -103,7 +103,7 @@ export default class Builder {
       iamRoleStatements: [],
       name: 'aws',
       region,
-      runtime: 'nodejs6.10',
+      runtime: 'nodejs8.10',
       stage: 'dev',
       timeout: 30,
     }
