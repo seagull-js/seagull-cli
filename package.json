@@ -1,6 +1,6 @@
 {
   "name": "@seagull/cli",
-  "version": "0.13.6",
+  "version": "0.13.7",
   "description": "CLI for developing seagull apps",
   "main": "dist/index.js",
   "bin": {
@@ -57,7 +57,7 @@
     "ts-simple-ast": "^9.1.0",
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.10.0",
-    "typescript": "^2.7.2",
+    "typescript": "2.7.2",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
