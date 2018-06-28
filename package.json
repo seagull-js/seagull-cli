@@ -1,6 +1,6 @@
 {
   "name": "@seagull/cli",
-  "version": "0.13.7",
+  "version": "0.13.8",
   "description": "CLI for developing seagull apps",
   "main": "dist/index.js",
   "bin": {
@@ -31,7 +31,7 @@
   "author": "",
   "license": "LGPL-3.0",
   "dependencies": {
-    "@seagull/build-tools": "^0.1.6",
+    "@seagull/build-tools": "^0.1.7",
     "@seagull/code-generators": "^0.5.0",
     "@seagull/core": "0.11.5",
     "aws-data-science": "^0.2.2",
@@ -57,7 +57,7 @@
     "ts-simple-ast": "^9.1.0",
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.10.0",
-    "typescript": "2.7.2",
+    "typescript": "2.8",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
