@@ -61,9 +61,9 @@ export default function generate(
       Effect: 'Allow',
       Resource: `arn:aws:dynamodb:${region}:*:table/${model.tableName}`,
     })
-    
+
     const s3Actions = []
-    
+
     s3Actions.push('s3:PutObject')
     s3Actions.push('s3:GetObject')
     s3Actions.push('s3:ListBucket')
