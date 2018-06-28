@@ -1,6 +1,6 @@
 {
   "name": "@seagull/cli",
-  "version": "0.13.9",
+  "version": "0.13.10",
   "description": "CLI for developing seagull apps",
   "main": "dist/index.js",
   "bin": {
@@ -31,7 +31,7 @@
   "author": "",
   "license": "LGPL-3.0",
   "dependencies": {
-    "@seagull/build-tools": "^0.1.7",
+    "@seagull/build-tools": "^0.1.8",
     "@seagull/code-generators": "^0.5.1",
     "@seagull/core": "0.11.5",
     "aws-data-science": "^0.2.2",
