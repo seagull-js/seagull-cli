@@ -62,20 +62,20 @@ export default function generate(
       Resource: `arn:aws:dynamodb:${region}:*:table/${model.tableName}`,
     })
     
-    const s3Actions = []
-    
-    s3Actions.push('s3:PutObject')
-    s3Actions.push('s3:GetObject')
-    s3Actions.push('s3:ListBucket')
-    s3Actions.push('s3:DeleteObject')
-    s3Actions.push('s3:PutObjectAcl')
-
-    sls.addIAMRoleStatement({
-      Action: s3Actions,
-      Effect: 'Allow',
-      Resource: `arn:aws:s3:::*`,
-    })
   }
+  const s3Actions = []
+  
+  s3Actions.push('s3:PutObject')
+  s3Actions.push('s3:GetObject')
+  s3Actions.push('s3:ListBucket')
+  s3Actions.push('s3:DeleteObject')
+  s3Actions.push('s3:PutObjectAcl')
+
+  sls.addIAMRoleStatement({
+    Action: s3Actions,
+    Effect: 'Allow',
+    Resource: `arn:aws:s3:::*`,
+  })
 
   // add access identity so s3 and cloudfront can communicate
   const distributionAccessIdentityResourceName = 'appDistributionAccessIdentity'
